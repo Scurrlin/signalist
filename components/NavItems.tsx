@@ -2,28 +2,16 @@
 
 import {NAV_ITEMS} from "@/lib/constants";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
 import SearchCommand from "@/components/SearchCommand";
 import {DropdownMenuItem, DropdownMenuSeparator} from "@/components/ui/dropdown-menu";
 
 const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSearch}: { initialStocks: StockWithWatchlistStatus[], isGuest?: boolean, inDropdown?: boolean, onOpenSearch?: () => void}) => {
-    const pathname = usePathname()
-
-    const isActive = (path: string) => {
-        if (path === '/') return pathname === '/';
-
-        return pathname.startsWith(path);
-    }
-
-    // Filter out watchlist for guests
-    const navItems = isGuest 
-        ? NAV_ITEMS.filter(item => item.href !== '/watchlist')
-        : NAV_ITEMS;
+    const navItems = NAV_ITEMS.filter(item => !isGuest || !item.authOnly);
 
     if (inDropdown) {
         return (
             <>
-                {navItems.map(({ href, label }, index) => {
+                {navItems.map(({ href, label, external }, index) => {
                     const isLast = index === navItems.length - 1;
                     
                     if(href === '/search') return (
@@ -41,9 +29,15 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
                     return (
                         <div key={href}>
                             <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
-                                <Link href={href} className="w-full">
-                                    {label}
-                                </Link>
+                                {external ? (
+                                    <a href={href} target="_blank" rel="noopener noreferrer" className="w-full">
+                                        {label}
+                                    </a>
+                                ) : (
+                                    <Link href={href} className="w-full">
+                                        {label}
+                                    </Link>
+                                )}
                             </DropdownMenuItem>
                             {!isLast && <DropdownMenuSeparator className="bg-gray-600"/>}
                         </div>
@@ -53,27 +47,46 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
         )
     }
 
-    return (
-        <ul className="flex flex-col sm:flex-row p-2 gap-3 sm:gap-10 font-medium">
-            {navItems.map(({ href, label }) => {
-                if(href === '/search') return (
-                    <li key="search-trigger">
-                        <SearchCommand
-                            renderAs="text"
-                            label="Search"
-                            initialStocks={initialStocks}
-                        />
-                    </li>
-                )
+    const dashboardItem = navItems.find(({ href }) => href === '/');
+    const searchItem = navItems.find(({ href }) => href === '/search');
+    const watchlistItem = navItems.find(({ href }) => href === '/watchlist');
+    const docsItem = navItems.find(({ label }) => label === 'Docs');
 
-                return <li key={href}>
-                    <Link href={href} className={`hover:text-blue-600 transition-colors ${
-                        isActive(href) ? 'text-gray-100' : ''
-                    }`}>
-                        {label}
+    return (
+        <ul className="header-nav-list">
+            <li className="header-nav-group header-nav-group-left header-side-nav-item">
+                {dashboardItem && (
+                    <Link href={dashboardItem.href} className="header-nav-link">
+                        {dashboardItem.label}
                     </Link>
-                </li>
-            })}
+                )}
+                {searchItem && (
+                    <SearchCommand
+                        renderAs="text"
+                        label={searchItem.label}
+                        initialStocks={initialStocks}
+                    />
+                )}
+            </li>
+            <li className="header-brand-spacer" aria-hidden="true" />
+            <li className="header-nav-group header-nav-group-right header-side-nav-item">
+                {watchlistItem && (
+                    <Link href={watchlistItem.href} className="header-nav-link">
+                        {watchlistItem.label}
+                    </Link>
+                )}
+                {docsItem && (
+                    <a
+                        href={docsItem.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="header-nav-link"
+                        onClick={(event) => event.currentTarget.blur()}
+                    >
+                        {docsItem.label}
+                    </a>
+                )}
+            </li>
         </ul>
     )
 }

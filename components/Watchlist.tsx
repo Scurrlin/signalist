@@ -55,10 +55,6 @@ const Watchlist = ({ initialStocks, userId, maxItems }: WatchlistProps) => {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">Your Watchlist</h2>
-      </div>
-
       <div className="mx-auto grid w-full max-w-[340px] grid-cols-1 justify-center gap-4 md:max-w-[696px] md:grid-cols-2 lg:max-w-[1052px] lg:grid-cols-3">
         {displayStocks.map((stock) => (
           <WatchlistCard

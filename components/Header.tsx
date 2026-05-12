@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
@@ -17,14 +18,25 @@ const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolea
     return (
         <header className="sticky top-0 header">
             <div className="container header-wrapper">
-                <Link href="/">
-                    <BrandLogo className="cursor-pointer" />
+                <Link href="/" className="header-tv-link" aria-label="$ignalist dashboard">
+                    <Image
+                        src="/assets/icons/TradingView_Logo.svg"
+                        alt=""
+                        width={36}
+                        height={28}
+                        aria-hidden="true"
+                        className="brand-logo-icon"
+                    />
                 </Link>
-                <nav className="hidden sm:block">
+                <nav className="header-center-nav" aria-label="Primary navigation">
                     <NavItems initialStocks={initialStocks} isGuest={isGuest} />
                 </nav>
-
-                <UserDropdown user={displayUser} initialStocks={initialStocks} isGuest={isGuest} />
+                <Link href="/" className="header-brand-center" aria-label="$ignalist dashboard">
+                    <BrandLogo className="cursor-pointer" />
+                </Link>
+                <div className="header-actions">
+                    <UserDropdown user={displayUser} initialStocks={initialStocks} isGuest={isGuest} />
+                </div>
             </div>
         </header>
     )

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,6 +20,7 @@ import SearchCommand from "@/components/SearchCommand";
 
 const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, initialStocks: StockWithWatchlistStatus[], isGuest?: boolean}) => {
     const router = useRouter();
+    const triggerRef = useRef<HTMLButtonElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
 
@@ -33,11 +34,25 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
         setSearchOpen(true);
     };
 
+    const handleDropdownOpenChange = (open: boolean) => {
+        setDropdownOpen(open);
+
+        if (!open) {
+            requestAnimationFrame(() => {
+                triggerRef.current?.blur();
+            });
+        }
+    };
+
     return (
         <>
-        <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+        <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-3 text-gray-4 hover:text-blue-600">
+                <Button
+                    ref={triggerRef}
+                    variant="ghost"
+                    className="flex items-center gap-3 text-gray-4 hover:text-blue-600 focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
+                >
                     <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                             {user.name[0]}
@@ -52,17 +67,16 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-gray-400">
                 <DropdownMenuLabel>
-                    <div className="flex relative items-center gap-3 py-2">
-                        <Avatar className="h-10 w-10">
+                    <div className="flex items-center gap-3 py-2">
+                        <Avatar className="h-10 w-10 shrink-0">
                             <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                                 {user.name[0]}
                             </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col">
-                            <span className='text-base font-medium text-gray-400'>
+                        <div className="min-w-0 flex-1">
+                            <span className="block whitespace-normal break-words text-base font-medium leading-snug text-gray-100">
                                 {user.name}
                             </span>
-                            {!isGuest && <span className="text-sm text-gray-500">{user.email}</span>}
                         </div>
                     </div>
                 </DropdownMenuLabel>
@@ -71,8 +85,8 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                 {/* Guest users see Sign Up and Sign In options */}
                 {isGuest ? (
                     <>
-                        {/* Desktop: Show Sign Up and Sign In */}
-                        <div className="hidden sm:block">
+                        {/* Wide screens: Show only Sign Up and Sign In */}
+                        <div className="hidden lg:block">
                             <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-up" className="w-full">
                                     Sign Up
@@ -86,8 +100,8 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                             </DropdownMenuItem>
                         </div>
                         
-                        {/* Mobile: Show Sign Up, Sign In, Dashboard, and Search */}
-                        <div className="sm:hidden">
+                        {/* Compact header: Show auth actions plus collapsed nav links */}
+                        <div className="lg:hidden">
                             <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-up" className="w-full">
                                     Sign Up
@@ -112,8 +126,8 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                             <LogOut className="h-4 w-4 mr-2" />
                             Logout
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator className="sm:hidden bg-gray-600"/>
-                        <nav className="sm:hidden">
+                        <DropdownMenuSeparator className="lg:hidden bg-gray-600"/>
+                        <nav className="lg:hidden">
                             <NavItems initialStocks={initialStocks} isGuest={false} inDropdown={true} onOpenSearch={handleOpenSearch} />
                         </nav>
                     </>
