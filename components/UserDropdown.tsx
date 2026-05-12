@@ -37,9 +37,9 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
         <>
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-3 text-gray-4 hover:text-yellow-500">
+                <Button variant="ghost" className="flex items-center gap-3 text-gray-4 hover:text-blue-600">
                     <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-yellow-500 text-yellow-900 text-sm font-bold">
+                        <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                             {user.name[0]}
                         </AvatarFallback>
                     </Avatar>
@@ -54,7 +54,7 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                 <DropdownMenuLabel>
                     <div className="flex relative items-center gap-3 py-2">
                         <Avatar className="h-10 w-10">
-                            <AvatarFallback className="bg-yellow-500 text-yellow-900 text-sm font-bold">
+                            <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                                 {user.name[0]}
                             </AvatarFallback>
                         </Avatar>
@@ -73,13 +73,13 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                     <>
                         {/* Desktop: Show Sign Up and Sign In */}
                         <div className="hidden sm:block">
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-up" className="w-full">
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-gray-600"/>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-in" className="w-full">
                                     Sign In
                                 </Link>
@@ -88,13 +88,13 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                         
                         {/* Mobile: Show Sign Up, Sign In, Dashboard, and Search */}
                         <div className="sm:hidden">
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-up" className="w-full">
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-gray-600"/>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href="/sign-in" className="w-full">
                                     Sign In
                                 </Link>
@@ -108,7 +108,7 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                 ) : (
                     <>
                         {/* Authenticated users see Logout */}
-                        <DropdownMenuItem onClick={handleSignOut} className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                        <DropdownMenuItem onClick={handleSignOut} className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                             <LogOut className="h-4 w-4 mr-2" />
                             Logout
                         </DropdownMenuItem>

@@ -55,7 +55,7 @@ export default function StockDetailsClient({
   };
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-center">
       <WatchlistButton
         symbol={symbol.toUpperCase()}
         company={company.toUpperCase()}
@@ -67,4 +67,3 @@ export default function StockDetailsClient({
     </div>
   );
 }
-

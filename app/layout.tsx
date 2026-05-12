@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description: "Track real-time stock prices with personalized watchlists.",
   metadataBase: new URL('https://stocks-app-s2l1.onrender.com/'),
   keywords: ["stocks", "stock market", "watchlist", "real-time prices", "financial tracker", "trading"],
+  icons: {
+    icon: "/assets/icons/SClogo.png",
+    shortcut: "/assets/icons/SClogo.png",
+    apple: "/assets/icons/SClogo.png",
+  },
   
   // OpenGraph tags (Facebook, LinkedIn, iMessage, WhatsApp, Slack, Discord, etc.)
   openGraph: {
@@ -27,11 +32,11 @@ export const metadata: Metadata = {
     siteName: "Signalist",
     images: [
       {
-        url: "/assets/images/dashboard.png",
+        url: "/assets/images/dashboard.jpg",
         width: 1200,
         height: 630,
         alt: "Signalist Dashboard - Real-time stock tracking interface",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
     locale: "en_US",
@@ -43,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Signalist",
     description: "Track real-time stock prices with personalized watchlists.",
-    images: ["/assets/images/dashboard.png"],
+    images: ["/assets/images/dashboard.jpg"],
     creator: "@signalist",
     site: "@signalist",
   },

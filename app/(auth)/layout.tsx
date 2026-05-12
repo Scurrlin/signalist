@@ -3,6 +3,7 @@ import Image from "next/image";
 import {auth} from "@/lib/better-auth/auth";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
+import BrandLogo from "@/components/BrandLogo";
 
 const Layout = async ({ children }: { children : React.ReactNode }) => {
     const session = await auth.api.getSession({ headers: await headers() })
@@ -13,32 +14,30 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
         <main className="auth-layout">
             <section className="auth-left-section scrollbar-hide-default">
                 <Link href="/" className="auth-logo">
-                    <Image src="/assets/icons/logo.svg" alt="Signalist logo" width={140} height={32} className='h-8 w-auto' />
+                    <BrandLogo />
                 </Link>
 
                 <div className="pb-6 lg:pb-8 flex-1">{children}</div>
             </section>
 
             <section className="auth-right-section">
-                <div className="z-10 relative lg:mt-4 lg:mb-16">
-                    <blockquote className="auth-blockquote">
-                        &ldquo;Signalist makes it even easier for investors to do the opposite of what I say!&rdquo;
-                    </blockquote>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <cite className="auth-testimonial-author">- Jim Cramer... probably</cite>
-                            <p className="max-md:text-xs text-gray-500">Investment Pro & Media Personality</p>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <Image src="/assets/icons/star.svg" alt="Star" key={star} width={20} height={20} className="w-5 h-5" />
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <Image
+                    src="/assets/images/dashboard.jpg"
+                    alt="Astronaut looking over Earth from orbit"
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 55vw, 100vw"
+                    className="auth-dashboard-preview"
+                />
+                <div className="auth-hero-scrim" />
 
-                <div className="flex-1 relative">
-                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" />
+                <div className="auth-hero-content">
+                    <h2 className="auth-hero-title">Look first / Then leap.</h2>
+                    <p className="auth-hero-subtitle">The best trades require research, then commitment.</p>
+                    <Link href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" className="auth-hero-cta">
+                        <span>Get started for free</span>
+                    </Link>
+                    <p className="auth-hero-note">$0 forever, no credit card needed</p>
                 </div>
             </section>
         </main>

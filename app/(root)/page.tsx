@@ -36,18 +36,18 @@ const Home = async () => {
                     <Watchlist 
                         initialStocks={watchlistStocks}
                         userId={userId!}
-                        maxItems={6}
+                        maxItems={3}
                     />
                 </section>
             )}
 
             <section className="grid w-full gap-8 home-section">
-                <div className="md:col-span-1 xl:col-span-1">
+                <div className="lg:col-span-1 xl:col-span-1">
                     <TradingViewWidget
                       title="Market Overview"
                       scriptUrl={`${scriptUrl}market-overview.js`}
                       config={MARKET_OVERVIEW_WIDGET_CONFIG}
-                      className="custom-chart"
+                      className="custom-chart widget-overlay-frame"
                       height={600}
                     />
                 </div>
@@ -56,23 +56,26 @@ const Home = async () => {
                         title="Stock Heatmap"
                         scriptUrl={`${scriptUrl}stock-heatmap.js`}
                         config={HEATMAP_WIDGET_CONFIG}
+                        className="widget-overlay-frame"
                         height={600}
                     />
                 </div>
             </section>
             <section className="grid w-full gap-8 home-section">
-                <div className="h-full md:col-span-1 xl:col-span-1">
+                <div className="h-full lg:col-span-1 xl:col-span-1">
                     <TradingViewWidget
                         scriptUrl={`${scriptUrl}timeline.js`}
                         config={TOP_STORIES_WIDGET_CONFIG}
-                        height={600}
+                        className="widget-overlay-frame"
+                        height={730}
                     />
                 </div>
-                <div className="h-full md:col-span-1 xl:col-span-2">
+                <div className="h-full lg:col-span-1 xl:col-span-2">
                     <TradingViewWidget
                         scriptUrl={`${scriptUrl}market-quotes.js`}
                         config={MARKET_DATA_WIDGET_CONFIG}
-                        height={600}
+                        className="widget-overlay-frame"
+                        height={730}
                     />
                 </div>
             </section>

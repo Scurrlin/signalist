@@ -29,7 +29,6 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NYSE:WFC', d: 'Wells Fargo Co New' },
                 { s: 'NYSE:BAC', d: 'Bank Amer Corp' },
                 { s: 'NYSE:HSBC', d: 'Hsbc Hldgs Plc' },
-                { s: 'NYSE:C', d: 'Citigroup Inc' },
                 { s: 'NYSE:MA', d: 'Mastercard Incorporated' },
             ],
         },
@@ -39,9 +38,8 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NASDAQ:AAPL', d: 'Apple' },
                 { s: 'NASDAQ:GOOGL', d: 'Alphabet' },
                 { s: 'NASDAQ:MSFT', d: 'Microsoft' },
-                { s: 'NASDAQ:FB', d: 'Meta Platforms' },
+                { s: 'NASDAQ:META', d: 'Meta Platforms' },
                 { s: 'NYSE:ORCL', d: 'Oracle Corp' },
-                { s: 'NASDAQ:INTC', d: 'Intel Corp' },
             ],
         },
         {
@@ -50,7 +48,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NASDAQ:AMZN', d: 'Amazon' },
                 { s: 'NYSE:BABA', d: 'Alibaba Group Hldg Ltd' },
                 { s: 'NYSE:T', d: 'At&t Inc' },
-                { s: 'NYSE:WMT', d: 'Walmart' },
+                { s: 'NASDAQ:WMT', d: 'Walmart' },
                 { s: 'NYSE:V', d: 'Visa' },
             ],
         },
@@ -90,13 +88,13 @@ export const TOP_STORIES_WIDGET_CONFIG = {
     locale: 'en',
     market: 'stock',
     width: '100%',
-    height: '600',
+    height: '730',
 };
 
 export const MARKET_DATA_WIDGET_CONFIG = {
     title: 'Stocks',
     width: '100%',
-    height: 600,
+    height: 730,
     locale: 'en',
     showSymbolLogo: true,
     colorTheme: 'dark',
@@ -110,7 +108,6 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NYSE:WFC', displayName: 'Wells Fargo Co New' },
                 { name: 'NYSE:BAC', displayName: 'Bank Amer Corp' },
                 { name: 'NYSE:HSBC', displayName: 'Hsbc Hldgs Plc' },
-                { name: 'NYSE:C', displayName: 'Citigroup Inc' },
                 { name: 'NYSE:MA', displayName: 'Mastercard Incorporated' },
             ],
         },
@@ -120,9 +117,8 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NASDAQ:AAPL', displayName: 'Apple' },
                 { name: 'NASDAQ:GOOGL', displayName: 'Alphabet' },
                 { name: 'NASDAQ:MSFT', displayName: 'Microsoft' },
-                { name: 'NASDAQ:FB', displayName: 'Meta Platforms' },
+                { name: 'NASDAQ:META', displayName: 'Meta Platforms' },
                 { name: 'NYSE:ORCL', displayName: 'Oracle Corp' },
-                { name: 'NASDAQ:INTC', displayName: 'Intel Corp' },
             ],
         },
         {
@@ -131,7 +127,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NASDAQ:AMZN', displayName: 'Amazon' },
                 { name: 'NYSE:BABA', displayName: 'Alibaba Group Hldg Ltd' },
                 { name: 'NYSE:T', displayName: 'At&t Inc' },
-                { name: 'NYSE:WMT', displayName: 'Walmart' },
+                { name: 'NASDAQ:WMT', displayName: 'Walmart' },
                 { name: 'NYSE:V', displayName: 'Visa' },
             ],
         },
@@ -150,7 +146,7 @@ export const SYMBOL_INFO_WIDGET_CONFIG = (symbol: string) => ({
 export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string) => ({
     allow_symbol_change: false,
     calendar: false,
-    details: true,
+    details: false,
     hide_side_toolbar: true,
     hide_top_toolbar: false,
     hide_legend: false,
@@ -173,30 +169,9 @@ export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string) => ({
     height: 600,
 });
 
-export const BASELINE_WIDGET_CONFIG = (symbol: string) => ({
-    allow_symbol_change: false,
-    calendar: false,
-    details: false,
-    hide_side_toolbar: true,
-    hide_top_toolbar: false,
-    hide_legend: false,
-    hide_volume: false,
-    hotlist: false,
-    interval: 'D',
-    locale: 'en',
-    save_image: false,
-    style: 10,
-    symbol: symbol.toUpperCase(),
-    theme: 'dark',
-    timezone: 'Etc/UTC',
-    backgroundColor: '#141414',
-    gridColor: '#141414',
-    watchlist: [],
-    withdateranges: false,
-    compareSymbols: [],
-    studies: [],
-    width: '100%',
-    height: 600,
+export const CANDLE_CHART_DETAILS_WIDGET_CONFIG = (symbol: string) => ({
+    ...CANDLE_CHART_WIDGET_CONFIG(symbol),
+    details: true,
 });
 
 export const TECHNICAL_ANALYSIS_WIDGET_CONFIG = (symbol: string) => ({
@@ -225,7 +200,7 @@ export const COMPANY_FINANCIALS_WIDGET_CONFIG = (symbol: string) => ({
     isTransparent: 'true',
     locale: 'en',
     width: '100%',
-    height: 464,
+    height: 920,
     displayMode: 'regular',
     largeChartUrl: '',
 });
@@ -249,9 +224,9 @@ export const POPULAR_STOCK_SYMBOLS = [
     'AMD',
     'PYPL',
     'UBER',
-    'ZOOM',
+    'ZM',
     'SPOT',
-    'SQ',
+    'XYZ',
     'SHOP',
     'ROKU',
 
@@ -265,7 +240,7 @@ export const POPULAR_STOCK_SYMBOLS = [
     'NET',
     'OKTA',
     'TWLO',
-    'ZM',
+    'APP',
 
     // Consumer & Delivery Apps
     'DOCU',
@@ -287,20 +262,7 @@ export const POPULAR_STOCK_SYMBOLS = [
     'PDD',
     'TME',
     'BILI',
-    'DIDI',
+    'DIDIY',
     'GRAB',
     'SE',
-];
-
-export const NO_MARKET_NEWS =
-    '<p class="mobile-text" style="margin:0 0 20px 0;font-size:16px;line-height:1.6;color:#4b5563;">No market news available today. Please check back tomorrow.</p>';
-
-export const WATCHLIST_TABLE_HEADER = [
-    'Company',
-    'Symbol',
-    'Price',
-    'Change',
-    'Market Cap',
-    'P/E Ratio',
-    'Action',
 ];

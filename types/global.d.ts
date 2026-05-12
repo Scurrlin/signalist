@@ -22,21 +22,6 @@ declare global {
         value?: string;
     };
 
-    type Option = {
-        value: string;
-        label: string;
-    };
-
-    type SelectFieldProps = {
-        name: string;
-        label: string;
-        placeholder: string;
-        options: readonly Option[];
-        control: Control;
-        error?: FieldError;
-        required?: boolean;
-    };
-
     type FooterLinkProps = {
         text: string;
         linkText: string;
@@ -105,6 +90,7 @@ declare global {
 
     type ProfileData = {
         name?: string;
+        logo?: string;
         marketCapitalization?: number;
     };
 

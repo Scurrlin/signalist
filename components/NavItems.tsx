@@ -30,7 +30,7 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
                         <div key="search-trigger">
                             <DropdownMenuItem 
                                 onClick={onOpenSearch}
-                                className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer"
+                                className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer"
                             >
                                 <span className="w-full block">Search</span>
                             </DropdownMenuItem>
@@ -40,7 +40,7 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
 
                     return (
                         <div key={href}>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
                                 <Link href={href} className="w-full">
                                     {label}
                                 </Link>
@@ -67,7 +67,7 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
                 )
 
                 return <li key={href}>
-                    <Link href={href} className={`hover:text-yellow-500 transition-colors ${
+                    <Link href={href} className={`hover:text-blue-600 transition-colors ${
                         isActive(href) ? 'text-gray-100' : ''
                     }`}>
                         {label}

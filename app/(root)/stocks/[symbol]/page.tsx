@@ -1,9 +1,10 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
+import ResponsiveStockChart from "@/components/ResponsiveStockChart";
 import StockDetailsClient from "@/components/StockDetailsClient";
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
-  BASELINE_WIDGET_CONFIG,
+  CANDLE_CHART_DETAILS_WIDGET_CONFIG,
   TECHNICAL_ANALYSIS_WIDGET_CONFIG,
   COMPANY_PROFILE_WIDGET_CONFIG,
   COMPANY_FINANCIALS_WIDGET_CONFIG,
@@ -34,33 +35,25 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   }
 
   return (
-    <div className="flex min-h-screen p-4 md:p-6 lg:p-8">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-        {/* Left column */}
-        <div className="flex flex-col gap-6">
+    <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
+      <section className="flex w-full flex-col gap-8">
+        <div className="flex min-w-0 flex-col gap-6">
           <TradingViewWidget
             scriptUrl={`${scriptUrl}symbol-info.js`}
             config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
             height={170}
           />
 
-          <TradingViewWidget
+          <ResponsiveStockChart
             scriptUrl={`${scriptUrl}advanced-chart.js`}
-            config={CANDLE_CHART_WIDGET_CONFIG(symbol)}
-            className="custom-chart"
-            height={600}
-          />
-
-          <TradingViewWidget
-            scriptUrl={`${scriptUrl}advanced-chart.js`}
-            config={BASELINE_WIDGET_CONFIG(symbol)}
-            className="custom-chart"
+            defaultConfig={CANDLE_CHART_WIDGET_CONFIG(symbol)}
+            detailsConfig={CANDLE_CHART_DETAILS_WIDGET_CONFIG(symbol)}
+            className="custom-chart widget-overlay-frame"
             height={600}
           />
         </div>
 
-        {/* Right column */}
-        <div className="flex flex-col gap-6">
+        <div className="mx-auto flex w-full max-w-[880px] min-w-0 flex-col gap-6">
           <StockDetailsClient
             symbol={symbol}
             company={symbol}
@@ -72,6 +65,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <TradingViewWidget
             scriptUrl={`${scriptUrl}technical-analysis.js`}
             config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(symbol)}
+            className="technical-analysis-widget"
             height={400}
           />
 
@@ -84,7 +78,8 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <TradingViewWidget
             scriptUrl={`${scriptUrl}financials.js`}
             config={COMPANY_FINANCIALS_WIDGET_CONFIG(symbol)}
-            height={464}
+            className="financials-widget"
+            height={920}
           />
         </div>
       </section>

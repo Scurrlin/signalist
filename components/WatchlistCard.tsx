@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { X } from 'lucide-react';
 
 interface WatchlistCardProps {
   stock: StockWithData;
@@ -23,6 +24,11 @@ const WatchlistCard = ({ stock, onRemove, showStar = true }: WatchlistCardProps)
     setIsRemoving(false);
   };
 
+  const handleStarClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   // Generate a color for the company icon based on symbol
   const getColorFromSymbol = (symbol: string) => {
     const colors = [
@@ -31,7 +37,7 @@ const WatchlistCard = ({ stock, onRemove, showStar = true }: WatchlistCardProps)
       'bg-blue-500',
       'bg-green-500',
       'bg-purple-500',
-      'bg-yellow-500',
+      'bg-blue-600',
       'bg-pink-500',
       'bg-indigo-500',
     ];
@@ -43,20 +49,15 @@ const WatchlistCard = ({ stock, onRemove, showStar = true }: WatchlistCardProps)
   const changeColor = isPositive ? 'text-green-500' : 'text-red-500';
 
   return (
-    <Link href={`/stocks/${stock.symbol}`}>
+    <Link href={`/stocks/${stock.symbol}`} className="mx-auto block w-full max-w-[340px]">
       <div className="watchlist-card group relative">
-        {/* Star button - absolutely positioned */}
-        {showStar && onRemove && (
-          <button
-            onClick={handleRemove}
-            disabled={isRemoving}
-            className="watchlist-card-star absolute top-3 right-3"
-            title="Remove from watchlist"
-          >
+        {/* Star marker - reminder that this stock is in the watchlist */}
+        {showStar && (
+          <div className="watchlist-card-star absolute top-2 left-3" title="In your watchlist" onClick={handleStarClick}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="#FACC15"
+              fill="#2962FF"
               className="w-5 h-5"
             >
               <path
@@ -65,6 +66,19 @@ const WatchlistCard = ({ stock, onRemove, showStar = true }: WatchlistCardProps)
                 clipRule="evenodd"
               />
             </svg>
+          </div>
+        )}
+
+        {onRemove && (
+          <button
+            type="button"
+            onClick={handleRemove}
+            disabled={isRemoving}
+            className="watchlist-card-remove"
+            title={`Remove ${stock.symbol} from watchlist`}
+            aria-label={`Remove ${stock.symbol} from watchlist`}
+          >
+            <X className="h-5 w-5" strokeWidth={2.25} />
           </button>
         )}
 

@@ -38,7 +38,7 @@ export default async function WatchlistPage() {
           </p>
           <Link
             href="/"
-            className="inline-block yellow-btn px-6 py-3"
+            className="inline-block accent-btn px-6 py-3"
           >
             Explore Stocks
           </Link>
@@ -56,4 +56,3 @@ export default async function WatchlistPage() {
     </div>
   );
 }
-

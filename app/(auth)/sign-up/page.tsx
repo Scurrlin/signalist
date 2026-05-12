@@ -4,6 +4,7 @@ import {useForm} from "react-hook-form";
 import {Button} from "@/components/ui/button";
 import InputField from "@/components/forms/InputField";
 import FooterLink from "@/components/forms/FooterLink";
+import TradingViewAttribution from "@/components/forms/TradingViewAttribution";
 import {signUpWithEmail, setGuestMode} from "@/lib/actions/auth.actions";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
@@ -97,7 +98,7 @@ const SignUp = () => {
                     validation={{ required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } }}
                 />
 
-                <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
+                <Button type="submit" disabled={isSubmitting} className="auth-gradient-btn w-full mt-5">
                     {isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </Button>
 
@@ -114,12 +115,14 @@ const SignUp = () => {
                     type="button" 
                     onClick={handleGuestMode}
                     disabled={isGuestLoading}
-                    className="yellow-btn w-full"
+                    className="auth-gradient-btn w-full"
                 >
                     {isGuestLoading ? 'Loading...' : 'Continue as Guest'}
                 </Button>
 
                 <FooterLink text="Already have an account?" linkText="Sign in" href="/sign-in" />
+
+                <TradingViewAttribution />
             </form>
         </>
     )
