@@ -55,26 +55,6 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
     return (
         <ul className="header-nav-list">
             <li className="header-nav-group header-nav-group-left header-side-nav-item">
-                {dashboardItem && (
-                    <Link href={dashboardItem.href} className="header-nav-link">
-                        {dashboardItem.label}
-                    </Link>
-                )}
-                {searchItem && (
-                    <SearchCommand
-                        renderAs="text"
-                        label={searchItem.label}
-                        initialStocks={initialStocks}
-                    />
-                )}
-            </li>
-            <li className="header-brand-spacer" aria-hidden="true" />
-            <li className="header-nav-group header-nav-group-right header-side-nav-item">
-                {watchlistItem && (
-                    <Link href={watchlistItem.href} className="header-nav-link">
-                        {watchlistItem.label}
-                    </Link>
-                )}
                 {docsItem && (
                     <a
                         href={docsItem.href}
@@ -85,6 +65,26 @@ const NavItems = ({initialStocks, isGuest = false, inDropdown = false, onOpenSea
                     >
                         {docsItem.label}
                     </a>
+                )}
+                {dashboardItem && (
+                    <Link href={dashboardItem.href} className="header-nav-link">
+                        {dashboardItem.label}
+                    </Link>
+                )}
+            </li>
+            <li className="header-brand-spacer" aria-hidden="true" />
+            <li className="header-nav-group header-nav-group-right header-side-nav-item">
+                {searchItem && (
+                    <SearchCommand
+                        renderAs="text"
+                        label={searchItem.label}
+                        initialStocks={initialStocks}
+                    />
+                )}
+                {watchlistItem && (
+                    <Link href={watchlistItem.href} className="header-nav-link">
+                        {watchlistItem.label}
+                    </Link>
                 )}
             </li>
         </ul>

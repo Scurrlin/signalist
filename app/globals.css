@@ -224,7 +224,7 @@
     grid-column: 2;
   }
   .brand-logo-text {
-    @apply text-[28px] font-black leading-none tracking-normal text-white sm:text-[36px];
+    @apply text-[36px] font-black leading-none tracking-normal text-white;
   }
   .header-center-nav .search-text {
     @apply inline-flex h-full w-auto items-center text-sm font-medium text-gray-100 transition-colors hover:text-blue-600 focus:text-gray-100 focus-visible:text-gray-100 sm:text-base;
@@ -291,11 +291,13 @@
     @apply h-12 px-3 py-3 text-white text-base placeholder:text-gray-500 border-gray-600 bg-gray-800 rounded-lg focus:!border-blue-600 focus:ring-0;
   }
   .tradingview-attribution {
-    @apply flex flex-col items-center gap-4 pt-5;
+    @apply flex items-center justify-center pt-5;
   }
-  .auth-attribution-cta {
-    @apply inline-flex h-11 items-center justify-center rounded-lg px-6 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition-transform hover:-translate-y-0.5 lg:hidden;
-    background-image: linear-gradient(105deg, #38BDF8 0%, #5862FF 58%, #D13BFF 100%);
+  .tradingview-attribution-link {
+    @apply inline-flex max-w-full items-center justify-center rounded-md transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0E27];
+  }
+  .tradingview-attribution-logo {
+    @apply h-auto w-72 max-w-full sm:w-80;
   }
   .select-trigger {
     @apply w-full !h-12 px-3 py-3 text-base border-gray-600 bg-gray-800 text-white rounded-lg focus:!border-blue-600 focus:ring-0;

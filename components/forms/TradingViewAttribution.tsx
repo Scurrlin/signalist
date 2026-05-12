@@ -4,15 +4,20 @@ import Link from "next/link";
 const TradingViewAttribution = () => {
     return (
         <div className="tradingview-attribution">
-            <Image
-                src="/assets/icons/TradingView_Logo_Full.svg"
-                alt="TradingView"
-                width={420}
-                height={72}
-                className="h-auto w-80"
-            />
-            <Link href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" className="auth-attribution-cta">
-                Get started
+            <Link
+                href="https://www.tradingview.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open TradingView"
+                className="tradingview-attribution-link"
+            >
+                <Image
+                    src="/assets/icons/TradingView_Logo_Full.svg"
+                    alt="TradingView"
+                    width={420}
+                    height={72}
+                    className="tradingview-attribution-logo"
+                />
             </Link>
         </div>
     );
