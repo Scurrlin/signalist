@@ -1,9 +1,9 @@
 "use client"
 
-import { type MouseEvent, useEffect, useState, useTransition } from "react"
+import { type KeyboardEvent, type MouseEvent, useEffect, useState, useTransition } from "react"
 import { CommandDialog, CommandEmpty, CommandInput, CommandList } from "@/components/ui/command"
 import {Button} from "@/components/ui/button";
-import {Loader2,  TrendingUp} from "lucide-react";
+import {CornerDownLeft, Loader2, TrendingUp} from "lucide-react";
 import Link from "next/link";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
@@ -28,6 +28,7 @@ export default function SearchCommand({
   const open = externalOpen ?? internalOpen;
   const setOpen = onExternalOpenChange ?? setInternalOpen;
   const [searchTerm, setSearchTerm] = useState("")
+  const [submittedQuery, setSubmittedQuery] = useState("")
   const [loading, setLoading] = useState(false)
   const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>(initialStocks);
   const [updatingSymbol, setUpdatingSymbol] = useState<string | null>(null);
@@ -38,46 +39,64 @@ export default function SearchCommand({
   const [, startTransition] = useTransition();
   const router = useRouter();
 
-  const isSearchMode = !!searchTerm.trim();
+  const trimmedSearchTerm = searchTerm.trim();
+  const isSearchMode = !!submittedQuery;
+  const hasPendingSearch = !!trimmedSearchTerm && trimmedSearchTerm !== submittedQuery && !loading;
   const displayStocks = isSearchMode ? stocks : stocks?.slice(0, 10);
   const resultCount = displayStocks?.length ?? 0;
   const resultCountLabel = resultCount >= 11 ? '10+' : resultCount;
 
   useEffect(() => {
-    if (!isSearchMode) {
+    const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);
+    setTrackedSymbols(new Set(symbols.map(symbol => symbol.toUpperCase())));
+    if (!submittedQuery) {
+      setStocks(initialStocks);
+    }
+  }, [initialStocks, watchlistSymbols, submittedQuery]);
+
+  const performSearch = async () => {
+    const trimmed = searchTerm.trim();
+
+    if (!trimmed) {
+      setSubmittedQuery("");
       setStocks(initialStocks);
       return;
     }
 
-    let cancelled = false;
+    if (trimmed === submittedQuery) return;
 
-    const timer = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const results = await searchStocks(searchTerm.trim());
-        if (!cancelled) setStocks(results);
-      } catch {
-        if (!cancelled) setStocks([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }, 300);
+    setSubmittedQuery(trimmed);
+    setLoading(true);
+    try {
+      const results = await searchStocks(trimmed);
+      setStocks(results);
+    } catch {
+      setStocks([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [searchTerm, isSearchMode, initialStocks]);
+  const handleSearchTermChange = (value: string) => {
+    setSearchTerm(value);
+    if (!value.trim() && submittedQuery) {
+      setSubmittedQuery("");
+      setStocks(initialStocks);
+    }
+  }
 
-  useEffect(() => {
-    const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);
-    setTrackedSymbols(new Set(symbols.map(symbol => symbol.toUpperCase())));
-    setStocks(initialStocks);
-  }, [initialStocks, watchlistSymbols]);
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      void performSearch();
+    }
+  }
 
   const handleSelectStock = () => {
     setOpen(false);
     setSearchTerm("");
+    setSubmittedQuery("");
     setStocks(initialStocks);
   }
 
@@ -146,8 +165,28 @@ export default function SearchCommand({
       )}
       <CommandDialog open={open} onOpenChange={setOpen} className="search-dialog" overlayClassName="search-dialog-overlay">
         <div className="search-field">
-          <CommandInput value={searchTerm} onValueChange={setSearchTerm} placeholder="Search stocks..." className="search-input" />
-          {loading && <Loader2 className="search-loader" />}
+          <CommandInput
+            value={searchTerm}
+            onValueChange={handleSearchTermChange}
+            onKeyDown={handleSearchKeyDown}
+            placeholder="Search stocks and press Enter..."
+            className="search-input"
+          />
+          {loading ? (
+            <Loader2 className="search-loader" />
+          ) : hasPendingSearch ? (
+            <button
+              type="button"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => void performSearch()}
+              className="search-enter-btn"
+              title="Press Enter to search"
+              aria-label="Press Enter to search"
+            >
+              <span>Enter</span>
+              <CornerDownLeft className="h-3.5 w-3.5" />
+            </button>
+          ) : null}
         </div>
         <CommandList className="search-list">
           {loading ? (
