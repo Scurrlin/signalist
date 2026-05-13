@@ -19,11 +19,6 @@ const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>
 
         container.appendChild(script);
         container.dataset.loaded = 'true';
-
-        return () => {
-            container.innerHTML = '';
-            delete container.dataset.loaded;
-        }
     }, [scriptUrl, config, height])
 
     return containerRef;
