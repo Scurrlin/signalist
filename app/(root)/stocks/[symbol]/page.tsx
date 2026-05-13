@@ -49,7 +49,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
             height={170}
           />
 
-          <div className="bg-gray-800 rounded-xl overflow-hidden">
+          <div className="bg-gray-800 rounded-xl overflow-hidden" style={{ boxShadow: 'inset 0 0 0 1px #30333A' }}>
             <ResponsiveStockChart
               scriptUrl={`${scriptUrl}advanced-chart.js`}
               defaultConfig={CANDLE_CHART_WIDGET_CONFIG(symbol)}
