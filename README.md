@@ -1,6 +1,6 @@
 # Signalist
 
-A [stock market analysis app](https://stocks-app-s2l1.onrender.com/) for tracking markets, researching stocks, and managing a personal watchlist. Built with Next.js, Tailwind CSS, TypeScript, MongoDB, Better Auth, TradingView widgets, and the Finnhub API.
+A [stock market analysis app](https://signalist.seancurrlin.com/) for tracking markets, researching stocks, and managing a personal watchlist. Built with Next.js, Tailwind CSS, TypeScript, MongoDB, Better Auth, TradingView widgets, and the Finnhub API.
 
 ![Signalist dashboard preview](public/assets/images/dashboard.jpg)
 

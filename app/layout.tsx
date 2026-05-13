@@ -13,10 +13,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://signalist.seancurrlin.com/";
+
 export const metadata: Metadata = {
   title: "Signalist",
   description: "Track real-time stock prices with personalized watchlists.",
-  metadataBase: new URL('https://stocks-app-s2l1.onrender.com/'),
+  metadataBase: new URL(siteUrl),
   keywords: ["stocks", "stock market", "watchlist", "real-time prices", "financial tracker", "trading"],
   icons: {
     icon: "/assets/icons/SClogo.png",
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Signalist",
     description: "Track real-time stock prices with personalized watchlists.",
-    url: "https://stocks-app-s2l1.onrender.com/",
+    url: siteUrl,
     siteName: "Signalist",
     images: [
       {
@@ -55,7 +57,7 @@ export const metadata: Metadata = {
   
   // Additional metadata
   alternates: {
-    canonical: "https://stocks-app-s2l1.onrender.com/",
+    canonical: siteUrl,
   },
   robots: {
     index: true,
