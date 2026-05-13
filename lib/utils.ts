@@ -15,9 +15,22 @@ export const getDateRange = (days: number) => {
   };
 };
 
+const getSafeHttpUrl = (url?: string) => {
+  if (!url) return null;
+
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
+      ? parsedUrl.toString()
+      : null;
+  } catch {
+    return null;
+  }
+};
+
 // Check for required article fields
 export const validateArticle = (article: RawNewsArticle) =>
-    article.headline && article.summary && article.url && article.datetime;
+    article.headline && article.summary && getSafeHttpUrl(article.url) && article.datetime;
 
 export const formatArticle = (
     article: RawNewsArticle,
@@ -30,7 +43,7 @@ export const formatArticle = (
   summary:
       article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
   source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
-  url: article.url!,
+  url: getSafeHttpUrl(article.url)!,
   datetime: article.datetime!,
   image: article.image || '',
   category: isCompanyNews ? 'company' : article.category || 'general',

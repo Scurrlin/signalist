@@ -61,7 +61,7 @@ const UserDropdown = ({
                 <Button
                     ref={triggerRef}
                     variant="ghost"
-                    className="flex items-center gap-3 text-gray-4 hover:text-blue-600 focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
+                    className="flex items-center gap-3 text-gray-400 hover:text-blue-600 focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
                 >
                     <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">

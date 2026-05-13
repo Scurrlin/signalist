@@ -14,6 +14,14 @@ type StockProfile = {
 
 const FINNHUB_BASE_URL = process.env.FINNHUB_BASE_URL;
 
+type StockSearchResponse =
+  {
+    success: boolean;
+    stocks: StockWithWatchlistStatus[];
+    error?: string;
+    reason?: 'rate-limit' | 'config' | 'fetch';
+  };
+
 async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T> {
   const options: RequestInit & { next?: { revalidate?: number } } = revalidateSeconds
     ? { cache: 'force-cache', next: { revalidate: revalidateSeconds } }
@@ -131,17 +139,32 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
 }
 
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
+  const result = await searchStocksWithStatus(query);
+  return result.success ? result.stocks : [];
+});
+
+export async function searchStocksWithStatus(query?: string): Promise<StockSearchResponse> {
   try {
     const ip = await getClientIp();
     if (!checkRateLimit(`searchStocks:${ip}`, 100, 60_000)) {
-      return [];
+      return {
+        success: false,
+        stocks: [],
+        error: 'Search is temporarily rate limited. Please wait a moment and try again.',
+        reason: 'rate-limit',
+      };
     }
 
     const token = process.env.FINNHUB_API_KEY;
     if (!token) {
       // If no token, log and return empty to avoid throwing per requirements
       console.error('Error in stock search:', new Error('FINNHUB API key is not configured'));
-      return [];
+      return {
+        success: false,
+        stocks: [],
+        error: 'Search is unavailable right now. Please try again later.',
+        reason: 'config',
+      };
     }
 
     const trimmed = typeof query === 'string' ? query.trim() : '';
@@ -209,9 +232,14 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
       })
       .slice(0, 15);
 
-    return mapped;
+    return { success: true, stocks: mapped };
   } catch (err) {
     console.error('Error in stock search:', err);
-    return [];
+    return {
+      success: false,
+      stocks: [],
+      error: 'Search failed. Please try again.',
+      reason: 'fetch',
+    };
   }
-});
+}

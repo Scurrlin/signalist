@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import {auth} from "@/lib/better-auth/auth";
 import {headers} from "next/headers";
@@ -18,7 +17,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
             <section className="auth-right-section">
                 <Image
                     src="/assets/images/dashboard.jpg"
-                    alt="Astronaut looking over Earth from orbit"
+                    alt="Signalist dashboard preview"
                     fill
                     priority
                     sizes="(min-width: 1024px) 55vw, 100vw"
@@ -29,9 +28,6 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                 <div className="auth-hero-content">
                     <h2 className="auth-hero-title">Look first / Then leap.</h2>
                     <p className="auth-hero-subtitle">The best trades require research, then commitment.</p>
-                    <Link href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" className="auth-hero-cta">
-                        <span>Get started for free</span>
-                    </Link>
                     <p className="auth-hero-note">$0 forever, no credit card needed</p>
                 </div>
             </section>

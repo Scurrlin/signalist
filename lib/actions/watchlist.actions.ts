@@ -44,26 +44,17 @@ const getCurrentUserId = async () => {
   return session?.user?.id;
 };
 
-export async function getWatchlistSymbolsByEmail(email: string): Promise<string[]> {
-  if (!email) return [];
-
+export async function getCurrentWatchlistSymbols(): Promise<string[]> {
   try {
-    const mongoose = await connectToDatabase();
-    const db = mongoose.connection.db;
-    if (!db) throw new Error('MongoDB connection not found');
-
-    // Better Auth stores users in the "user" collection
-    const user = await db.collection('user').findOne<{ _id?: unknown; id?: string; email?: string }>({ email });
-
-    if (!user) return [];
-
-    const userId = (user.id as string) || String(user._id || '');
+    const userId = await getCurrentUserId();
     if (!userId) return [];
+
+    await connectToDatabase();
 
     const items = await Watchlist.find({ userId }, { symbol: 1 }).lean();
     return items.map((i) => String(i.symbol));
   } catch (err) {
-    console.error('getWatchlistSymbolsByEmail error:', err);
+    console.error('getCurrentWatchlistSymbols error:', err);
     return [];
   }
 }
@@ -167,20 +158,12 @@ export async function updateWatchlistNewsPreference(symbol: string, newsEnabled:
   }
 }
 
-export async function getWatchlistWithData(email: string): Promise<StockWithData[]> {
-  if (!email) return [];
-
+export async function getCurrentWatchlistWithData(): Promise<StockWithData[]> {
   try {
-    const mongoose = await connectToDatabase();
-    const db = mongoose.connection.db;
-    if (!db) throw new Error('MongoDB connection not found');
-
-    // Get user
-    const user = await db.collection('user').findOne<{ _id?: unknown; id?: string; email?: string }>({ email });
-    if (!user) return [];
-
-    const userId = (user.id as string) || String(user._id || '');
+    const userId = await getCurrentUserId();
     if (!userId) return [];
+
+    await connectToDatabase();
 
     // Get watchlist items
     const items = await Watchlist.find({ userId }).sort({ addedAt: -1 }).lean();
@@ -262,7 +245,7 @@ export async function getWatchlistWithData(email: string): Promise<StockWithData
 
     return enrichedStocks;
   } catch (err) {
-    console.error('getWatchlistWithData error:', err);
+    console.error('getCurrentWatchlistWithData error:', err);
     return [];
   }
 }

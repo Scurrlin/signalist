@@ -1,7 +1,7 @@
 import Watchlist from "@/components/Watchlist";
 import { auth } from "@/lib/better-auth/auth";
 import { headers, cookies } from "next/headers";
-import { getWatchlistWithData } from "@/lib/actions/watchlist.actions";
+import { getCurrentWatchlistWithData } from "@/lib/actions/watchlist.actions";
 import { getNews, searchStocks } from "@/lib/actions/finnhub.actions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -24,7 +24,7 @@ export default async function WatchlistPage() {
 
   if (session?.user?.email) {
     userId = session.user.id;
-    watchlistStocks = await getWatchlistWithData(session.user.email);
+    watchlistStocks = await getCurrentWatchlistWithData();
   }
 
   if (watchlistStocks.length === 0) {

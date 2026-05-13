@@ -316,7 +316,7 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
             </thead>
             <tbody>
               {sortedStocks.map((stock) => {
-                const stockHref = `/stocks/${stock.symbol}`;
+                const stockHref = `/stocks/${encodeURIComponent(stock.symbol)}`;
                 const isPositive = (stock.changePercent ?? 0) >= 0;
 
                 return (

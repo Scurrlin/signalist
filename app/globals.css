@@ -270,9 +270,6 @@
   .auth-hero-subtitle {
     @apply mt-5 max-w-3xl text-base font-medium leading-7 text-white md:text-2xl;
   }
-  .auth-hero-cta {
-    @apply mt-8 inline-flex h-16 min-w-64 items-center justify-center rounded-2xl bg-white px-9 text-lg font-bold text-gray-950 shadow-xl shadow-black/20 transition-transform hover:-translate-y-0.5;
-  }
   .auth-hero-note {
     @apply mt-4 text-base text-white/80 md:text-lg;
   }

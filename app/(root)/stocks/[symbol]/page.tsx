@@ -12,7 +12,7 @@ import {
 import { cookies } from "next/headers";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
-import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
+import { getCurrentWatchlistSymbols } from "@/lib/actions/watchlist.actions";
 import { getStockProfile } from "@/lib/actions/finnhub.actions";
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
@@ -32,7 +32,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   
   if (session?.user?.email) {
     userId = session.user.id;
-    const watchlistSymbols = await getWatchlistSymbolsByEmail(session.user.email);
+    const watchlistSymbols = await getCurrentWatchlistSymbols();
     isInWatchlist = watchlistSymbols.includes(upperSymbol);
   }
 

@@ -5,7 +5,7 @@ import { CommandDialog, CommandEmpty, CommandInput, CommandList } from "@/compon
 import {Button} from "@/components/ui/button";
 import {CornerDownLeft, Loader2, TrendingUp} from "lucide-react";
 import Link from "next/link";
-import {searchStocks} from "@/lib/actions/finnhub.actions";
+import {searchStocksWithStatus} from "@/lib/actions/finnhub.actions";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,7 @@ export default function SearchCommand({
   const [searchTerm, setSearchTerm] = useState("")
   const [submittedQuery, setSubmittedQuery] = useState("")
   const [loading, setLoading] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
   const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>(initialStocks);
   const [updatingSymbol, setUpdatingSymbol] = useState<string | null>(null);
   const [trackedSymbols, setTrackedSymbols] = useState<Set<string>>(() => {
@@ -59,6 +60,7 @@ export default function SearchCommand({
 
     if (!trimmed) {
       setSubmittedQuery("");
+      setSearchError(null);
       setStocks(initialStocks);
       return;
     }
@@ -66,12 +68,19 @@ export default function SearchCommand({
     if (trimmed === submittedQuery) return;
 
     setSubmittedQuery(trimmed);
+    setSearchError(null);
     setLoading(true);
     try {
-      const results = await searchStocks(trimmed);
-      setStocks(results);
+      const result = await searchStocksWithStatus(trimmed);
+      setStocks(result.stocks);
+      if (result.success) {
+        setSearchError(null);
+      } else {
+        setSearchError(result.error ?? 'Search failed. Please try again.');
+      }
     } catch {
       setStocks([]);
+      setSearchError('Search failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -81,6 +90,7 @@ export default function SearchCommand({
     setSearchTerm(value);
     if (!value.trim() && submittedQuery) {
       setSubmittedQuery("");
+      setSearchError(null);
       setStocks(initialStocks);
     }
   }
@@ -169,7 +179,7 @@ export default function SearchCommand({
             value={searchTerm}
             onValueChange={handleSearchTermChange}
             onKeyDown={handleSearchKeyDown}
-            placeholder="Search stocks and press Enter..."
+            placeholder="Search stocks..."
             className="search-input"
           />
           {loading ? (
@@ -191,6 +201,10 @@ export default function SearchCommand({
         <CommandList className="search-list">
           {loading ? (
               <CommandEmpty className="search-list-empty">Loading stocks...</CommandEmpty>
+          ) : searchError ? (
+              <div className="search-list-indicator">
+                {searchError}
+              </div>
           ) : displayStocks?.length === 0 ? (
               <div className="search-list-indicator">
                 {isSearchMode ? 'No results found' : 'No stocks available'}
@@ -205,7 +219,7 @@ export default function SearchCommand({
                   <li key={stock.symbol} className="search-item">
                     <div className="search-item-row">
                     <Link
-                        href={`/stocks/${stock.symbol}`}
+                        href={`/stocks/${encodeURIComponent(stock.symbol)}`}
                         onClick={handleSelectStock}
                         className="search-item-link"
                     >

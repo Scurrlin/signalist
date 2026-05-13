@@ -4,12 +4,12 @@ import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
 import BrandLogo from "@/components/BrandLogo";
-import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
+import { getCurrentWatchlistSymbols } from "@/lib/actions/watchlist.actions";
 
 const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolean }) => {
     const [initialStocks, watchlistSymbols] = await Promise.all([
         searchStocks(),
-        user?.email && !isGuest ? getWatchlistSymbolsByEmail(user.email) : Promise.resolve([]),
+        user && !isGuest ? getCurrentWatchlistSymbols() : Promise.resolve([]),
     ]);
 
     // Create a guest user object if in guest mode
