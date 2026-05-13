@@ -24,13 +24,13 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
     symbolActiveColor: 'rgba(15, 237, 190, 0.05)', // highlight color for active symbol
     tabs: [
         {
-            title: 'Financial',
+            title: 'Finance',
             symbols: [
                 { s: 'NYSE:JPM', d: 'JPMorgan Chase' },
-                { s: 'NYSE:WFC', d: 'Wells Fargo Co New' },
-                { s: 'NYSE:BAC', d: 'Bank Amer Corp' },
-                { s: 'NYSE:HSBC', d: 'Hsbc Hldgs Plc' },
-                { s: 'NYSE:MA', d: 'Mastercard Incorporated' },
+                { s: 'NYSE:WFC', d: 'Wells Fargo' },
+                { s: 'NYSE:BAC', d: 'Bank of America' },
+                { s: 'NYSE:STT', d: 'State Street' },
+                { s: 'NYSE:BLK', d: 'BlackRock' },
             ],
         },
         {
@@ -40,17 +40,27 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NASDAQ:GOOGL', d: 'Alphabet' },
                 { s: 'NASDAQ:MSFT', d: 'Microsoft' },
                 { s: 'NASDAQ:META', d: 'Meta Platforms' },
-                { s: 'NYSE:ORCL', d: 'Oracle Corp' },
+                { s: 'NASDAQ:NVDA', d: 'Nvidia' },
             ],
         },
         {
-            title: 'Services',
+            title: 'Retail',
             symbols: [
                 { s: 'NASDAQ:AMZN', d: 'Amazon' },
-                { s: 'NYSE:BABA', d: 'Alibaba Group Hldg Ltd' },
-                { s: 'NYSE:T', d: 'At&t Inc' },
+                { s: 'NYSE:BABA', d: 'Alibaba' },
+                { s: 'NYSE:GME', d: 'GameStop' },
                 { s: 'NASDAQ:WMT', d: 'Walmart' },
-                { s: 'NYSE:V', d: 'Visa' },
+                { s: 'NASDAQ:COST', d: 'Costco' },
+            ],
+        },
+        {
+            title: 'Entertainment',
+            symbols: [
+                { s: 'NASDAQ:NFLX', d: 'Netflix' },
+                { s: 'NYSE:DIS', d: 'Disney' },
+                { s: 'NYSE:SPOT', d: 'Spotify' },
+                { s: 'NASDAQ:CMCSA', d: 'Comcast' },
+                { s: 'NASDAQ:WBD', d: 'Warner Bros.' },
             ],
         },
     ],
@@ -89,13 +99,13 @@ export const TOP_STORIES_WIDGET_CONFIG = {
     locale: 'en',
     market: 'stock',
     width: '100%',
-    height: '730',
+    height: '930',
 };
 
 export const MARKET_DATA_WIDGET_CONFIG = {
     title: 'Stocks',
     width: '100%',
-    height: 730,
+    height: 930,
     locale: 'en',
     showSymbolLogo: true,
     colorTheme: 'dark',
@@ -103,13 +113,13 @@ export const MARKET_DATA_WIDGET_CONFIG = {
     backgroundColor: '#0F0F0F',
     symbolsGroups: [
         {
-            name: 'Financial',
+            name: 'Finance',
             symbols: [
                 { name: 'NYSE:JPM', displayName: 'JPMorgan Chase' },
-                { name: 'NYSE:WFC', displayName: 'Wells Fargo Co New' },
-                { name: 'NYSE:BAC', displayName: 'Bank Amer Corp' },
-                { name: 'NYSE:HSBC', displayName: 'Hsbc Hldgs Plc' },
-                { name: 'NYSE:MA', displayName: 'Mastercard Incorporated' },
+                { name: 'NYSE:WFC', displayName: 'Wells Fargo' },
+                { name: 'NYSE:BAC', displayName: 'Bank of America' },
+                { name: 'NYSE:STT', displayName: 'State Street' },
+                { name: 'NYSE:BLK', displayName: 'BlackRock' },
             ],
         },
         {
@@ -119,17 +129,27 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NASDAQ:GOOGL', displayName: 'Alphabet' },
                 { name: 'NASDAQ:MSFT', displayName: 'Microsoft' },
                 { name: 'NASDAQ:META', displayName: 'Meta Platforms' },
-                { name: 'NYSE:ORCL', displayName: 'Oracle Corp' },
+                { name: 'NASDAQ:NVDA', displayName: 'Nvidia' },
             ],
         },
         {
-            name: 'Services',
+            name: 'Retail',
             symbols: [
                 { name: 'NASDAQ:AMZN', displayName: 'Amazon' },
-                { name: 'NYSE:BABA', displayName: 'Alibaba Group Hldg Ltd' },
-                { name: 'NYSE:T', displayName: 'At&t Inc' },
+                { name: 'NYSE:BABA', displayName: 'Alibaba' },
+                { name: 'NYSE:GME', displayName: 'GameStop' },
                 { name: 'NASDAQ:WMT', displayName: 'Walmart' },
-                { name: 'NYSE:V', displayName: 'Visa' },
+                { name: 'NASDAQ:COST', displayName: 'Costco' },
+            ],
+        },
+        {
+            name: 'Entertainment',
+            symbols: [
+                { name: 'NASDAQ:NFLX', displayName: 'Netflix' },
+                { name: 'NYSE:DIS', displayName: 'Disney' },
+                { name: 'NYSE:SPOT', displayName: 'Spotify' },
+                { name: 'NASDAQ:CMCSA', displayName: 'Comcast' },
+                { name: 'NASDAQ:WBD', displayName: 'Warner Bros.' },
             ],
         },
     ],
