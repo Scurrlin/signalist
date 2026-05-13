@@ -69,7 +69,7 @@ const SignUp = () => {
         <>
             <h1 className="form-title">$ignalist</h1>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 max-h-[calc(100dvh-9rem)] overflow-y-auto pb-6">
                 <InputField
                     name="fullName"
                     label="Full Name"
