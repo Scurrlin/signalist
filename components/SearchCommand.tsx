@@ -6,7 +6,6 @@ import {Button} from "@/components/ui/button";
 import {Loader2,  TrendingUp} from "lucide-react";
 import Link from "next/link";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
-import {useDebounce} from "@/hooks/useDebounce";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -44,25 +43,31 @@ export default function SearchCommand({
   const resultCount = displayStocks?.length ?? 0;
   const resultCountLabel = resultCount >= 11 ? '10+' : resultCount;
 
-  const handleSearch = async () => {
-    if(!isSearchMode) return setStocks(initialStocks);
-
-    setLoading(true)
-    try {
-        const results = await searchStocks(searchTerm.trim());
-        setStocks(results);
-    } catch {
-      setStocks([])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const debouncedSearch = useDebounce(handleSearch, 300);
-
   useEffect(() => {
-    debouncedSearch();
-  }, [searchTerm]);
+    if (!isSearchMode) {
+      setStocks(initialStocks);
+      return;
+    }
+
+    let cancelled = false;
+
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const results = await searchStocks(searchTerm.trim());
+        if (!cancelled) setStocks(results);
+      } catch {
+        if (!cancelled) setStocks([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [searchTerm, isSearchMode, initialStocks]);
 
   useEffect(() => {
     const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);

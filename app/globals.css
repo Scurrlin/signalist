@@ -238,7 +238,7 @@
     }
   }
   .auth-layout {
-    @apply flex flex-col justify-between lg:flex-row h-screen bg-gray-900 relative overflow-hidden;
+    @apply flex flex-col justify-between bg-gray-900 relative min-h-screen lg:h-screen lg:flex-row lg:overflow-hidden;
   }
   .auth-left-section {
     @apply w-full lg:w-[45%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
@@ -529,6 +529,23 @@
   background-color: #141414 !important;
   border-radius: 12px !important;
   overflow: hidden !important;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+@keyframes tv-skeleton-pulse {
+  0%, 100% { background-color: #141414; }
+  50%      { background-color: #1c1e23; }
+}
+
+.tradingview-widget-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  animation: tv-skeleton-pulse 1.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .tv-embed-widget-wrapper__body {
@@ -536,6 +553,8 @@
 }
 
 .tradingview-widget-container__widget {
+  position: relative;
+  z-index: 1;
   background-color: #141414 !important;
   height: 100% !important;
 

@@ -75,6 +75,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="preconnect" href="https://s3.tradingview.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.tradingview.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://s3.tradingview.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
