@@ -13,9 +13,11 @@ import { cookies } from "next/headers";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
+import { getStockProfile } from "@/lib/actions/finnhub.actions";
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
+  const upperSymbol = symbol.toUpperCase();
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
   
   // Check if user is a guest
@@ -31,8 +33,11 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   if (session?.user?.email) {
     userId = session.user.id;
     const watchlistSymbols = await getWatchlistSymbolsByEmail(session.user.email);
-    isInWatchlist = watchlistSymbols.includes(symbol.toUpperCase());
+    isInWatchlist = watchlistSymbols.includes(upperSymbol);
   }
+
+  const profile = await getStockProfile(upperSymbol);
+  const company = profile?.name || upperSymbol;
 
   return (
     <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
@@ -55,8 +60,8 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
 
         <div className="mx-auto flex w-full max-w-[880px] min-w-0 flex-col gap-6">
           <StockDetailsClient
-            symbol={symbol}
-            company={symbol}
+            symbol={upperSymbol}
+            company={company}
             isInWatchlist={isInWatchlist}
             isGuest={isGuest}
             userId={userId}

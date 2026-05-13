@@ -1,27 +1,19 @@
 "use client";
-import React, { useMemo, useState, useTransition } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const WatchlistButton = ({
   symbol,
-  company, // eslint-disable-line @typescript-eslint/no-unused-vars
   isInWatchlist,
   showTrashIcon = false,
   type = "button",
   onWatchlistChange,
   isGuest = false,
-  userId, // eslint-disable-line @typescript-eslint/no-unused-vars
 }: WatchlistButtonProps) => {
-  const [added, setAdded] = useState<boolean>(!!isInWatchlist);
   const [isLoading, setIsLoading] = useState(false);
-  const [, startTransition] = useTransition();
   const router = useRouter();
-
-  const label = useMemo(() => {
-    if (type === "icon") return added ? "" : "";
-    return added ? "Remove from watchlist" : "Add to watchlist";
-  }, [added, type]);
+  const label = isInWatchlist ? "Remove from watchlist" : "Add to watchlist";
 
   const handleClick = async () => {
     if (isGuest) {
@@ -36,42 +28,31 @@ const WatchlistButton = ({
     }
 
     if (isLoading) return;
+    if (!onWatchlistChange) return;
 
-    const next = !added;
-    
-    // Optimistic update
-    setAdded(next);
+    const next = !isInWatchlist;
     setIsLoading(true);
 
-    // Call the callback if provided (for custom handling)
-    if (onWatchlistChange) {
-      onWatchlistChange(symbol, next);
+    try {
+      await onWatchlistChange(symbol, next);
+    } finally {
       setIsLoading(false);
-    } else {
-      // Default behavior: show toast
-      toast.success(next ? 'Added to watchlist' : 'Removed from watchlist');
-      
-      // Refresh the page to update watchlist data
-      startTransition(() => {
-        router.refresh();
-        setIsLoading(false);
-      });
     }
   };
 
   if (type === "icon") {
     return (
       <button
-        title={isGuest ? 'Sign up to add to your watchlist' : (added ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`)}
-        aria-label={isGuest ? 'Sign up to add to your watchlist' : (added ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`)}
-        className={`watchlist-icon-btn ${added ? "watchlist-icon-added" : ""} ${isGuest ? "opacity-50 cursor-pointer" : ""} ${isLoading ? "opacity-50 cursor-wait" : ""}`}
+        title={isGuest ? 'Sign up to add to your watchlist' : (isInWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`)}
+        aria-label={isGuest ? 'Sign up to add to your watchlist' : (isInWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`)}
+        className={`watchlist-icon-btn ${isInWatchlist ? "watchlist-icon-added" : ""} ${isGuest ? "opacity-50 cursor-pointer" : ""} ${isLoading ? "opacity-50 cursor-wait" : ""}`}
         onClick={handleClick}
         disabled={isLoading}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill={added ? "#2962FF" : "none"}
+          fill={isInWatchlist ? "#2962FF" : "none"}
           stroke="#2962FF"
           strokeWidth="1.5"
           className="watchlist-star"
@@ -88,11 +69,11 @@ const WatchlistButton = ({
 
   return (
     <button 
-      className={`watchlist-btn ${added ? "watchlist-remove" : ""} ${isGuest ? "opacity-75" : ""} ${isLoading ? "opacity-50 cursor-wait" : ""}`} 
+      className={`watchlist-btn ${isInWatchlist ? "watchlist-remove" : ""} ${isGuest ? "opacity-75" : ""} ${isLoading ? "opacity-50 cursor-wait" : ""}`}
       onClick={handleClick}
       disabled={isLoading}
     >
-      {showTrashIcon && added ? (
+      {showTrashIcon && isInWatchlist ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

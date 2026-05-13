@@ -4,9 +4,13 @@ import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
 import BrandLogo from "@/components/BrandLogo";
+import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 
 const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolean }) => {
-    const initialStocks = await searchStocks();
+    const [initialStocks, watchlistSymbols] = await Promise.all([
+        searchStocks(),
+        user?.email && !isGuest ? getWatchlistSymbolsByEmail(user.email) : Promise.resolve([]),
+    ]);
 
     // Create a guest user object if in guest mode
     const displayUser: User = user || {
@@ -29,13 +33,23 @@ const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolea
                     />
                 </Link>
                 <nav className="header-center-nav" aria-label="Primary navigation">
-                    <NavItems initialStocks={initialStocks} isGuest={isGuest} />
+                    <NavItems
+                        initialStocks={initialStocks}
+                        isGuest={isGuest}
+                        userId={user?.id}
+                        watchlistSymbols={watchlistSymbols}
+                    />
                 </nav>
                 <Link href="/" className="header-brand-center" aria-label="$ignalist dashboard">
                     <BrandLogo className="cursor-pointer" />
                 </Link>
                 <div className="header-actions">
-                    <UserDropdown user={displayUser} initialStocks={initialStocks} isGuest={isGuest} />
+                    <UserDropdown
+                        user={displayUser}
+                        initialStocks={initialStocks}
+                        isGuest={isGuest}
+                        watchlistSymbols={watchlistSymbols}
+                    />
                 </div>
             </div>
         </header>

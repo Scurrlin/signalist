@@ -33,8 +33,8 @@ export default function StockDetailsClient({
 
     try {
       const result = isAdded
-        ? await addToWatchlist(userId, sym, company)
-        : await removeFromWatchlist(userId, sym);
+        ? await addToWatchlist(sym, company)
+        : await removeFromWatchlist(sym);
 
       if (result.success) {
         toast.success(isAdded ? 'Added to watchlist' : 'Removed from watchlist');
@@ -58,10 +58,8 @@ export default function StockDetailsClient({
     <div className="flex items-center justify-center">
       <WatchlistButton
         symbol={symbol.toUpperCase()}
-        company={company.toUpperCase()}
         isInWatchlist={inWatchlist}
         isGuest={isGuest}
-        userId={userId}
         onWatchlistChange={handleWatchlistChange}
       />
     </div>

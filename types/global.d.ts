@@ -1,3 +1,5 @@
+import type { FieldError, RegisterOptions, UseFormRegister } from 'react-hook-form';
+
 declare global {
     type SignInFormData = {
         email: string;
@@ -35,6 +37,10 @@ declare global {
         onSearchOpen?: () => void;
         externalOpen?: boolean;
         onExternalOpenChange?: (open: boolean) => void;
+        userId?: string;
+        isGuest?: boolean;
+        watchlistSymbols?: string[];
+        onWatchlistToggle?: (stock: StockWithWatchlistStatus, isAdded: boolean) => void;
     };
 
     type User = {
@@ -74,13 +80,11 @@ declare global {
 
     type WatchlistButtonProps = {
         symbol: string;
-        company: string;
         isInWatchlist: boolean;
         showTrashIcon?: boolean;
         type?: 'button' | 'icon';
-        onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
+        onWatchlistChange?: (symbol: string, isAdded: boolean) => Promise<void>;
         isGuest?: boolean;
-        userId?: string;
     };
 
     type QuoteData = {
@@ -98,16 +102,6 @@ declare global {
         metric?: { [key: string]: number };
     };
 
-    type SelectedStock = {
-        symbol: string;
-        company: string;
-        currentPrice?: number;
-    };
-
-    type WatchlistTableProps = {
-        watchlist: StockWithData[];
-    };
-
     type StockWithData = {
         userId: string;
         symbol: string;
@@ -120,6 +114,7 @@ declare global {
         marketCap?: string;
         peRatio?: string;
         logo?: string;
+        newsEnabled?: boolean;
     };
 
     type MarketNewsArticle = {
@@ -132,19 +127,6 @@ declare global {
         category: string;
         related: string;
         image?: string;
-    };
-
-    type WatchlistNewsProps = {
-        news?: MarketNewsArticle[];
-    };
-
-    type SearchCommandProps = {
-        open?: boolean;
-        setOpen?: (open: boolean) => void;
-        renderAs?: 'button' | 'text' | 'hidden';
-        buttonLabel?: string;
-        buttonVariant?: 'primary' | 'secondary';
-        className?: string;
     };
 
     type RawNewsArticle = {

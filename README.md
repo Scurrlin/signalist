@@ -40,9 +40,7 @@ Required runtime variables:
 - `BETTER_AUTH_SECRET` - Better Auth secret
 - `BETTER_AUTH_URL` - public URL of the deployed app
 - `FINNHUB_BASE_URL` - Finnhub API base URL, usually `https://finnhub.io/api/v1`
-- `FINNHUB_API_KEY` - server-side Finnhub API key
-
-`NEXT_PUBLIC_FINNHUB_API_KEY` is supported as a fallback, but `FINNHUB_API_KEY` is preferred so the token stays server-side.
+- `FINNHUB_API_KEY` - server-side Finnhub API key. Do not prefix this with `NEXT_PUBLIC_` or the value will be inlined into the browser bundle and exposed to anyone who views the page source.
 
 ## Tech Stack
 

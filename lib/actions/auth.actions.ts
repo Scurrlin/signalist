@@ -2,8 +2,14 @@
 
 import {auth} from "@/lib/better-auth/auth";
 import {headers, cookies} from "next/headers";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const signUpWithEmail = async ({ email, password, fullName }: SignUpFormData) => {
+    const ip = await getClientIp();
+    if (!checkRateLimit(`signup:${ip}`, 3, 5 * 60_000)) {
+        return { success: false, error: 'Too many sign-up attempts. Please wait a few minutes and try again.' };
+    }
+
     try {
         const response = await auth.api.signUpEmail({ body: { email, password, name: fullName } })
 
@@ -25,6 +31,11 @@ export const signUpWithEmail = async ({ email, password, fullName }: SignUpFormD
 }
 
 export const signInWithEmail = async ({ email, password }: SignInFormData) => {
+    const ip = await getClientIp();
+    if (!checkRateLimit(`signin:${ip}`, 5, 60_000)) {
+        return { success: false, error: 'Too many sign-in attempts. Please wait a minute and try again.' };
+    }
+
     try {
         const response = await auth.api.signInEmail({ body: { email, password } })
 

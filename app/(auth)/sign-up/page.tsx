@@ -85,7 +85,13 @@ const SignUp = () => {
                     placeholder="your.email@example.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/, message: 'Invalid email address' }}
+                    validation={{
+                        required: 'Email is required',
+                        pattern: {
+                            value: /^\w+@\w+\.\w+$/,
+                            message: 'Invalid email address',
+                        },
+                    }}
                 />
 
                 <InputField
@@ -102,7 +108,7 @@ const SignUp = () => {
                     {isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </Button>
 
-                <div className="relative my-6">
+                <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                         <span className="w-full border-t border-gray-700" />
                     </div>

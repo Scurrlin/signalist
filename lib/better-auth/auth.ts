@@ -17,6 +17,14 @@ const createAuth = (db: Db) =>
             maxPasswordLength: 128,
             autoSignIn: true,
         },
+        rateLimit: {
+            window: 60,
+            max: 100,
+            customRules: {
+                '/sign-in/email': { window: 60, max: 5 },
+                '/sign-up/email': { window: 300, max: 3 },
+            },
+        },
         plugins: [nextCookies()],
     });
 

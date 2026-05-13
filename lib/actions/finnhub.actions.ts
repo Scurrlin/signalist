@@ -2,6 +2,7 @@
 
 import { getDateRange, validateArticle, formatArticle } from '@/lib/utils';
 import { POPULAR_STOCK_SYMBOLS } from '@/lib/constants';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 import { cache } from 'react';
 
 type StockProfile = {
@@ -12,7 +13,6 @@ type StockProfile = {
 } | null;
 
 const FINNHUB_BASE_URL = process.env.FINNHUB_BASE_URL;
-const NEXT_PUBLIC_FINNHUB_API_KEY = process.env.NEXT_PUBLIC_FINNHUB_API_KEY ?? '';
 
 async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T> {
   const options: RequestInit & { next?: { revalidate?: number } } = revalidateSeconds
@@ -29,10 +29,35 @@ async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T>
 
 export { fetchJSON };
 
-export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> {
+export async function getStockProfile(symbol: string): Promise<ProfileData | null> {
   try {
+    const token = process.env.FINNHUB_API_KEY;
+    if (!token) {
+      return null;
+    }
+
+    const trimmed = symbol.trim().toUpperCase();
+    if (!trimmed) {
+      return null;
+    }
+
+    const url = `${FINNHUB_BASE_URL}/stock/profile2?symbol=${encodeURIComponent(trimmed)}&token=${token}`;
+    return await fetchJSON<ProfileData>(url, 3600);
+  } catch (err) {
+    console.error('getStockProfile error:', err);
+    return null;
+  }
+}
+
+export async function getNews(symbols?: string[], limit = 8): Promise<MarketNewsArticle[]> {
+  try {
+    const ip = await getClientIp();
+    if (!checkRateLimit(`getNews:${ip}`, 30, 60_000)) {
+      return [];
+    }
+
     const range = getDateRange(5);
-    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    const token = process.env.FINNHUB_API_KEY;
     if (!token) {
       throw new Error('FINNHUB API key is not configured');
     }
@@ -40,7 +65,7 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
       .map((s) => s?.trim().toUpperCase())
       .filter((s): s is string => Boolean(s));
 
-    const maxArticles = 6;
+    const maxArticles = limit;
 
     // If we have symbols, try to fetch company news per symbol and round-robin select
     if (cleanSymbols.length > 0) {
@@ -60,7 +85,7 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
       );
 
       const collected: MarketNewsArticle[] = [];
-      // Round-robin up to 6 picks
+      // Round-robin up to the requested article limit
       for (let round = 0; round < maxArticles; round++) {
         for (let i = 0; i < cleanSymbols.length; i++) {
           const sym = cleanSymbols[i];
@@ -94,7 +119,7 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
       if (seen.has(key)) continue;
       seen.add(key);
       unique.push(art);
-      if (unique.length >= 20) break; // cap early before final slicing
+      if (unique.length >= Math.max(maxArticles, 20)) break; // cap early before final slicing
     }
 
     const formatted = unique.slice(0, maxArticles).map((a, idx) => formatArticle(a, false, undefined, idx));
@@ -107,7 +132,12 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
 
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
   try {
-    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    const ip = await getClientIp();
+    if (!checkRateLimit(`searchStocks:${ip}`, 100, 60_000)) {
+      return [];
+    }
+
+    const token = process.env.FINNHUB_API_KEY;
     if (!token) {
       // If no token, log and return empty to avoid throwing per requirements
       console.error('Error in stock search:', new Error('FINNHUB API key is not configured'));

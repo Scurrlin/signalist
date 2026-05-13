@@ -18,7 +18,17 @@ import {signOut} from "@/lib/actions/auth.actions";
 import Link from "next/link";
 import SearchCommand from "@/components/SearchCommand";
 
-const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, initialStocks: StockWithWatchlistStatus[], isGuest?: boolean}) => {
+const UserDropdown = ({
+    user,
+    initialStocks,
+    isGuest = false,
+    watchlistSymbols = [],
+}: {
+    user: User;
+    initialStocks: StockWithWatchlistStatus[];
+    isGuest?: boolean;
+    watchlistSymbols?: string[];
+}) => {
     const router = useRouter();
     const triggerRef = useRef<HTMLButtonElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -115,7 +125,13 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-gray-600"/>
                             <nav>
-                                <NavItems initialStocks={initialStocks} isGuest={true} inDropdown={true} onOpenSearch={handleOpenSearch} />
+                                <NavItems
+                                    initialStocks={initialStocks}
+                                    isGuest={true}
+                                    inDropdown={true}
+                                    onOpenSearch={handleOpenSearch}
+                                    watchlistSymbols={watchlistSymbols}
+                                />
                             </nav>
                         </div>
                     </>
@@ -128,7 +144,14 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="lg:hidden bg-gray-600"/>
                         <nav className="lg:hidden">
-                            <NavItems initialStocks={initialStocks} isGuest={false} inDropdown={true} onOpenSearch={handleOpenSearch} />
+                            <NavItems
+                                initialStocks={initialStocks}
+                                isGuest={false}
+                                inDropdown={true}
+                                onOpenSearch={handleOpenSearch}
+                                userId={user.id}
+                                watchlistSymbols={watchlistSymbols}
+                            />
                         </nav>
                     </>
                 )}
@@ -140,6 +163,9 @@ const UserDropdown = ({ user, initialStocks, isGuest = false }: {user: User, ini
             initialStocks={initialStocks}
             externalOpen={searchOpen}
             onExternalOpenChange={setSearchOpen}
+            userId={isGuest ? undefined : user.id}
+            isGuest={isGuest}
+            watchlistSymbols={watchlistSymbols}
         />
     </>
     )
