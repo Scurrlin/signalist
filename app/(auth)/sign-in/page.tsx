@@ -31,7 +31,7 @@ const SignIn = () => {
             
             if(result.success) {
                 toast.success('Welcome back!');
-                router.push('/');
+                router.push('/', { scroll: true });
             } else {
                 toast.error('Sign in failed', {
                     description: result.error || 'Invalid email or password.'
@@ -52,7 +52,7 @@ const SignIn = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                router.push('/');
+                router.push('/', { scroll: true });
             } else {
                 toast.error('Failed to enter guest mode');
             }

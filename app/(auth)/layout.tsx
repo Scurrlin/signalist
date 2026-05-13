@@ -28,7 +28,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                 <div className="auth-hero-content">
                     <h2 className="auth-hero-title">Look first / Then leap.</h2>
                     <p className="auth-hero-subtitle">The best trades require research, then commitment.</p>
-                    <p className="auth-hero-note">$0 forever, no credit card needed</p>
+                    <p className="auth-hero-note">$0 forever, no credit card needed.</p>
                 </div>
             </section>
         </main>

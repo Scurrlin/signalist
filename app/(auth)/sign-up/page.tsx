@@ -32,7 +32,7 @@ const SignUp = () => {
             
             if(result.success) {
                 toast.success('Account created successfully!');
-                router.push('/');
+                router.push('/', { scroll: true });
             } else {
                 toast.error('Sign up failed', {
                     description: result.error || 'Failed to create an account.'
@@ -53,7 +53,7 @@ const SignUp = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                router.push('/');
+                router.push('/', { scroll: true });
             } else {
                 toast.error('Failed to enter guest mode');
             }

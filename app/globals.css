@@ -259,19 +259,19 @@
     }
   }
   .auth-hero-scrim {
-    @apply absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.04)_0%,rgba(5,5,5,0.12)_45%,rgba(5,5,5,0.34)_100%)];
+    @apply absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.02)_0%,rgba(5,5,5,0.08)_45%,rgba(5,5,5,0.20)_100%)];
   }
   .auth-hero-content {
     @apply relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center text-center text-white lg:mt-4;
   }
   .auth-hero-title {
-    @apply text-4xl font-bold leading-[0.95] tracking-normal md:text-5xl xl:text-6xl 2xl:text-7xl;
+    @apply text-4xl font-bold leading-[0.95] tracking-normal text-white md:text-5xl xl:text-6xl 2xl:text-7xl;
   }
   .auth-hero-subtitle {
     @apply mt-5 max-w-3xl text-base font-medium leading-7 text-white md:text-2xl;
   }
   .auth-hero-note {
-    @apply mt-4 text-base text-white/80 md:text-lg;
+    @apply mt-4 text-base text-white md:text-lg;
   }
   .auth-dashboard-preview {
     @apply absolute inset-0 z-0 h-full w-full object-cover object-left;
