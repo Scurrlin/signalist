@@ -461,7 +461,7 @@
     @apply flex min-h-10 items-center justify-center text-center text-gray-100 transition-colors hover:text-white;
   }
   .watchlist-company {
-    @apply max-w-[260px] truncate;
+    @apply max-w-[180px] truncate;
   }
   .watchlist-symbol {
     @apply font-semibold text-gray-400;

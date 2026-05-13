@@ -328,7 +328,7 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
                     </td>
                     <td className="table-cell">
                       <Link href={stockHref} className="watchlist-row-link">
-                        <span className="watchlist-company">{stock.company}</span>
+                        <span className="watchlist-company" title={stock.company}>{stock.company}</span>
                       </Link>
                     </td>
                     <td className="table-cell">
