@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,12 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://signalist.seancurrlin.com/";
-
 export const metadata: Metadata = {
   title: "Signalist",
   description: "Track real-time stock prices with personalized watchlists.",
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   keywords: ["stocks", "stock market", "watchlist", "real-time prices", "financial tracker", "trading"],
   icons: {
     icon: "/assets/icons/SClogo.png",
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Signalist",
     description: "Track real-time stock prices with personalized watchlists.",
-    url: siteUrl,
+    url: SITE_URL,
     siteName: "Signalist",
     images: [
       {
@@ -55,10 +54,6 @@ export const metadata: Metadata = {
     site: "@signalist",
   },
   
-  // Additional metadata
-  alternates: {
-    canonical: siteUrl,
-  },
   robots: {
     index: true,
     follow: true,

@@ -5,6 +5,14 @@ import {
     MARKET_OVERVIEW_WIDGET_CONFIG,
     TOP_STORIES_WIDGET_CONFIG
 } from "@/lib/constants";
+import { SITE_URL } from "@/lib/site";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    alternates: {
+        canonical: SITE_URL,
+    },
+};
 
 const Home = () => {
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
