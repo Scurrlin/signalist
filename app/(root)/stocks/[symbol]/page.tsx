@@ -49,12 +49,12 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
             height={170}
           />
 
-          <div className="bg-gray-800 rounded-xl overflow-hidden" style={{ boxShadow: 'inset 0 0 0 1px #30333A' }}>
+          <div className="relative bg-gray-800 rounded-xl overflow-hidden widget-overlay-frame">
             <ResponsiveStockChart
               scriptUrl={`${scriptUrl}advanced-chart.js`}
               defaultConfig={CANDLE_CHART_WIDGET_CONFIG(symbol)}
               detailsConfig={CANDLE_CHART_DETAILS_WIDGET_CONFIG(symbol)}
-              className="custom-chart widget-overlay-frame"
+              className="custom-chart"
               height={600}
             />
           </div>
