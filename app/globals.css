@@ -183,7 +183,7 @@
   .header-wrapper {
     @apply relative grid h-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-3 text-gray-500 sm:px-6;
   }
-  .header-tv-mark {
+  .header-tv-logo {
     @apply relative z-20 flex h-full w-fit items-center justify-self-start;
     grid-column: 1;
   }

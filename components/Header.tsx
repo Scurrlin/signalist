@@ -22,7 +22,7 @@ const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolea
     return (
         <header className="sticky top-0 header">
             <div className="container header-wrapper">
-                <div className="header-tv-mark" aria-hidden="true">
+                <div className="header-tv-logo" aria-hidden="true">
                     <Image
                         src="/assets/icons/TradingView_Logo.svg"
                         alt=""
