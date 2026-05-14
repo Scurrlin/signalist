@@ -615,6 +615,21 @@
   opacity: 0;
 }
 
+.home-tall-widget.tradingview-widget-container {
+  height: 950px !important;
+}
+
+.home-tall-widget .tradingview-widget-container__widget,
+.home-tall-widget iframe {
+  height: 100% !important;
+}
+
+@media (min-width: 810px) and (max-width: 1000px) {
+  .home-tall-widget.tradingview-widget-container {
+    height: 850px !important;
+  }
+}
+
 .widget-overlay-frame::after {
   content: "";
   pointer-events: none;

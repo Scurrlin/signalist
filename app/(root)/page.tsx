@@ -44,16 +44,16 @@ const Home = () => {
                     <TradingViewWidget
                         scriptUrl={`${scriptUrl}timeline.js`}
                         config={TOP_STORIES_WIDGET_CONFIG}
-                        className="widget-overlay-frame"
-                        height={730}
+                        className="home-tall-widget widget-overlay-frame"
+                        height={950}
                     />
                 </div>
                 <div className="h-full lg:col-span-1 xl:col-span-2">
                     <TradingViewWidget
                         scriptUrl={`${scriptUrl}market-quotes.js`}
                         config={MARKET_DATA_WIDGET_CONFIG}
-                        className="widget-overlay-frame"
-                        height={730}
+                        className="home-tall-widget widget-overlay-frame"
+                        height={950}
                     />
                 </div>
             </section>
