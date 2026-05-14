@@ -12,7 +12,7 @@ const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>
             container.dataset.widgetReady = 'false';
         }
 
-        let readyTimeout: ReturnType<typeof window.setTimeout> | undefined;
+        let readyTimeout: number | undefined;
         const trackedIframes = new Set<HTMLIFrameElement>();
 
         const markReady = () => {
