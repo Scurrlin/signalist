@@ -22,7 +22,7 @@ const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolea
     return (
         <header className="sticky top-0 header">
             <div className="container header-wrapper">
-                <Link href="/" className="header-tv-link" aria-label="$ignalist dashboard">
+                <div className="header-tv-mark" aria-hidden="true">
                     <Image
                         src="/assets/icons/TradingView_Logo.svg"
                         alt=""
@@ -31,7 +31,7 @@ const Header = async ({ user, isGuest = false }: { user?: User; isGuest?: boolea
                         aria-hidden="true"
                         className="brand-logo-icon"
                     />
-                </Link>
+                </div>
                 <nav className="header-center-nav" aria-label="Primary navigation">
                     <NavItems
                         initialStocks={initialStocks}
