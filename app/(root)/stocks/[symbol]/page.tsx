@@ -1,6 +1,6 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
 import ResponsiveStockChart from "@/components/ResponsiveStockChart";
-import StockDetailsClient from "@/components/LazyStockDetailsClient";
+import StockDetailsClient from "@/components/StockDetailsClient";
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,

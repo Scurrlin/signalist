@@ -626,6 +626,12 @@
   }
 }
 
+@media (max-width: 500px) {
+  .symbol-info-widget.tradingview-widget-container {
+    height: 260px !important;
+  }
+}
+
 .home-tall-widget.tradingview-widget-container {
   height: 950px !important;
 }
@@ -654,6 +660,15 @@
 .technical-analysis-widget.tradingview-widget-container {
   display: flex;
   justify-content: center;
+}
+
+.technical-analysis-widget.tradingview-widget-container[data-widget-ready="false"]::before {
+  background-color: #141414;
+  background-image:
+    linear-gradient(rgba(204, 218, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(204, 218, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(135deg, transparent 0 35%, rgba(41, 98, 255, 0.18) 35% 36%, transparent 36% 50%, rgba(15, 237, 190, 0.14) 50% 51%, transparent 51%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
 }
 
 .technical-analysis-widget .tradingview-widget-container__widget,
