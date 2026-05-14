@@ -270,6 +270,9 @@
   .auth-hero-subtitle {
     @apply mt-5 max-w-3xl text-base font-medium leading-7 text-white md:text-2xl;
   }
+  .auth-hero-tradingview-logo {
+    @apply mt-6 h-auto w-16 md:w-20;
+  }
   .auth-hero-note {
     @apply mt-4 text-base text-white md:text-lg;
   }
