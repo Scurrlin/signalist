@@ -581,12 +581,15 @@
 }
 
 .tradingview-widget-container iframe {
-  color-scheme: dark;
   background-color: #141414 !important;
   width: 100% !important;
   border: 0 !important;
   border-radius: inherit !important;
   display: block;
+}
+
+.custom-chart iframe {
+  color-scheme: dark;
 }
 
 .widget-overlay-frame::after {
