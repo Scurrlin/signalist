@@ -588,10 +588,6 @@
   display: block;
 }
 
-.custom-chart iframe {
-  color-scheme: dark;
-}
-
 .widget-overlay-frame::after {
   content: "";
   pointer-events: none;
