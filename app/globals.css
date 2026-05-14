@@ -628,7 +628,7 @@
 
 @media (max-width: 500px) {
   .symbol-info-widget.tradingview-widget-container {
-    height: 260px !important;
+    height: 270px !important;
   }
 }
 
