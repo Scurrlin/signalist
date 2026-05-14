@@ -1,4 +1,5 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
+import ResponsiveSymbolInfoWidget from "@/components/ResponsiveSymbolInfoWidget";
 import ResponsiveStockChart from "@/components/ResponsiveStockChart";
 import StockDetailsClient from "@/components/StockDetailsClient";
 import {
@@ -43,7 +44,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
       <section className="flex w-full flex-col gap-8">
         <div className="flex min-w-0 flex-col gap-6">
-          <TradingViewWidget
+          <ResponsiveSymbolInfoWidget
             scriptUrl={`${scriptUrl}symbol-info.js`}
             config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
             className="widget-overlay-frame"
