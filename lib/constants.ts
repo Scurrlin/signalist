@@ -54,12 +54,12 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
             ],
         },
         {
-            title: 'Entertainment',
+            title: 'Streaming',
             symbols: [
                 { s: 'NASDAQ:NFLX', d: 'Netflix' },
                 { s: 'NYSE:DIS', d: 'Disney' },
                 { s: 'NYSE:SPOT', d: 'Spotify' },
-                { s: 'NASDAQ:CMCSA', d: 'Comcast' },
+                { s: 'NASDAQ:ROKU', d: 'Roku' },
                 { s: 'NASDAQ:WBD', d: 'Warner Bros.' },
             ],
         },
@@ -143,12 +143,12 @@ export const MARKET_DATA_WIDGET_CONFIG = {
             ],
         },
         {
-            name: 'Entertainment',
+            name: 'Streaming',
             symbols: [
                 { name: 'NASDAQ:NFLX', displayName: 'Netflix' },
                 { name: 'NYSE:DIS', displayName: 'Disney' },
                 { name: 'NYSE:SPOT', displayName: 'Spotify' },
-                { name: 'NASDAQ:CMCSA', displayName: 'Comcast' },
+                { name: 'NASDAQ:ROKU', displayName: 'Roku' },
                 { name: 'NASDAQ:WBD', displayName: 'Warner Bros.' },
             ],
         },
