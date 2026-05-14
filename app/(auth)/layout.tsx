@@ -35,7 +35,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                         height={28}
                         className="auth-hero-tradingview-logo"
                     />
-                    <p className="auth-hero-note">$0 forever, no credit card needed.</p>
+                    <p className="auth-hero-note">$0 forever, no credit card needed</p>
                 </div>
             </section>
         </main>
