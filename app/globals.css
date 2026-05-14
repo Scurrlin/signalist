@@ -615,7 +615,7 @@
   opacity: 0;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
   .symbol-info-widget.tradingview-widget-container {
     height: 250px !important;
   }
