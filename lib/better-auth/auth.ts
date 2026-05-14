@@ -17,6 +17,10 @@ const createAuth = (db: Db) =>
             maxPasswordLength: 128,
             autoSignIn: true,
         },
+        session: {
+            expiresIn: 60 * 60 * 12,
+            disableSessionRefresh: true,
+        },
         rateLimit: {
             window: 60,
             max: 100,

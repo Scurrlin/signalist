@@ -54,7 +54,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
             ],
         },
         {
-            title: 'Streaming',
+            title: 'Entertainment',
             symbols: [
                 { s: 'NASDAQ:NFLX', d: 'Netflix' },
                 { s: 'NYSE:DIS', d: 'Disney' },
@@ -143,7 +143,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
             ],
         },
         {
-            name: 'Streaming',
+            name: 'Entertainment',
             symbols: [
                 { name: 'NASDAQ:NFLX', displayName: 'Netflix' },
                 { name: 'NYSE:DIS', displayName: 'Disney' },
