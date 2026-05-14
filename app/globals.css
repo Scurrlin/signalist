@@ -531,11 +531,29 @@
   overflow: hidden !important;
 }
 
+.tradingview-widget-container::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background-color: #141414;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.tradingview-widget-container[data-widget-ready="false"]::before {
+  opacity: 1;
+}
+
 .tv-embed-widget-wrapper__body {
   background-color: #141414 !important;
 }
 
 .tradingview-widget-container__widget {
+  position: relative;
+  z-index: 0;
   background-color: #141414 !important;
   height: 100% !important;
 
@@ -586,6 +604,12 @@
   border: 0 !important;
   border-radius: inherit !important;
   display: block;
+  opacity: 1;
+  transition: opacity 150ms ease;
+}
+
+.tradingview-widget-container[data-widget-ready="false"] iframe {
+  opacity: 0;
 }
 
 .widget-overlay-frame::after {

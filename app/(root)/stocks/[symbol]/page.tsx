@@ -46,18 +46,17 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <TradingViewWidget
             scriptUrl={`${scriptUrl}symbol-info.js`}
             config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
+            className="widget-overlay-frame"
             height={170}
           />
 
-          <div className="bg-gray-800 rounded-xl overflow-hidden" style={{ boxShadow: 'inset 0 0 0 1px #30333A' }}>
-            <ResponsiveStockChart
-              scriptUrl={`${scriptUrl}advanced-chart.js`}
-              defaultConfig={CANDLE_CHART_WIDGET_CONFIG(symbol)}
-              detailsConfig={CANDLE_CHART_DETAILS_WIDGET_CONFIG(symbol)}
-              className="custom-chart widget-overlay-frame"
-              height={600}
-            />
-          </div>
+          <ResponsiveStockChart
+            scriptUrl={`${scriptUrl}advanced-chart.js`}
+            defaultConfig={CANDLE_CHART_WIDGET_CONFIG(symbol)}
+            detailsConfig={CANDLE_CHART_DETAILS_WIDGET_CONFIG(symbol)}
+            className="custom-chart widget-overlay-frame"
+            height={600}
+          />
         </div>
 
         <div className="mx-auto flex w-full max-w-[880px] min-w-0 flex-col gap-6">
@@ -72,20 +71,21 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <TradingViewWidget
             scriptUrl={`${scriptUrl}technical-analysis.js`}
             config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(symbol)}
-            className="technical-analysis-widget"
+            className="technical-analysis-widget widget-overlay-frame"
             height={400}
           />
 
           <TradingViewWidget
             scriptUrl={`${scriptUrl}company-profile.js`}
             config={COMPANY_PROFILE_WIDGET_CONFIG(symbol)}
+            className="widget-overlay-frame"
             height={440}
           />
 
           <TradingViewWidget
             scriptUrl={`${scriptUrl}financials.js`}
             config={COMPANY_FINANCIALS_WIDGET_CONFIG(symbol)}
-            className="financials-widget"
+            className="financials-widget widget-overlay-frame"
             height={920}
           />
         </div>
