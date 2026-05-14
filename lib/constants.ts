@@ -54,7 +54,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
             ],
         },
         {
-            title: 'Entertainment',
+            title: 'Streaming',
             symbols: [
                 { s: 'NASDAQ:NFLX', d: 'Netflix' },
                 { s: 'NYSE:DIS', d: 'Disney' },
@@ -99,13 +99,13 @@ export const TOP_STORIES_WIDGET_CONFIG = {
     locale: 'en',
     market: 'stock',
     width: '100%',
-    height: '930',
+    height: '950',
 };
 
 export const MARKET_DATA_WIDGET_CONFIG = {
     title: 'Stocks',
     width: '100%',
-    height: 930,
+    height: 950,
     locale: 'en',
     showSymbolLogo: true,
     colorTheme: 'dark',
@@ -143,7 +143,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
             ],
         },
         {
-            name: 'Entertainment',
+            name: 'Streaming',
             symbols: [
                 { name: 'NASDAQ:NFLX', displayName: 'Netflix' },
                 { name: 'NYSE:DIS', displayName: 'Disney' },
