@@ -640,6 +640,21 @@
   box-shadow: inset 0 0 0 1px #30333A;
 }
 
+.symbol-info-widget.tradingview-widget-container {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 170px !important;
+  background-color: #141414 !important;
+}
+
+.symbol-info-widget .tradingview-widget-container__widget,
+.symbol-info-widget iframe {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  background-color: #141414 !important;
+}
+
 .technical-analysis-widget.tradingview-widget-container {
   display: flex;
   justify-content: center;

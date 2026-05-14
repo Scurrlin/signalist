@@ -1,13 +1,13 @@
 'use client';
 
 import TradingViewWidget from './TradingViewWidget';
+import { cn } from '@/lib/utils';
 
 interface ResponsiveSymbolInfoWidgetProps {
     scriptUrl: string;
     config: Record<string, unknown>;
     height?: number | string;
     className?: string;
-    minWidth?: number;
 }
 
 export default function ResponsiveSymbolInfoWidget({
@@ -15,18 +15,15 @@ export default function ResponsiveSymbolInfoWidget({
     config,
     height = 170,
     className,
-    minWidth = 720,
 }: ResponsiveSymbolInfoWidgetProps) {
     return (
-        <div className="w-full min-w-0 overflow-x-auto">
-            <div style={{ minWidth }}>
-                <TradingViewWidget
-                    scriptUrl={scriptUrl}
-                    config={config}
-                    height={height}
-                    className={className}
-                />
-            </div>
+        <div className="w-full min-w-0 overflow-hidden">
+            <TradingViewWidget
+                scriptUrl={scriptUrl}
+                config={config}
+                height={height}
+                className={cn('symbol-info-widget', className)}
+            />
         </div>
     );
 }
