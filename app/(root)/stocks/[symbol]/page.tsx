@@ -1,6 +1,6 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
 import ResponsiveStockChart from "@/components/ResponsiveStockChart";
-import StockDetailsClient from "@/components/StockDetailsClient";
+import StockDetailsClient from "@/components/LazyStockDetailsClient";
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
@@ -46,7 +46,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <TradingViewWidget
             scriptUrl={`${scriptUrl}symbol-info.js`}
             config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
-            className="widget-overlay-frame"
+            className="symbol-info-widget widget-overlay-frame"
             height={170}
           />
 

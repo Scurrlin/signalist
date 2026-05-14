@@ -615,6 +615,17 @@
   opacity: 0;
 }
 
+@media (max-width: 850px) {
+  .symbol-info-widget.tradingview-widget-container {
+    height: 240px !important;
+  }
+
+  .symbol-info-widget .tradingview-widget-container__widget,
+  .symbol-info-widget iframe {
+    height: 100% !important;
+  }
+}
+
 .home-tall-widget.tradingview-widget-container {
   height: 950px !important;
 }
