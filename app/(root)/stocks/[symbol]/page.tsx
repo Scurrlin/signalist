@@ -43,25 +43,21 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
       <section className="flex w-full flex-col gap-8">
         <div className="flex min-w-0 flex-col gap-6">
-          <div className="relative">
+          <div className="flex flex-col gap-3">
+            <StockDetailsClient
+              symbol={upperSymbol}
+              company={company}
+              isInWatchlist={isInWatchlist}
+              isGuest={isGuest}
+              userId={userId}
+            />
+
             <TradingViewWidget
               scriptUrl={`${scriptUrl}symbol-info.js`}
               config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
               className="symbol-info-widget widget-overlay-frame"
               height={170}
             />
-
-            <div className="pointer-events-none absolute inset-x-0 top-3 z-10 flex justify-center px-4 sm:top-4">
-              <div className="pointer-events-auto">
-                <StockDetailsClient
-                  symbol={upperSymbol}
-                  company={company}
-                  isInWatchlist={isInWatchlist}
-                  isGuest={isGuest}
-                  userId={userId}
-                />
-              </div>
-            </div>
           </div>
 
           <ResponsiveStockChart
