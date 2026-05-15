@@ -43,14 +43,16 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
       <section className="flex w-full flex-col gap-8">
         <div className="flex min-w-0 flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <StockDetailsClient
-              symbol={upperSymbol}
-              company={company}
-              isInWatchlist={isInWatchlist}
-              isGuest={isGuest}
-              userId={userId}
-            />
+          <div className="flex flex-col">
+            <div className="py-4 md:py-5">
+              <StockDetailsClient
+                symbol={upperSymbol}
+                company={company}
+                isInWatchlist={isInWatchlist}
+                isGuest={isGuest}
+                userId={userId}
+              />
+            </div>
 
             <TradingViewWidget
               scriptUrl={`${scriptUrl}symbol-info.js`}
