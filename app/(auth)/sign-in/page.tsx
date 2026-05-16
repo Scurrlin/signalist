@@ -6,7 +6,6 @@ import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
 import TradingViewAttribution from '@/components/forms/TradingViewAttribution';
 import {signInWithEmail, setGuestMode} from "@/lib/actions/auth.actions";
-import { enterAppFromAuth } from '@/lib/auth-navigation';
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import { useState } from 'react';
@@ -32,7 +31,7 @@ const SignIn = () => {
             
             if(result.success) {
                 toast.success('Welcome back!');
-                enterAppFromAuth(router);
+                router.push('/');
             } else {
                 toast.error('Sign in failed', {
                     description: result.error || 'Invalid email or password.'
@@ -53,7 +52,7 @@ const SignIn = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                enterAppFromAuth(router);
+                router.push('/');
             } else {
                 toast.error('Failed to enter guest mode');
             }

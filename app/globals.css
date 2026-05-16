@@ -631,10 +631,18 @@
 }
 
 .symbol-info-widget.tradingview-widget-container {
+  width: 100% !important;
+  height: 100% !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   scrollbar-width: thin;
   scrollbar-color: #30333A #141414;
+}
+
+.symbol-info-widget .tradingview-widget-container__widget,
+.symbol-info-widget iframe {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .symbol-info-widget.tradingview-widget-container::-webkit-scrollbar {
