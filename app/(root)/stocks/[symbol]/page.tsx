@@ -2,18 +2,18 @@ import TradingViewWidget from "@/components/TradingViewWidget";
 import ResponsiveStockChart from "@/components/ResponsiveStockChart";
 import StockDetailsClient from "@/components/StockDetailsClient";
 import {
-  SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
   CANDLE_CHART_DETAILS_WIDGET_CONFIG,
+  SINGLE_TICKER_WIDGET_CONFIG,
   TECHNICAL_ANALYSIS_WIDGET_CONFIG,
   COMPANY_FINANCIALS_WIDGET_CONFIG,
-  SYMBOL_NEWS_WIDGET_CONFIG,
 } from "@/lib/constants";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import { getCurrentWatchlistSymbols } from "@/lib/actions/watchlist.actions";
-import { getStockProfile } from "@/lib/actions/finnhub.actions";
+import { getStockNews, getStockProfile } from "@/lib/actions/finnhub.actions";
+import StockNewsList from "@/components/StockNewsList";
 
 const getTradingViewSymbol = (symbol: string, exchange?: string) => {
   const upperSymbol = symbol.toUpperCase();
@@ -38,6 +38,8 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
   const upperSymbol = symbol.toUpperCase();
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+  const profilePromise = getStockProfile(upperSymbol);
+  const stockNewsPromise = getStockNews(upperSymbol, 8);
   
   // Check if user is a guest
   const cookieStore = await cookies();
@@ -55,16 +57,16 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     isInWatchlist = watchlistSymbols.includes(upperSymbol);
   }
 
-  const profile = await getStockProfile(upperSymbol);
+  const [profile, stockNews] = await Promise.all([profilePromise, stockNewsPromise]);
   const company = profile?.name || upperSymbol;
-  const tradingViewNewsSymbol = getTradingViewSymbol(upperSymbol, profile?.exchange);
+  const tradingViewSymbol = getTradingViewSymbol(upperSymbol, profile?.exchange);
 
   return (
     <div className="flex min-h-screen px-2 pb-4 md:px-3 md:pb-5 lg:px-4 lg:pb-6">
       <section className="flex w-full flex-col gap-8">
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-4">
           <div className="flex flex-col">
-            <div className="pb-4 md:pb-5">
+            <div className="flex flex-col items-center gap-4">
               <StockDetailsClient
                 symbol={upperSymbol}
                 company={company}
@@ -72,14 +74,16 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                 isGuest={isGuest}
                 userId={userId}
               />
-            </div>
 
-            <TradingViewWidget
-              scriptUrl={`${scriptUrl}symbol-info.js`}
-              config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
-              className="symbol-info-widget widget-overlay-frame"
-              height="100%"
-            />
+              <div className="stock-single-ticker-wrap">
+                <TradingViewWidget
+                  scriptUrl={`${scriptUrl}single-quote.js`}
+                  config={SINGLE_TICKER_WIDGET_CONFIG(tradingViewSymbol)}
+                  className="single-ticker-widget widget-overlay-frame"
+                  height={96}
+                />
+              </div>
+            </div>
           </div>
 
           <ResponsiveStockChart
@@ -100,12 +104,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
               height={400}
             />
 
-            <TradingViewWidget
-              scriptUrl={`${scriptUrl}timeline.js`}
-              config={SYMBOL_NEWS_WIDGET_CONFIG(tradingViewNewsSymbol)}
-              className="stock-news-widget widget-overlay-frame"
-              height={496}
-            />
+            <StockNewsList symbol={upperSymbol} articles={stockNews} />
           </div>
 
           <div className="min-w-0 min-[1025px]:order-1">

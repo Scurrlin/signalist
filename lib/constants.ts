@@ -166,13 +166,13 @@ export const MARKET_DATA_WIDGET_CONFIG = {
     ],
 };
 
-export const SYMBOL_INFO_WIDGET_CONFIG = (symbol: string) => ({
+export const SINGLE_TICKER_WIDGET_CONFIG = (symbol: string) => ({
     symbol: symbol.toUpperCase(),
     colorTheme: 'dark',
     isTransparent: true,
     locale: 'en',
     width: '100%',
-    height: '100%',
+    largeChartUrl: '',
 });
 
 export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string) => ({

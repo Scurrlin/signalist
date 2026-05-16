@@ -138,6 +138,48 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
   }
 }
 
+export async function getStockNews(symbol: string, limit = 8): Promise<MarketNewsArticle[]> {
+  try {
+    const ip = await getClientIp();
+    if (!checkRateLimit(`getStockNews:${ip}`, 60, 60_000)) {
+      return [];
+    }
+
+    const token = process.env.FINNHUB_API_KEY;
+    if (!token) {
+      console.error('getStockNews error:', new Error('FINNHUB API key is not configured'));
+      return [];
+    }
+
+    const cleanSymbol = symbol.trim().toUpperCase();
+    const maxArticles = Math.max(0, limit);
+    if (!cleanSymbol || maxArticles === 0) {
+      return [];
+    }
+
+    const range = getDateRange(30);
+    const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(cleanSymbol)}&from=${range.from}&to=${range.to}&token=${token}`;
+    const articles = await fetchJSON<RawNewsArticle[]>(url, 300);
+
+    const seen = new Set<string>();
+    const unique = (articles || [])
+      .filter(validateArticle)
+      .filter((article) => {
+        const key = `${article.id}-${article.url}-${article.headline}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort((a, b) => (b.datetime || 0) - (a.datetime || 0))
+      .slice(0, maxArticles);
+
+    return unique.map((article, index) => formatArticle(article, true, cleanSymbol, index));
+  } catch (err) {
+    console.error('getStockNews error:', err);
+    return [];
+  }
+}
+
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
   const result = await searchStocksWithStatus(query);
   return result.success ? result.stocks : [];

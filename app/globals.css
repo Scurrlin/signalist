@@ -529,6 +529,55 @@
   .watchlist-news-empty {
     @apply rounded-lg border border-gray-600 bg-gray-800 px-5 py-8 text-center text-gray-500;
   }
+  .stock-news-panel {
+    @apply relative flex h-[496px] flex-col overflow-hidden rounded-lg bg-gray-800 py-4 pl-4 pr-0;
+  }
+  .stock-news-panel-scroll {
+    @apply min-h-0 flex-1 overflow-y-auto pr-3;
+    scrollbar-width: thin;
+    scrollbar-color: #30333A #141414;
+  }
+  .stock-news-panel-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  .stock-news-panel-scroll::-webkit-scrollbar-track {
+    background-color: #141414;
+  }
+  .stock-news-panel-scroll::-webkit-scrollbar-thumb {
+    background-color: #30333A;
+    border-radius: 999px;
+  }
+  .stock-news-panel-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #9095A1;
+  }
+  .stock-news-panel-header {
+    @apply mb-4 flex items-center justify-between pr-4;
+  }
+  .stock-news-panel-title {
+    @apply text-xl font-bold text-gray-100;
+  }
+  .stock-news-panel-symbol {
+    @apply text-blue-600;
+  }
+  .stock-news-panel-list {
+    @apply flex flex-col gap-3;
+  }
+  .stock-news-panel-item {
+    @apply flex min-h-[170px] w-full cursor-pointer flex-col rounded-lg border border-gray-600 bg-gray-900/50 p-4 transition-colors hover:border-blue-600/70;
+  }
+  .stock-news-panel-empty {
+    @apply flex min-h-full items-center justify-center rounded-lg border border-gray-600 bg-gray-900/50 px-5 py-8 text-center text-gray-500;
+  }
+  .stock-single-ticker-wrap {
+    @apply w-full max-w-[380px];
+  }
+  .single-ticker-widget.tradingview-widget-container {
+    height: 96px !important;
+  }
+  .single-ticker-widget .tradingview-widget-container__widget,
+  .single-ticker-widget iframe {
+    height: 100% !important;
+  }
 }
 
 /* Market News Component Styles */
@@ -628,48 +677,6 @@
 
 .tradingview-widget-container[data-widget-ready="false"] iframe {
   opacity: 0;
-}
-
-.symbol-info-widget.tradingview-widget-container {
-  height: 180px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scrollbar-width: thin;
-  scrollbar-color: #30333A #141414;
-}
-
-.symbol-info-widget .tradingview-widget-container__widget,
-.symbol-info-widget iframe {
-  height: 100% !important;
-}
-
-@media (max-width: 850px) {
-  .symbol-info-widget.tradingview-widget-container {
-    height: 230px !important;
-  }
-}
-
-@media (max-width: 545px) {
-  .symbol-info-widget.tradingview-widget-container {
-    height: 265px !important;
-  }
-}
-
-.symbol-info-widget.tradingview-widget-container::-webkit-scrollbar {
-  height: 8px;
-}
-
-.symbol-info-widget.tradingview-widget-container::-webkit-scrollbar-track {
-  background-color: #141414;
-}
-
-.symbol-info-widget.tradingview-widget-container::-webkit-scrollbar-thumb {
-  background-color: #30333A;
-  border-radius: 999px;
-}
-
-.symbol-info-widget.tradingview-widget-container::-webkit-scrollbar-thumb:hover {
-  background-color: #9095A1;
 }
 
 .home-tall-widget.tradingview-widget-container {
