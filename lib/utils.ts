@@ -58,6 +58,55 @@ const decodeHtmlEntities = (input: string): string =>
     return NAMED_HTML_ENTITIES[entity.toLowerCase()] ?? match;
   });
 
+// Build a stable URL key that ignores tracking params and trailing-slash
+// noise so two links to the same article fingerprint identically.
+const canonicalUrl = (url?: string): string => {
+  if (!url) return '';
+  try {
+    const u = new URL(url);
+    u.search = '';
+    u.hash = '';
+    let path = u.pathname;
+    if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1);
+    return `${u.protocol}//${u.host.toLowerCase()}${path}`;
+  } catch {
+    return url.toLowerCase();
+  }
+};
+
+// First 120 chars of the decoded, lowercased, whitespace-collapsed summary.
+// Republished press releases share this prefix word-for-word even when ids,
+// urls, and headlines differ, which makes it the workhorse dedup signal.
+const summaryFingerprint = (summary?: string): string =>
+  decodeHtmlEntities((summary || '').toLowerCase())
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 120);
+
+// Stateful dedup tracker for one news result set. Treats an article as a
+// duplicate if any one of (id, canonical url, summary fingerprint) matches a
+// previously-accepted article. Use one instance per request.
+export const createArticleDedupe = () => {
+  const seenIds = new Set<number>();
+  const seenUrls = new Set<string>();
+  const seenSummaries = new Set<string>();
+
+  return {
+    tryAccept(article: { id?: number; url?: string; summary?: string }): boolean {
+      if (typeof article.id === 'number' && seenIds.has(article.id)) return false;
+      const cu = canonicalUrl(article.url);
+      if (cu && seenUrls.has(cu)) return false;
+      const sk = summaryFingerprint(article.summary);
+      if (sk && seenSummaries.has(sk)) return false;
+
+      if (typeof article.id === 'number') seenIds.add(article.id);
+      if (cu) seenUrls.add(cu);
+      if (sk) seenSummaries.add(sk);
+      return true;
+    },
+  };
+};
+
 // Headlines like "Transcript: ..." or "Transcript : ..." are auto-generated
 // earnings-call transcripts on Finnhub that have no real article body, so we
 // drop them at the validation step (case-insensitive, optional whitespace

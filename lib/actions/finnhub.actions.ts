@@ -1,6 +1,6 @@
 'use server';
 
-import { getDateRange, validateArticle, formatArticle } from '@/lib/utils';
+import { getDateRange, validateArticle, formatArticle, createArticleDedupe } from '@/lib/utils';
 import { POPULAR_STOCK_SYMBOLS } from '@/lib/constants';
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 import { cache } from 'react';
@@ -93,6 +93,7 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
       );
 
       const collected: MarketNewsArticle[] = [];
+      const dedup = createArticleDedupe();
       // Round-robin up to the requested article limit
       for (let round = 0; round < maxArticles; round++) {
         for (let i = 0; i < cleanSymbols.length; i++) {
@@ -101,6 +102,7 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
           if (list.length === 0) continue;
           const article = list.shift();
           if (!article || !validateArticle(article)) continue;
+          if (!dedup.tryAccept(article)) continue;
           collected.push(formatArticle(article, true, sym, round));
           if (collected.length >= maxArticles) break;
         }
@@ -119,13 +121,11 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
     const generalUrl = `${FINNHUB_BASE_URL}/news?category=general&token=${token}`;
     const general = await fetchJSON<RawNewsArticle[]>(generalUrl, 300);
 
-    const seen = new Set<string>();
+    const dedup = createArticleDedupe();
     const unique: RawNewsArticle[] = [];
     for (const art of general || []) {
       if (!validateArticle(art)) continue;
-      const key = `${art.id}-${art.url}-${art.headline}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
+      if (!dedup.tryAccept(art)) continue;
       unique.push(art);
       if (unique.length >= Math.max(maxArticles, 20)) break; // cap early before final slicing
     }
@@ -161,15 +161,10 @@ export async function getStockNews(symbol: string, limit = 8): Promise<MarketNew
     const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(cleanSymbol)}&from=${range.from}&to=${range.to}&token=${token}`;
     const articles = await fetchJSON<RawNewsArticle[]>(url, 300);
 
-    const seen = new Set<string>();
+    const dedup = createArticleDedupe();
     const unique = (articles || [])
       .filter(validateArticle)
-      .filter((article) => {
-        const key = `${article.id}-${article.url}-${article.headline}`;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      })
+      .filter((article) => dedup.tryAccept(article))
       .sort((a, b) => (b.datetime || 0) - (a.datetime || 0))
       .slice(0, maxArticles);
 
