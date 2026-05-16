@@ -102,6 +102,17 @@ export const TOP_STORIES_WIDGET_CONFIG = {
     height: '950',
 };
 
+export const SYMBOL_NEWS_WIDGET_CONFIG = (symbol: string) => ({
+    displayMode: 'regular',
+    feedMode: 'symbol',
+    symbol: symbol.toUpperCase(),
+    colorTheme: 'dark',
+    isTransparent: true,
+    locale: 'en',
+    width: '100%',
+    height: 496,
+});
+
 export const MARKET_DATA_WIDGET_CONFIG = {
     title: 'Stocks',
     width: '100%',

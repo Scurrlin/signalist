@@ -190,7 +190,7 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
     setIsRefreshingNews(true);
 
     try {
-      const nextNews = await getNews(selectedNewsSymbols, 8);
+      const nextNews = await getNews(selectedNewsSymbols, 12);
       setCurrentNews(nextNews);
       setNewsEmptyMessage('No watchlist news is available right now.');
     } catch {

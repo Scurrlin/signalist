@@ -6,14 +6,33 @@ import {
   CANDLE_CHART_WIDGET_CONFIG,
   CANDLE_CHART_DETAILS_WIDGET_CONFIG,
   TECHNICAL_ANALYSIS_WIDGET_CONFIG,
-  COMPANY_PROFILE_WIDGET_CONFIG,
   COMPANY_FINANCIALS_WIDGET_CONFIG,
+  SYMBOL_NEWS_WIDGET_CONFIG,
 } from "@/lib/constants";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import { getCurrentWatchlistSymbols } from "@/lib/actions/watchlist.actions";
 import { getStockProfile } from "@/lib/actions/finnhub.actions";
+
+const getTradingViewSymbol = (symbol: string, exchange?: string) => {
+  const upperSymbol = symbol.toUpperCase();
+  const upperExchange = exchange?.toUpperCase() || '';
+
+  if (upperExchange.includes('NASDAQ')) {
+    return `NASDAQ:${upperSymbol}`;
+  }
+
+  if (upperExchange.includes('NYSE')) {
+    return `NYSE:${upperSymbol}`;
+  }
+
+  if (upperExchange.includes('AMEX') || upperExchange.includes('NYSE AMERICAN')) {
+    return `AMEX:${upperSymbol}`;
+  }
+
+  return upperSymbol;
+};
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
@@ -38,13 +57,14 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
 
   const profile = await getStockProfile(upperSymbol);
   const company = profile?.name || upperSymbol;
+  const tradingViewNewsSymbol = getTradingViewSymbol(upperSymbol, profile?.exchange);
 
   return (
-    <div className="flex min-h-screen px-2 py-4 md:px-3 md:py-5 lg:px-4 lg:py-6">
+    <div className="flex min-h-screen px-2 pb-4 md:px-3 md:pb-5 lg:px-4 lg:pb-6">
       <section className="flex w-full flex-col gap-8">
         <div className="flex min-w-0 flex-col gap-6">
           <div className="flex flex-col">
-            <div className="py-4 md:py-5">
+            <div className="pb-4 md:pb-5">
               <StockDetailsClient
                 symbol={upperSymbol}
                 company={company}
@@ -57,7 +77,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
             <TradingViewWidget
               scriptUrl={`${scriptUrl}symbol-info.js`}
               config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
-              className="symbol-info-widget widget-overlay-frame"
+              className="widget-overlay-frame"
               height={170}
             />
           </div>
@@ -71,27 +91,31 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           />
         </div>
 
-        <div className="mx-auto flex w-full max-w-[880px] min-w-0 flex-col gap-6">
-          <TradingViewWidget
-            scriptUrl={`${scriptUrl}technical-analysis.js`}
-            config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(symbol)}
-            className="technical-analysis-widget widget-overlay-frame"
-            height={400}
-          />
+        <div className="mx-auto grid w-full max-w-[992px] min-w-0 grid-cols-1 gap-6 min-[1025px]:max-w-none min-[1025px]:grid-cols-2 min-[1025px]:items-start">
+          <div className="flex min-w-0 flex-col gap-6 min-[1025px]:order-2">
+            <TradingViewWidget
+              scriptUrl={`${scriptUrl}technical-analysis.js`}
+              config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(symbol)}
+              className="technical-analysis-widget widget-overlay-frame"
+              height={400}
+            />
 
-          <TradingViewWidget
-            scriptUrl={`${scriptUrl}company-profile.js`}
-            config={COMPANY_PROFILE_WIDGET_CONFIG(symbol)}
-            className="widget-overlay-frame"
-            height={440}
-          />
+            <TradingViewWidget
+              scriptUrl={`${scriptUrl}timeline.js`}
+              config={SYMBOL_NEWS_WIDGET_CONFIG(tradingViewNewsSymbol)}
+              className="stock-news-widget widget-overlay-frame"
+              height={496}
+            />
+          </div>
 
-          <TradingViewWidget
-            scriptUrl={`${scriptUrl}financials.js`}
-            config={COMPANY_FINANCIALS_WIDGET_CONFIG(symbol)}
-            className="financials-widget widget-overlay-frame"
-            height={920}
-          />
+          <div className="min-w-0 min-[1025px]:order-1">
+            <TradingViewWidget
+              scriptUrl={`${scriptUrl}financials.js`}
+              config={COMPANY_FINANCIALS_WIDGET_CONFIG(symbol)}
+              className="financials-widget widget-overlay-frame"
+              height={920}
+            />
+          </div>
         </div>
       </section>
     </div>

@@ -94,6 +94,7 @@ declare global {
 
     type ProfileData = {
         name?: string;
+        exchange?: string;
         logo?: string;
         marketCapitalization?: number;
     };

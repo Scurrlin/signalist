@@ -53,7 +53,7 @@ export default async function WatchlistPage() {
     .map((stock) => stock.symbol);
 
   const [watchlistNews, initialSearchStocks] = await Promise.all([
-    newsSymbols.length > 0 ? getNews(newsSymbols, 8).catch(() => []) : Promise.resolve([]),
+    newsSymbols.length > 0 ? getNews(newsSymbols, 12).catch(() => []) : Promise.resolve([]),
     searchStocks(),
   ]);
 

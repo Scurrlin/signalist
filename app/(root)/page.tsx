@@ -44,7 +44,7 @@ const Home = () => {
                     <TradingViewWidget
                         scriptUrl={`${scriptUrl}timeline.js`}
                         config={TOP_STORIES_WIDGET_CONFIG}
-                        className="home-tall-widget widget-overlay-frame"
+                        className="home-tall-widget home-top-stories-widget widget-overlay-frame"
                         height={950}
                     />
                 </div>

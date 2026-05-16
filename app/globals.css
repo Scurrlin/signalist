@@ -615,23 +615,6 @@
   opacity: 0;
 }
 
-@media (max-width: 800px) {
-  .symbol-info-widget.tradingview-widget-container {
-    height: 250px !important;
-  }
-
-  .symbol-info-widget .tradingview-widget-container__widget,
-  .symbol-info-widget iframe {
-    height: 100% !important;
-  }
-}
-
-@media (max-width: 500px) {
-  .symbol-info-widget.tradingview-widget-container {
-    height: 270px !important;
-  }
-}
-
 .home-tall-widget.tradingview-widget-container {
   height: 950px !important;
 }
@@ -641,9 +624,9 @@
   height: 100% !important;
 }
 
-@media (min-width: 810px) and (max-width: 1000px) {
-  .home-tall-widget.tradingview-widget-container {
-    height: 850px !important;
+@media (max-width: 1023px) {
+  .home-top-stories-widget.tradingview-widget-container {
+    height: 840px !important;
   }
 }
 
@@ -674,15 +657,21 @@
 .technical-analysis-widget .tradingview-widget-container__widget,
 .technical-analysis-widget iframe {
   margin-inline: auto;
-  max-width: 880px;
+  width: 100% !important;
 }
 
 .financials-widget.tradingview-widget-container {
   height: 920px;
 }
 
+.stock-news-widget.tradingview-widget-container {
+  height: 496px;
+}
+
 .financials-widget .tradingview-widget-container__widget,
-.financials-widget iframe {
+.financials-widget iframe,
+.stock-news-widget .tradingview-widget-container__widget,
+.stock-news-widget iframe {
   height: 100% !important;
 }
 
