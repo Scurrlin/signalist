@@ -6,6 +6,7 @@ import InputField from "@/components/forms/InputField";
 import FooterLink from "@/components/forms/FooterLink";
 import TradingViewAttribution from "@/components/forms/TradingViewAttribution";
 import {signUpWithEmail, setGuestMode} from "@/lib/actions/auth.actions";
+import { enterAppFromAuth } from '@/lib/auth-navigation';
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import { useState } from 'react';
@@ -32,7 +33,7 @@ const SignUp = () => {
             
             if(result.success) {
                 toast.success('Account created successfully!');
-                router.push('/', { scroll: true });
+                enterAppFromAuth(router);
             } else {
                 toast.error('Sign up failed', {
                     description: result.error || 'Failed to create an account.'
@@ -53,7 +54,7 @@ const SignUp = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                router.push('/', { scroll: true });
+                enterAppFromAuth(router);
             } else {
                 toast.error('Failed to enter guest mode');
             }
