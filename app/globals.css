@@ -441,6 +441,21 @@
   }
   .watchlist-table-scroll {
     @apply w-full overflow-x-auto;
+    scrollbar-width: thin;
+    scrollbar-color: #30333A #141414;
+  }
+  .watchlist-table-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+  .watchlist-table-scroll::-webkit-scrollbar-track {
+    background-color: #141414;
+  }
+  .watchlist-table-scroll::-webkit-scrollbar-thumb {
+    background-color: #30333A;
+    border-radius: 999px;
+  }
+  .watchlist-table-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #9095A1;
   }
   .watchlist-table {
     @apply w-full min-w-[940px] border-collapse bg-transparent;
