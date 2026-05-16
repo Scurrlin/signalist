@@ -166,12 +166,15 @@ export const MARKET_DATA_WIDGET_CONFIG = {
     ],
 };
 
-export const SINGLE_TICKER_WIDGET_CONFIG = (symbol: string) => ({
+export const MINI_CHART_WIDGET_CONFIG = (symbol: string) => ({
     symbol: symbol.toUpperCase(),
     colorTheme: 'dark',
+    dateRange: '12M',
     isTransparent: true,
     locale: 'en',
     width: '100%',
+    height: 200,
+    autosize: false,
     largeChartUrl: '',
 });
 

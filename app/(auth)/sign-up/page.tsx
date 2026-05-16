@@ -9,6 +9,7 @@ import {signUpWithEmail, setGuestMode} from "@/lib/actions/auth.actions";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import { useState } from 'react';
+import { pushWithAuthSuccessTransition } from "@/lib/auth-transition";
 
 const SignUp = () => {
     const router = useRouter()
@@ -32,7 +33,7 @@ const SignUp = () => {
             
             if(result.success) {
                 toast.success('Account created successfully!');
-                router.push('/');
+                pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Sign up failed', {
                     description: result.error || 'Failed to create an account.'
@@ -53,7 +54,7 @@ const SignUp = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                router.push('/');
+                pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Failed to enter guest mode');
             }

@@ -26,6 +26,7 @@
 
 # local asset generation scripts
 /scripts/download-tradingview-hero.sh
+/scripts/download-finnhub-logo.sh
 
 # debug
 npm-debug.log*

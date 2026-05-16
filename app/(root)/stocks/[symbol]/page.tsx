@@ -4,7 +4,7 @@ import StockDetailsClient from "@/components/StockDetailsClient";
 import {
   CANDLE_CHART_WIDGET_CONFIG,
   CANDLE_CHART_DETAILS_WIDGET_CONFIG,
-  SINGLE_TICKER_WIDGET_CONFIG,
+  MINI_CHART_WIDGET_CONFIG,
   TECHNICAL_ANALYSIS_WIDGET_CONFIG,
   COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
@@ -65,25 +65,23 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     <div className="flex min-h-screen px-2 pb-4 md:px-3 md:pb-5 lg:px-4 lg:pb-6">
       <section className="flex w-full flex-col gap-8">
         <div className="flex min-w-0 flex-col gap-4">
-          <div className="flex flex-col">
-            <div className="flex flex-col items-center gap-4">
-              <StockDetailsClient
-                symbol={upperSymbol}
-                company={company}
-                isInWatchlist={isInWatchlist}
-                isGuest={isGuest}
-                userId={userId}
-              />
+          <div className="flex flex-col items-center">
+            <StockDetailsClient
+              symbol={upperSymbol}
+              company={company}
+              isInWatchlist={isInWatchlist}
+              isGuest={isGuest}
+              userId={userId}
+            />
+          </div>
 
-              <div className="stock-single-ticker-wrap">
-                <TradingViewWidget
-                  scriptUrl={`${scriptUrl}single-quote.js`}
-                  config={SINGLE_TICKER_WIDGET_CONFIG(tradingViewSymbol)}
-                  className="single-ticker-widget widget-overlay-frame"
-                  height={96}
-                />
-              </div>
-            </div>
+          <div className="stock-mini-chart-wrap">
+            <TradingViewWidget
+              scriptUrl={`${scriptUrl}mini-symbol-overview.js`}
+              config={MINI_CHART_WIDGET_CONFIG(tradingViewSymbol)}
+              className="mini-chart-widget widget-overlay-frame"
+              height={200}
+            />
           </div>
 
           <ResponsiveStockChart

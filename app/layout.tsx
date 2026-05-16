@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
+import AuthSuccessTransition from "@/components/AuthSuccessTransition";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -76,6 +77,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <AuthSuccessTransition />
         <Toaster />
       </body>
     </html>

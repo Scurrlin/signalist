@@ -9,6 +9,7 @@ import {signInWithEmail, setGuestMode} from "@/lib/actions/auth.actions";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import { useState } from 'react';
+import { pushWithAuthSuccessTransition } from "@/lib/auth-transition";
 
 const SignIn = () => {
     const router = useRouter()
@@ -31,7 +32,7 @@ const SignIn = () => {
             
             if(result.success) {
                 toast.success('Welcome back!');
-                router.push('/');
+                pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Sign in failed', {
                     description: result.error || 'Invalid email or password.'
@@ -52,7 +53,7 @@ const SignIn = () => {
             
             if (result.success) {
                 toast.success('Welcome! Feel free to take a look around');
-                router.push('/');
+                pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Failed to enter guest mode');
             }
