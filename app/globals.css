@@ -631,8 +631,7 @@
 }
 
 .symbol-info-widget.tradingview-widget-container {
-  width: 100% !important;
-  height: 100% !important;
+  height: 180px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   scrollbar-width: thin;
@@ -641,8 +640,19 @@
 
 .symbol-info-widget .tradingview-widget-container__widget,
 .symbol-info-widget iframe {
-  width: 100% !important;
   height: 100% !important;
+}
+
+@media (max-width: 850px) {
+  .symbol-info-widget.tradingview-widget-container {
+    height: 230px !important;
+  }
+}
+
+@media (max-width: 545px) {
+  .symbol-info-widget.tradingview-widget-container {
+    height: 260px !important;
+  }
 }
 
 .symbol-info-widget.tradingview-widget-container::-webkit-scrollbar {
