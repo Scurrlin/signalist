@@ -28,24 +28,73 @@ const getSafeHttpUrl = (url?: string) => {
   }
 };
 
-// Check for required article fields
+// Decode the HTML entities Finnhub emits in headline/summary text so they
+// render as readable characters when interpolated into JSX (which never
+// decodes entities itself). Covers numeric (&#39;), hex (&#x27;), and the
+// handful of named entities seen in practice.
+const NAMED_HTML_ENTITIES: Record<string, string> = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: '\u00A0',
+};
+
+const decodeHtmlEntities = (input: string): string =>
+  input.replace(/&(#x[0-9a-fA-F]+|#\d+|[a-zA-Z]+);/g, (match, entity: string) => {
+    if (entity[0] === '#') {
+      const isHex = entity[1] === 'x' || entity[1] === 'X';
+      const code = isHex
+        ? parseInt(entity.slice(2), 16)
+        : parseInt(entity.slice(1), 10);
+      if (!Number.isFinite(code) || code < 0 || code > 0x10ffff) return match;
+      try {
+        return String.fromCodePoint(code);
+      } catch {
+        return match;
+      }
+    }
+    return NAMED_HTML_ENTITIES[entity.toLowerCase()] ?? match;
+  });
+
+// Headlines like "Transcript: ..." or "Transcript : ..." are auto-generated
+// earnings-call transcripts on Finnhub that have no real article body, so we
+// drop them at the validation step (case-insensitive, optional whitespace
+// before the colon to match Finnhub's actual formatting).
+const TRANSCRIPT_HEADLINE_RE = /^\s*transcript\s*:/i;
+
+// Check for required article fields and filter out low-substance headlines.
 export const validateArticle = (article: RawNewsArticle) =>
-    article.headline && article.summary && getSafeHttpUrl(article.url) && article.datetime;
+    !!article.headline
+    && !TRANSCRIPT_HEADLINE_RE.test(article.headline)
+    && !!article.summary
+    && !!getSafeHttpUrl(article.url)
+    && !!article.datetime;
 
 export const formatArticle = (
     article: RawNewsArticle,
     isCompanyNews: boolean,
     symbol?: string,
     index: number = 0
-) => ({
-  id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
-  headline: article.headline!.trim(),
-  summary:
-      article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
-  source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
-  url: getSafeHttpUrl(article.url)!,
-  datetime: article.datetime!,
-  image: article.image || '',
-  category: isCompanyNews ? 'company' : article.category || 'general',
-  related: isCompanyNews ? symbol! : article.related || '',
-});
+) => {
+  const headline = decodeHtmlEntities(article.headline!.trim());
+  const decodedSummary = decodeHtmlEntities(article.summary!.trim());
+  const summaryLimit = isCompanyNews ? 200 : 150;
+  const summary =
+      decodedSummary.length > summaryLimit
+          ? decodedSummary.substring(0, summaryLimit).trimEnd() + '...'
+          : decodedSummary;
+
+  return {
+    id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
+    headline,
+    summary,
+    source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
+    url: getSafeHttpUrl(article.url)!,
+    datetime: article.datetime!,
+    image: article.image || '',
+    category: isCompanyNews ? 'company' : article.category || 'general',
+    related: isCompanyNews ? symbol! : article.related || '',
+  };
+};
