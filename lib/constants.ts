@@ -172,7 +172,7 @@ export const SYMBOL_INFO_WIDGET_CONFIG = (symbol: string) => ({
     isTransparent: true,
     locale: 'en',
     width: '100%',
-    height: 170,
+    height: '100%',
 });
 
 export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string) => ({

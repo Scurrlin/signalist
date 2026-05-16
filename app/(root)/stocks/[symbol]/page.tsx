@@ -77,8 +77,8 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
             <TradingViewWidget
               scriptUrl={`${scriptUrl}symbol-info.js`}
               config={SYMBOL_INFO_WIDGET_CONFIG(symbol)}
-              className="widget-overlay-frame"
-              height={170}
+              className="symbol-info-widget widget-overlay-frame"
+              height="100%"
             />
           </div>
 
