@@ -16,24 +16,14 @@ A [stock market analysis app](https://signalist.seancurrlin.com/) for tracking m
 ## Local Development
 
 ```bash
+nvm use 20
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` to view the app.
-
-## Useful Commands
-
-```bash
-npm run lint
-./node_modules/.bin/tsc --noEmit
-npm run test:db
-npm run build
-```
-
 ## Deployment Notes
 
-Use Node 20 in production. Configure the deployment environment with MongoDB, Better Auth, and Finnhub settings before building or starting the app.
+Configure the deployment environment with MongoDB, Better Auth, and Finnhub settings before building or starting the app.
 
 Required runtime variables:
 
