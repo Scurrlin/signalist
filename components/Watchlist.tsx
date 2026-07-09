@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
-import { ArrowDown, ArrowUp, ChevronsUpDown, RefreshCw, Star, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, RefreshCw, Trash2 } from 'lucide-react';
 import { removeFromWatchlist, updateWatchlistNewsPreference } from '@/lib/actions/watchlist.actions';
 import { getNews } from '@/lib/actions/finnhub.actions';
 import { toast } from 'sonner';
@@ -291,7 +291,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
           <table className="watchlist-table">
             <thead>
               <tr className="table-header-row">
-                <th className="table-header" aria-label="Watchlist marker" />
                 <th className="table-header">{renderSortButton('company', 'Company')}</th>
                 <th className="table-header">{renderSortButton('symbol', 'Symbol')}</th>
                 <th className="table-header">{renderSortButton('price', 'Price')}</th>
@@ -321,11 +320,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
 
                 return (
                   <tr key={stock.symbol} className="table-row">
-                    <td className="table-cell w-12">
-                      <Link href={stockHref} className="watchlist-row-link justify-center" aria-label={`${stock.symbol} details`}>
-                        <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
-                      </Link>
-                    </td>
                     <td className="table-cell">
                       <Link href={stockHref} className="watchlist-row-link">
                         <span className="watchlist-company" title={stock.company}>{stock.company}</span>
