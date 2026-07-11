@@ -7,7 +7,7 @@ A [stock market analysis app](https://signalist.seancurrlin.com/) for tracking m
 ## Features
 
 - Email/password authentication with guest access
-- Guest access expires after 1 hour; signed-in sessions expire after a fixed 12 hours.
+- Guest access expires after 1 hour; signed-in sessions expire after 12 hours
 - Personalized stock watchlists backed by MongoDB
 - Stock search powered by Finnhub
 - Market overview, heatmap, quotes, news, charts, technical analysis, company profile, and financials powered by TradingView
@@ -22,8 +22,6 @@ npm run dev
 ```
 
 ## Deployment Notes
-
-Configure the deployment environment with MongoDB, Better Auth, and Finnhub settings before building or starting the app.
 
 Required runtime variables:
 
