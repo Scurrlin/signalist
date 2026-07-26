@@ -51,6 +51,7 @@ const StockNewsList = ({ symbol, articles }: StockNewsListProps) => {
           </div>
         ) : (
           <div className="stock-news-panel-empty">
+            <span>No recent news found for {symbol.toUpperCase()}</span>
             <Image
               src="/assets/icons/Finnhub.png"
               alt=""
@@ -59,7 +60,6 @@ const StockNewsList = ({ symbol, articles }: StockNewsListProps) => {
               className="stock-news-panel-empty-icon"
               aria-hidden="true"
             />
-            <span>No recent news found for {symbol.toUpperCase()}</span>
           </div>
         )}
       </div>
