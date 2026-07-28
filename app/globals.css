@@ -419,7 +419,7 @@
     @apply inline-flex items-center gap-1.5;
   }
   .watchlist-reset-btn {
-    @apply inline-flex min-h-7 cursor-pointer items-center justify-center text-gray-500 transition-colors hover:text-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 disabled:cursor-default disabled:opacity-40 disabled:hover:text-gray-500;
+    @apply inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-gray-100 transition-colors hover:bg-blue-600/10 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/40 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-gray-100;
   }
   .watchlist-icon-btn {
     @apply w-fit cursor-pointer hover:bg-transparent! text-gray-400 hover:text-blue-600;

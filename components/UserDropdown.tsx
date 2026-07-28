@@ -61,7 +61,7 @@ const UserDropdown = ({
                 <Button
                     ref={triggerRef}
                     variant="ghost"
-                    className="flex items-center gap-3 text-gray-400 hover:text-blue-600 focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
+                    className="flex items-center gap-3 text-gray-400 hover:bg-transparent hover:text-blue-600 focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
                 >
                     <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
@@ -69,13 +69,13 @@ const UserDropdown = ({
                         </AvatarFallback>
                     </Avatar>
                     <div className="hidden md:flex flex-col items-start">
-                        <span className='text-base font-medium text-gray-400'>
+                        <span className="text-base font-medium">
                             {user.name}
                         </span>
                     </div>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="text-gray-400">
+            <DropdownMenuContent className="border-gray-600 bg-gray-800 text-gray-400">
                 <DropdownMenuLabel>
                     <div className="flex items-center gap-3 py-2">
                         <Avatar className="h-10 w-10 shrink-0">

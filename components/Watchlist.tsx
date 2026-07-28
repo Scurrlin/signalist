@@ -275,7 +275,7 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
               title="Reset watchlist order"
               aria-label="Reset watchlist order"
             >
-              <RefreshCw className="h-5 w-5 md:h-6 md:w-6" />
+              <RefreshCw className="h-4 w-4" />
             </button>
           </div>
           <SearchCommand
