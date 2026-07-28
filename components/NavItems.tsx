@@ -63,7 +63,7 @@ const NavItems = ({
         )
     }
 
-    const homeItem = navItems.find(({ href }) => href === '/');
+    const overviewItem = navItems.find(({ href }) => href === '/');
     const searchItem = navItems.find(({ href }) => href === '/search');
     const watchlistItem = navItems.find(({ href }) => href === '/watchlist');
     const docsItem = navItems.find(({ label }) => label === 'Docs');
@@ -82,6 +82,14 @@ const NavItems = ({
                         {docsItem.label}
                     </a>
                 )}
+                {overviewItem && (
+                    <Link href={overviewItem.href} className="header-nav-link">
+                        {overviewItem.label}
+                    </Link>
+                )}
+            </li>
+            <li className="header-brand-spacer" aria-hidden="true" />
+            <li className="header-nav-group header-nav-group-right header-side-nav-item">
                 {searchItem && (
                     <SearchCommand
                         renderAs="text"
@@ -91,14 +99,6 @@ const NavItems = ({
                         isGuest={isGuest}
                         watchlistSymbols={watchlistSymbols}
                     />
-                )}
-            </li>
-            <li className="header-brand-spacer" aria-hidden="true" />
-            <li className="header-nav-group header-nav-group-right header-side-nav-item">
-                {homeItem && (
-                    <Link href={homeItem.href} className="header-nav-link">
-                        {homeItem.label}
-                    </Link>
                 )}
                 {watchlistItem && (
                     <Link href={watchlistItem.href} className="header-nav-link">
