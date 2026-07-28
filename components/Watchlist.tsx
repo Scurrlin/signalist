@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
-import { ArrowDown, ArrowUp, ChevronsUpDown, ListRestart, RefreshCw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, RefreshCw, Trash2 } from 'lucide-react';
 import { removeFromWatchlist, updateWatchlistNewsPreference } from '@/lib/actions/watchlist.actions';
 import { getNews } from '@/lib/actions/finnhub.actions';
 import { toast } from 'sonner';
@@ -265,26 +265,26 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
     <div className="watchlist-dashboard">
       <section className="watchlist-panel">
         <div className="watchlist-panel-header">
-          <div className="watchlist-heading">
-            <h1 className="watchlist-title">Watchlist</h1>
+          <h1 className="watchlist-title">Watchlist</h1>
+          <div className="watchlist-header-actions">
             <button
               type="button"
               onClick={handleResetSort}
               disabled={!sortState}
-              className="watchlist-reset-btn"
+              className="search-btn watchlist-reset-btn"
               title="Reset sort"
               aria-label="Reset sort"
             >
-              <ListRestart className="h-4 w-4" />
+              Reset
             </button>
+            <SearchCommand
+              initialStocks={initialSearchStocks}
+              label="Add Stock"
+              userId={userId}
+              watchlistSymbols={stocks.map(stock => stock.symbol)}
+              onWatchlistToggle={handleSearchWatchlistToggle}
+            />
           </div>
-          <SearchCommand
-            initialStocks={initialSearchStocks}
-            label="Add Stock"
-            userId={userId}
-            watchlistSymbols={stocks.map(stock => stock.symbol)}
-            onWatchlistToggle={handleSearchWatchlistToggle}
-          />
         </div>
 
         <div className="watchlist-table-scroll">

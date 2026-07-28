@@ -415,11 +415,11 @@
   .watchlist-panel-header {
     @apply flex items-center justify-between gap-4 border-b border-gray-600 px-4 py-4;
   }
-  .watchlist-heading {
-    @apply inline-flex items-center gap-1.5;
+  .watchlist-header-actions {
+    @apply flex items-center gap-2;
   }
   .watchlist-reset-btn {
-    @apply inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded bg-blue-600 text-gray-100 transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 disabled:cursor-default disabled:opacity-50;
+    @apply h-9 disabled:cursor-not-allowed disabled:opacity-100;
   }
   .watchlist-icon-btn {
     @apply w-fit cursor-pointer hover:bg-transparent! text-gray-400 hover:text-blue-600;

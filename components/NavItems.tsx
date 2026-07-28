@@ -63,7 +63,7 @@ const NavItems = ({
         )
     }
 
-    const dashboardItem = navItems.find(({ href }) => href === '/');
+    const homeItem = navItems.find(({ href }) => href === '/');
     const searchItem = navItems.find(({ href }) => href === '/search');
     const watchlistItem = navItems.find(({ href }) => href === '/watchlist');
     const docsItem = navItems.find(({ label }) => label === 'Docs');
@@ -82,9 +82,9 @@ const NavItems = ({
                         {docsItem.label}
                     </a>
                 )}
-                {dashboardItem && (
-                    <Link href={dashboardItem.href} className="header-nav-link">
-                        {dashboardItem.label}
+                {homeItem && (
+                    <Link href={homeItem.href} className="header-nav-link">
+                        {homeItem.label}
                     </Link>
                 )}
             </li>
