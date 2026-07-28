@@ -279,8 +279,8 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
               onClick={handleResetSort}
               disabled={!sortState}
               className="search-btn watchlist-reset-btn"
-              title="Reset sort"
-              aria-label="Reset sort"
+              title="Reset order"
+              aria-label="Reset order"
             >
               Reset
             </button>
