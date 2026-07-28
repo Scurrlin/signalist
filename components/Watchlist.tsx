@@ -267,6 +267,13 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
         <div className="watchlist-panel-header">
           <h1 className="watchlist-title">Watchlist</h1>
           <div className="watchlist-header-actions">
+            <SearchCommand
+              initialStocks={initialSearchStocks}
+              label="Add Stock"
+              userId={userId}
+              watchlistSymbols={stocks.map(stock => stock.symbol)}
+              onWatchlistToggle={handleSearchWatchlistToggle}
+            />
             <button
               type="button"
               onClick={handleResetSort}
@@ -277,13 +284,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
             >
               Reset
             </button>
-            <SearchCommand
-              initialStocks={initialSearchStocks}
-              label="Add Stock"
-              userId={userId}
-              watchlistSymbols={stocks.map(stock => stock.symbol)}
-              onWatchlistToggle={handleSearchWatchlistToggle}
-            />
           </div>
         </div>
 
