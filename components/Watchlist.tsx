@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
-import { ArrowDown, ArrowUp, ChevronsUpDown, RefreshCw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, ListRestart, RefreshCw, Trash2 } from 'lucide-react';
 import { removeFromWatchlist, updateWatchlistNewsPreference } from '@/lib/actions/watchlist.actions';
 import { getNews } from '@/lib/actions/finnhub.actions';
 import { toast } from 'sonner';
@@ -131,7 +131,7 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
     });
   };
 
-  const handleResetWatchlist = () => {
+  const handleResetSort = () => {
     setSortState(null);
   };
 
@@ -269,13 +269,13 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
             <h1 className="watchlist-title">Watchlist</h1>
             <button
               type="button"
-              onClick={handleResetWatchlist}
+              onClick={handleResetSort}
               disabled={!sortState}
               className="watchlist-reset-btn"
-              title="Reset watchlist order"
-              aria-label="Reset watchlist order"
+              title="Reset sort"
+              aria-label="Reset sort"
             >
-              <RefreshCw className="h-4 w-4" />
+              <ListRestart className="h-4 w-4" />
             </button>
           </div>
           <SearchCommand

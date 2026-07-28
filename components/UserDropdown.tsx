@@ -12,7 +12,6 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
-import {LogOut} from "lucide-react";
 import NavItems from "@/components/NavItems";
 import {signOut} from "@/lib/actions/auth.actions";
 import Link from "next/link";
@@ -61,7 +60,7 @@ const UserDropdown = ({
                 <Button
                     ref={triggerRef}
                     variant="ghost"
-                    className="group flex cursor-pointer items-center gap-3 text-gray-400 hover:bg-transparent focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent"
+                    className="group flex cursor-pointer items-center gap-3 text-gray-400 hover:bg-transparent! dark:hover:bg-transparent! focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent!"
                 >
                     <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
@@ -137,10 +136,9 @@ const UserDropdown = ({
                     </>
                 ) : (
                     <>
-                        {/* Authenticated users see Logout */}
+                        {/* Authenticated users see Log Out */}
                         <DropdownMenuItem onClick={handleSignOut} className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
-                            <LogOut className="h-4 w-4 mr-2" />
-                            Logout
+                            Log Out
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="lg:hidden bg-gray-600"/>
                         <nav className="lg:hidden">
