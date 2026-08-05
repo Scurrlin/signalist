@@ -53,6 +53,8 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
 
 export const signOut = async () => {
     try {
+        const cookieStore = await cookies();
+        cookieStore.delete('guest_mode');
         await auth.api.signOut({ headers: await headers() });
     } catch (e) {
         console.log('Sign out failed', e)

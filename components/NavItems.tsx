@@ -2,8 +2,16 @@
 
 import {NAV_ITEMS} from "@/lib/constants";
 import Link from "next/link";
+import { BookOpen, LayoutDashboard, Search as SearchIcon, Star } from "lucide-react";
 import SearchCommand from "@/components/SearchCommand";
 import {DropdownMenuItem, DropdownMenuSeparator} from "@/components/ui/dropdown-menu";
+
+const getDropdownNavIcon = (href: string) => {
+    if (href === '/') return LayoutDashboard;
+    if (href === '/search') return SearchIcon;
+    if (href === '/watchlist') return Star;
+    return BookOpen;
+};
 
 type NavItemsProps = {
     initialStocks: StockWithWatchlistStatus[];
@@ -29,6 +37,7 @@ const NavItems = ({
             <>
                 {navItems.map(({ href, label, external }, index) => {
                     const isLast = index === navItems.length - 1;
+                    const NavIcon = getDropdownNavIcon(href);
                     
                     if(href === '/search') return (
                         <div key="search-trigger">
@@ -36,6 +45,7 @@ const NavItems = ({
                                 onClick={onOpenSearch}
                                 className="user-menu-item"
                             >
+                                <NavIcon aria-hidden="true" />
                                 <span className="w-full block">Search</span>
                             </DropdownMenuItem>
                             {!isLast && <DropdownMenuSeparator className="user-menu-separator"/>}
@@ -47,11 +57,13 @@ const NavItems = ({
                             <DropdownMenuItem asChild className="user-menu-item">
                                 {external ? (
                                     <a href={href} target="_blank" rel="noopener noreferrer" className="w-full">
-                                        {label}
+                                        <NavIcon aria-hidden="true" />
+                                        <span>{label}</span>
                                     </a>
                                 ) : (
                                     <Link href={href} className="w-full">
-                                        {label}
+                                        <NavIcon aria-hidden="true" />
+                                        <span>{label}</span>
                                     </Link>
                                 )}
                             </DropdownMenuItem>

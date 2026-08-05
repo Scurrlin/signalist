@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, LogIn, LogOut, UserPlus } from "lucide-react";
+import { LogIn, LogOut, UserPlus } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -68,7 +68,7 @@ const UserDropdown = ({
                     variant="ghost"
                     className="group flex cursor-pointer items-center gap-3 text-gray-400 hover:bg-transparent! dark:hover:bg-transparent! focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent!"
                 >
-                    <Avatar className="h-8 w-8 ring-1 ring-white/10 transition-shadow group-hover:ring-blue-600/60">
+                    <Avatar className="h-8 w-8 ring-1 ring-white/10">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                             {user.name[0]}
                         </AvatarFallback>
@@ -78,10 +78,6 @@ const UserDropdown = ({
                             {user.name}
                         </span>
                     </div>
-                    <ChevronDown
-                        aria-hidden="true"
-                        className={`hidden h-4 w-4 transition-transform duration-200 md:block ${dropdownOpen ? "rotate-180" : ""}`}
-                    />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -116,6 +112,7 @@ const UserDropdown = ({
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator className="user-menu-separator"/>
                             <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-in" className="w-full">
                                     <LogIn aria-hidden="true" />
@@ -132,6 +129,7 @@ const UserDropdown = ({
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator className="user-menu-separator"/>
                             <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-in" className="w-full">
                                     <LogIn aria-hidden="true" />
@@ -151,25 +149,24 @@ const UserDropdown = ({
                         </div>
                     </>
                 ) : (
-                    <>
-                        {/* Authenticated users see Log Out */}
-                        <DropdownMenuItem onClick={handleSignOut} className="user-menu-item user-menu-item-danger">
-                            <LogOut aria-hidden="true" />
-                            <span>Log Out</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator className="user-menu-separator lg:hidden"/>
-                        <nav className="lg:hidden">
-                            <NavItems
-                                initialStocks={initialStocks}
-                                isGuest={false}
-                                inDropdown={true}
-                                onOpenSearch={handleOpenSearch}
-                                userId={user.id}
-                                watchlistSymbols={watchlistSymbols}
-                            />
-                        </nav>
-                    </>
+                    <nav className="lg:hidden">
+                        <NavItems
+                            initialStocks={initialStocks}
+                            isGuest={false}
+                            inDropdown={true}
+                            onOpenSearch={handleOpenSearch}
+                            userId={user.id}
+                            watchlistSymbols={watchlistSymbols}
+                        />
+                    </nav>
                 )}
+                <DropdownMenuSeparator
+                    className={isGuest ? "user-menu-separator" : "user-menu-separator lg:hidden"}
+                />
+                <DropdownMenuItem onClick={handleSignOut} className="user-menu-item user-menu-item-danger">
+                    <LogOut aria-hidden="true" />
+                    <span>Log Out</span>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
         
