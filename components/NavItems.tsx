@@ -34,17 +34,17 @@ const NavItems = ({
                         <div key="search-trigger">
                             <DropdownMenuItem 
                                 onClick={onOpenSearch}
-                                className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer"
+                                className="user-menu-item"
                             >
                                 <span className="w-full block">Search</span>
                             </DropdownMenuItem>
-                            {!isLast && <DropdownMenuSeparator className="bg-gray-600"/>}
+                            {!isLast && <DropdownMenuSeparator className="user-menu-separator"/>}
                         </div>
                     )
 
                     return (
                         <div key={href}>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="user-menu-item">
                                 {external ? (
                                     <a href={href} target="_blank" rel="noopener noreferrer" className="w-full">
                                         {label}
@@ -55,7 +55,7 @@ const NavItems = ({
                                     </Link>
                                 )}
                             </DropdownMenuItem>
-                            {!isLast && <DropdownMenuSeparator className="bg-gray-600"/>}
+                            {!isLast && <DropdownMenuSeparator className="user-menu-separator"/>}
                         </div>
                     )
                 })}

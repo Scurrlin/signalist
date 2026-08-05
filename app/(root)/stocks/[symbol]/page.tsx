@@ -39,7 +39,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   const upperSymbol = symbol.toUpperCase();
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
   const profilePromise = getStockProfile(upperSymbol);
-  const stockNewsPromise = getStockNews(upperSymbol, 8);
+  const stockNewsPromise = getStockNews(upperSymbol, 6);
   
   // Check if user is a guest
   const cookieStore = await cookies();

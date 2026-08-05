@@ -1,6 +1,8 @@
 'use client';
 
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { ChevronDown, LogIn, LogOut, UserPlus } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -55,6 +57,10 @@ const UserDropdown = ({
 
     return (
         <>
+        {dropdownOpen && createPortal(
+            <div className="user-menu-overlay" aria-hidden="true" />,
+            document.body
+        )}
         <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
                 <Button
@@ -62,7 +68,7 @@ const UserDropdown = ({
                     variant="ghost"
                     className="group flex cursor-pointer items-center gap-3 text-gray-400 hover:bg-transparent! dark:hover:bg-transparent! focus:!ring-0 focus-visible:!border-transparent focus-visible:!ring-0 data-[state=open]:bg-transparent!"
                 >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-8 w-8 ring-1 ring-white/10 transition-shadow group-hover:ring-blue-600/60">
                         <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                             {user.name[0]}
                         </AvatarFallback>
@@ -72,12 +78,20 @@ const UserDropdown = ({
                             {user.name}
                         </span>
                     </div>
+                    <ChevronDown
+                        aria-hidden="true"
+                        className={`hidden h-4 w-4 transition-transform duration-200 md:block ${dropdownOpen ? "rotate-180" : ""}`}
+                    />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="border-gray-600 bg-gray-800 text-gray-400">
-                <DropdownMenuLabel>
-                    <div className="flex items-center gap-3 py-2">
-                        <Avatar className="h-10 w-10 shrink-0">
+            <DropdownMenuContent
+                align="end"
+                sideOffset={10}
+                className="user-menu-content"
+            >
+                <DropdownMenuLabel className="user-menu-label">
+                    <div className="flex items-center gap-3">
+                        <Avatar className="h-11 w-11 shrink-0 ring-1 ring-white/10">
                             <AvatarFallback className="bg-blue-600 text-gray-100 text-sm font-bold">
                                 {user.name[0]}
                             </AvatarFallback>
@@ -89,21 +103,22 @@ const UserDropdown = ({
                         </div>
                     </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-600"/>
+                <DropdownMenuSeparator className="user-menu-separator"/>
                 
                 {/* Guest users see Sign Up and Sign In options */}
                 {isGuest ? (
                     <>
                         {/* Wide screens: Show only Sign Up and Sign In */}
-                        <div className="hidden lg:block">
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
+                        <div className="hidden space-y-1 lg:block">
+                            <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-up" className="w-full">
+                                    <UserPlus aria-hidden="true" />
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-gray-600"/>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-in" className="w-full">
+                                    <LogIn aria-hidden="true" />
                                     Sign In
                                 </Link>
                             </DropdownMenuItem>
@@ -111,18 +126,19 @@ const UserDropdown = ({
                         
                         {/* Compact header: Show auth actions plus collapsed nav links */}
                         <div className="lg:hidden">
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-up" className="w-full">
+                                    <UserPlus aria-hidden="true" />
                                     Sign Up
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-gray-600"/>
-                            <DropdownMenuItem asChild className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
+                            <DropdownMenuItem asChild className="user-menu-item">
                                 <Link href="/sign-in" className="w-full">
+                                    <LogIn aria-hidden="true" />
                                     Sign In
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-gray-600"/>
+                            <DropdownMenuSeparator className="user-menu-separator"/>
                             <nav>
                                 <NavItems
                                     initialStocks={initialStocks}
@@ -137,10 +153,11 @@ const UserDropdown = ({
                 ) : (
                     <>
                         {/* Authenticated users see Log Out */}
-                        <DropdownMenuItem onClick={handleSignOut} className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-blue-600 transition-colors cursor-pointer">
-                            Log Out
+                        <DropdownMenuItem onClick={handleSignOut} className="user-menu-item user-menu-item-danger">
+                            <LogOut aria-hidden="true" />
+                            <span>Log Out</span>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator className="lg:hidden bg-gray-600"/>
+                        <DropdownMenuSeparator className="user-menu-separator lg:hidden"/>
                         <nav className="lg:hidden">
                             <NavItems
                                 initialStocks={initialStocks}
