@@ -19,8 +19,8 @@ const createAuth = (db: Db) =>
             autoSignIn: true,
         },
         session: {
-            expiresIn: 60 * 60 * 12,
-            disableSessionRefresh: true,
+            expiresIn: 60 * 60 * 12, // 12 hours
+            updateAge: 60 * 60, // refresh once a session is >1h old, so active users roll forward
         },
         user: {
             deleteUser: {

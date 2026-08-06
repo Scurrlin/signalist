@@ -3,8 +3,7 @@
 import { connectToDatabase } from '@/database/mongoose';
 import { Watchlist } from '@/database/models/watchlist.model';
 import { fetchJSON } from './finnhub.actions';
-import { auth } from '@/lib/better-auth/auth';
-import { headers } from 'next/headers';
+import { getServerSession } from '@/lib/better-auth/session';
 
 const FINNHUB_BASE_URL = process.env.FINNHUB_BASE_URL;
 const AUTH_REQUIRED_ERROR = 'Please sign in to update your watchlist';
@@ -40,7 +39,7 @@ const formatPERatio = (value?: number) => {
 };
 
 const getCurrentUserId = async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getServerSession();
   return session?.user?.id;
 };
 

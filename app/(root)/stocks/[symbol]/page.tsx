@@ -9,8 +9,7 @@ import {
   COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
 import { cookies } from "next/headers";
-import { auth } from "@/lib/better-auth/auth";
-import { headers } from "next/headers";
+import { getServerSession } from "@/lib/better-auth/session";
 import { getCurrentWatchlistSymbols } from "@/lib/actions/watchlist.actions";
 import { getStockNews, getStockProfile } from "@/lib/actions/finnhub.actions";
 import StockNewsList from "@/components/StockNewsList";
@@ -44,7 +43,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
   // Check if user is a guest
   const cookieStore = await cookies();
   const guestMode = cookieStore.get('guest_mode');
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getServerSession();
   const isGuest = !session?.user && !!guestMode;
 
   // Get user's watchlist to check if this stock is in it

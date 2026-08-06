@@ -1,10 +1,10 @@
 import Header from "@/components/Header";
-import {auth} from "@/lib/better-auth/auth";
-import {headers, cookies} from "next/headers";
+import {getServerSession} from "@/lib/better-auth/session";
+import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 
 const Layout = async ({ children }: { children : React.ReactNode }) => {
-    const session = await auth.api.getSession({ headers: await headers() });
+    const session = await getServerSession();
     const cookieStore = await cookies();
     const guestMode = cookieStore.get('guest_mode');
 

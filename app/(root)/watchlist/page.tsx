@@ -1,6 +1,6 @@
 import Watchlist from "@/components/Watchlist";
-import { auth } from "@/lib/better-auth/auth";
-import { headers, cookies } from "next/headers";
+import { getServerSession } from "@/lib/better-auth/session";
+import { cookies } from "next/headers";
 import { getCurrentWatchlistWithData } from "@/lib/actions/watchlist.actions";
 import { getNews, searchStocks } from "@/lib/actions/finnhub.actions";
 import { redirect } from "next/navigation";
@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default async function WatchlistPage() {
   // Get user session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getServerSession();
   const cookieStore = await cookies();
   const guestMode = cookieStore.get('guest_mode');
   const isGuest = !session?.user && !!guestMode;
