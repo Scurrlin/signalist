@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import WatchlistButton from './WatchlistButton';
 import { addToWatchlist, removeFromWatchlist } from '@/lib/actions/watchlist.actions';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 interface StockDetailsClientProps {
   symbol: string;
@@ -22,8 +21,6 @@ export default function StockDetailsClient({
   userId,
 }: StockDetailsClientProps) {
   const [inWatchlist, setInWatchlist] = useState(isInWatchlist);
-  const [, startTransition] = useTransition();
-  const router = useRouter();
 
   const handleWatchlistChange = async (sym: string, isAdded: boolean) => {
     if (!userId) return;
@@ -38,10 +35,6 @@ export default function StockDetailsClient({
 
       if (result.success) {
         toast.success(isAdded ? 'Added to watchlist' : 'Removed from watchlist');
-        // Refresh server data
-        startTransition(() => {
-          router.refresh();
-        });
       } else {
         // Revert on error
         setInWatchlist(!isAdded);

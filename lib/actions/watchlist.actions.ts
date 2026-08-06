@@ -191,8 +191,8 @@ export async function getCurrentWatchlistWithData(): Promise<StockWithData[]> {
           const metricsUrl = `${FINNHUB_BASE_URL}/stock/metric?symbol=${encodeURIComponent(item.symbol)}&metric=all&token=${token}`;
           
           const [quote, profile, financials] = await Promise.all([
-            fetchJSON<QuoteData>(quoteUrl).catch(() => null),
-            fetchJSON<ProfileData>(profileUrl).catch(() => null),
+            fetchJSON<QuoteData>(quoteUrl, 60).catch(() => null),
+            fetchJSON<ProfileData>(profileUrl, 3600).catch(() => null),
             fetchJSON<FinancialsData>(metricsUrl, 3600).catch(() => null),
           ]);
 

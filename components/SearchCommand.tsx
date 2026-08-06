@@ -1,6 +1,6 @@
 "use client"
 
-import { type KeyboardEvent, type MouseEvent, useEffect, useState, useTransition } from "react"
+import { type KeyboardEvent, type MouseEvent, useEffect, useState } from "react"
 import { CommandDialog, CommandEmpty, CommandInput, CommandList } from "@/components/ui/command"
 import {Button} from "@/components/ui/button";
 import {CornerDownLeft, Loader2, TrendingUp} from "lucide-react";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import {searchStocksWithStatus} from "@/lib/actions/finnhub.actions";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function SearchCommand({
   renderAs = 'button',
@@ -37,8 +37,8 @@ export default function SearchCommand({
     const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);
     return new Set(symbols.map(symbol => symbol.toUpperCase()));
   });
-  const [, startTransition] = useTransition();
   const router = useRouter();
+  const pathname = usePathname();
 
   const trimmedSearchTerm = searchTerm.trim();
   const isSearchMode = !!submittedQuery;
@@ -145,9 +145,9 @@ export default function SearchCommand({
     if (result.success || (!wasAdded && result.error === 'Stock already in watchlist')) {
       onWatchlistToggle?.(stock, !wasAdded);
       toast.success(wasAdded ? 'Removed from watchlist' : 'Added to watchlist');
-      startTransition(() => {
+      if (!wasAdded && pathname?.startsWith('/watchlist')) {
         router.refresh();
-      });
+      }
     } else {
       const revertedSymbols = new Set(nextSymbols);
       if (wasAdded) {

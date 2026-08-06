@@ -1,12 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp, ChevronsUpDown, RefreshCw, Trash2 } from 'lucide-react';
 import { removeFromWatchlist, updateWatchlistNewsPreference } from '@/lib/actions/watchlist.actions';
 import { getNews } from '@/lib/actions/finnhub.actions';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import SearchCommand from './SearchCommand';
 
 interface WatchlistProps {
@@ -63,8 +62,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
   const [updatingNewsSymbol, setUpdatingNewsSymbol] = useState<string | null>(null);
   const [isRefreshingNews, setIsRefreshingNews] = useState(false);
   const [sortState, setSortState] = useState<{ key: SortKey; direction: SortDirection } | null>(null);
-  const [, startTransition] = useTransition();
-  const router = useRouter();
 
   useEffect(() => {
     setStocks(initialStocks);
@@ -210,9 +207,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
 
     if (result.success) {
       toast.success('Removed from watchlist');
-      startTransition(() => {
-        router.refresh();
-      });
     } else {
       setStocks(initialStocks);
       toast.error(result.error || 'Failed to remove from watchlist');

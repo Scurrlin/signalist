@@ -87,7 +87,6 @@ const UserDropdown = ({
             setDropdownOpen(false);
             toast.success("Your account has been deleted");
             router.replace("/sign-in");
-            router.refresh();
         } catch {
             toast.error("Failed to delete account");
         } finally {
