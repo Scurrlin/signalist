@@ -12,15 +12,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import NavItems from "@/components/NavItems";
@@ -53,7 +44,7 @@ const UserDropdown = ({
     const triggerRef = useRef<HTMLButtonElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
     const [isDeletingAccount, setIsDeletingAccount] = useState(false);
     const [menuPlacement, setMenuPlacement] = useState<UserMenuPlacement>({
         alignOffset: 0,
@@ -92,7 +83,8 @@ const UserDropdown = ({
                 return;
             }
 
-            setDeleteDialogOpen(false);
+            setDeleteConfirmationOpen(false);
+            setDropdownOpen(false);
             toast.success("Your account has been deleted.");
             router.replace("/sign-in");
             router.refresh();
@@ -103,18 +95,14 @@ const UserDropdown = ({
         }
     };
 
-    const handleDeleteDialogOpenChange = (open: boolean) => {
-        if (!isDeletingAccount) {
-            setDeleteDialogOpen(open);
-        }
-    };
-
     const handleOpenSearch = () => {
         setDropdownOpen(false);
         setSearchOpen(true);
     };
 
     const handleDropdownOpenChange = (open: boolean) => {
+        if (!open && isDeletingAccount) return;
+
         if (open) {
             updateMenuPlacement();
         }
@@ -122,6 +110,7 @@ const UserDropdown = ({
         setDropdownOpen(open);
 
         if (!open) {
+            setDeleteConfirmationOpen(false);
             requestAnimationFrame(() => {
                 triggerRef.current?.blur();
             });
@@ -260,55 +249,54 @@ const UserDropdown = ({
                 {!isGuest && (
                     <>
                         <DropdownMenuSeparator className="user-menu-separator" />
-                        <DropdownMenuItem
-                            className="user-menu-item user-menu-item-danger"
-                            onSelect={() => {
-                                setDropdownOpen(false);
-                                setDeleteDialogOpen(true);
-                            }}
-                        >
-                            <Trash2 aria-hidden="true" />
-                            <span>Delete Account</span>
-                        </DropdownMenuItem>
+                        {deleteConfirmationOpen ? (
+                            <div className="space-y-2 px-1 pb-1">
+                                <div
+                                    role="heading"
+                                    aria-level={2}
+                                    className="flex min-h-12 items-center justify-center rounded-lg bg-red-500 px-4 text-base font-semibold text-white shadow-lg shadow-red-500/15"
+                                >
+                                    Are You Sure?
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <DropdownMenuItem
+                                        className="min-h-10 cursor-pointer justify-center rounded-lg border border-gray-600 bg-gray-700/70 text-sm font-semibold text-gray-100 focus:bg-gray-700 focus:text-white"
+                                        disabled={isDeletingAccount}
+                                        onSelect={(event) => {
+                                            event.preventDefault();
+                                            setDeleteConfirmationOpen(false);
+                                        }}
+                                    >
+                                        No
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        className="min-h-10 cursor-pointer justify-center rounded-lg bg-red-500 text-sm font-semibold text-white focus:bg-red-500/90 focus:text-white data-[disabled]:opacity-60"
+                                        disabled={isDeletingAccount}
+                                        onSelect={(event) => {
+                                            event.preventDefault();
+                                            void handleDeleteAccount();
+                                        }}
+                                    >
+                                        {isDeletingAccount ? "Deleting..." : "Yes"}
+                                    </DropdownMenuItem>
+                                </div>
+                            </div>
+                        ) : (
+                            <DropdownMenuItem
+                                className="user-menu-item user-menu-item-danger"
+                                onSelect={(event) => {
+                                    event.preventDefault();
+                                    setDeleteConfirmationOpen(true);
+                                }}
+                            >
+                                <Trash2 aria-hidden="true" />
+                                <span>Delete Account</span>
+                            </DropdownMenuItem>
+                        )}
                     </>
                 )}
             </DropdownMenuContent>
         </DropdownMenu>
-
-        <Dialog open={deleteDialogOpen} onOpenChange={handleDeleteDialogOpenChange}>
-            <DialogContent
-                className="border-gray-600 bg-gray-800 text-gray-100 sm:max-w-md"
-                showCloseButton={!isDeletingAccount}
-            >
-                <DialogHeader>
-                    <DialogTitle>Delete your account?</DialogTitle>
-                    <DialogDescription className="leading-relaxed text-gray-400">
-                        This will permanently delete your account and watchlist. This action cannot be undone.
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            className="cursor-pointer text-gray-100 hover:bg-gray-700 hover:text-gray-100"
-                            disabled={isDeletingAccount}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogClose>
-                    <Button
-                        type="button"
-                        variant="destructive"
-                        className="cursor-pointer bg-red-500 text-white hover:bg-red-500/90"
-                        disabled={isDeletingAccount}
-                        onClick={handleDeleteAccount}
-                    >
-                        {isDeletingAccount ? "Deleting..." : "Delete Account"}
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
         
         <SearchCommand 
             renderAs="hidden"
