@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { LogIn, LogOut, UserPlus } from "lucide-react";
+import { LogIn, LogOut, Trash2, UserPlus } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,12 +12,22 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import NavItems from "@/components/NavItems";
-import {signOut} from "@/lib/actions/auth.actions";
+import {deleteAccount, signOut} from "@/lib/actions/auth.actions";
 import Link from "next/link";
 import SearchCommand from "@/components/SearchCommand";
+import { toast } from "sonner";
 
 const SEARCH_DIALOG_SM_BREAKPOINT = 640;
 const DEFAULT_MENU_GAP = 10;
@@ -43,6 +53,8 @@ const UserDropdown = ({
     const triggerRef = useRef<HTMLButtonElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [isDeletingAccount, setIsDeletingAccount] = useState(false);
     const [menuPlacement, setMenuPlacement] = useState<UserMenuPlacement>({
         alignOffset: 0,
         sideOffset: DEFAULT_MENU_GAP,
@@ -68,6 +80,34 @@ const UserDropdown = ({
         await signOut();
         router.push("/sign-in");
     }
+
+    const handleDeleteAccount = async () => {
+        setIsDeletingAccount(true);
+
+        try {
+            const result = await deleteAccount();
+
+            if (!result.success) {
+                toast.error(result.error || "Failed to delete account");
+                return;
+            }
+
+            setDeleteDialogOpen(false);
+            toast.success("Your account has been deleted.");
+            router.replace("/sign-in");
+            router.refresh();
+        } catch {
+            toast.error("Failed to delete account");
+        } finally {
+            setIsDeletingAccount(false);
+        }
+    };
+
+    const handleDeleteDialogOpenChange = (open: boolean) => {
+        if (!isDeletingAccount) {
+            setDeleteDialogOpen(open);
+        }
+    };
 
     const handleOpenSearch = () => {
         setDropdownOpen(false);
@@ -213,12 +253,62 @@ const UserDropdown = ({
                 <DropdownMenuSeparator
                     className={isGuest ? "user-menu-separator" : "user-menu-separator lg:hidden"}
                 />
-                <DropdownMenuItem onClick={handleSignOut} className="user-menu-item user-menu-item-danger">
+                <DropdownMenuItem onClick={handleSignOut} className="user-menu-item">
                     <LogOut aria-hidden="true" />
                     <span>Log Out</span>
                 </DropdownMenuItem>
+                {!isGuest && (
+                    <>
+                        <DropdownMenuSeparator className="user-menu-separator" />
+                        <DropdownMenuItem
+                            className="user-menu-item user-menu-item-danger"
+                            onSelect={() => {
+                                setDropdownOpen(false);
+                                setDeleteDialogOpen(true);
+                            }}
+                        >
+                            <Trash2 aria-hidden="true" />
+                            <span>Delete Account</span>
+                        </DropdownMenuItem>
+                    </>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
+
+        <Dialog open={deleteDialogOpen} onOpenChange={handleDeleteDialogOpenChange}>
+            <DialogContent
+                className="border-gray-600 bg-gray-800 text-gray-100 sm:max-w-md"
+                showCloseButton={!isDeletingAccount}
+            >
+                <DialogHeader>
+                    <DialogTitle>Delete your account?</DialogTitle>
+                    <DialogDescription className="leading-relaxed text-gray-400">
+                        This will permanently delete your account and watchlist. This action cannot be undone.
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className="cursor-pointer text-gray-100 hover:bg-gray-700 hover:text-gray-100"
+                            disabled={isDeletingAccount}
+                        >
+                            Cancel
+                        </Button>
+                    </DialogClose>
+                    <Button
+                        type="button"
+                        variant="destructive"
+                        className="cursor-pointer bg-red-500 text-white hover:bg-red-500/90"
+                        disabled={isDeletingAccount}
+                        onClick={handleDeleteAccount}
+                    >
+                        {isDeletingAccount ? "Deleting..." : "Delete Account"}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
         
         <SearchCommand 
             renderAs="hidden"

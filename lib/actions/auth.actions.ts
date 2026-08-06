@@ -62,6 +62,27 @@ export const signOut = async () => {
     }
 }
 
+export const deleteAccount = async () => {
+    try {
+        await auth.api.deleteUser({
+            body: {},
+            headers: await headers(),
+        });
+
+        const cookieStore = await cookies();
+        cookieStore.delete('guest_mode');
+
+        return { success: true };
+    } catch (e: unknown) {
+        console.log('Delete account failed', e);
+
+        const error = e as { message?: string; body?: { message?: string } };
+        const errorMessage = error?.body?.message || error?.message || 'Failed to delete account';
+
+        return { success: false, error: errorMessage };
+    }
+}
+
 export async function setGuestMode() {
     try {
         const cookieStore = await cookies();

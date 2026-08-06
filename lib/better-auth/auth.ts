@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter} from "better-auth/adapters/mongodb";
 import { connectToDatabase} from "@/database/mongoose";
+import { Watchlist } from "@/database/models/watchlist.model";
 import { nextCookies} from "better-auth/next-js";
 import type { Db } from "mongodb";
 
@@ -20,6 +21,14 @@ const createAuth = (db: Db) =>
         session: {
             expiresIn: 60 * 60 * 12,
             disableSessionRefresh: true,
+        },
+        user: {
+            deleteUser: {
+                enabled: true,
+                afterDelete: async (user) => {
+                    await Watchlist.deleteMany({ userId: user.id });
+                },
+            },
         },
         rateLimit: {
             window: 60,
