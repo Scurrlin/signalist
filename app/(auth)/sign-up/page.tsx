@@ -36,13 +36,13 @@ const SignUp = () => {
                 pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Sign up failed', {
-                    description: result.error || 'Failed to create an account.'
+                    description: result.error || 'Failed to create an account'
                 })
             }
         } catch (e) {
             console.error(e);
             toast.error('Sign up failed', {
-                description: e instanceof Error ? e.message : 'Something went wrong. Please try again.'
+                description: e instanceof Error ? e.message : 'Something went wrong. Please try again'
             })
         }
     }

@@ -35,13 +35,13 @@ const SignIn = () => {
                 pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Sign in failed', {
-                    description: result.error || 'Invalid email or password.'
+                    description: result.error || 'Invalid email or password'
                 })
             }
         } catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
-                description: e instanceof Error ? e.message : 'Something went wrong. Please try again.'
+                description: e instanceof Error ? e.message : 'Something went wrong. Please try again'
             })
         }
     }

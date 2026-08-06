@@ -17,7 +17,7 @@ const WatchlistButton = ({
 
   const handleClick = async () => {
     if (isGuest) {
-      toast.info('Create a Free Account', {
+      toast.info('Create a free account', {
         description: 'Sign up to add to your watchlist',
         action: {
           label: 'Sign Up',

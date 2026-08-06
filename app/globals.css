@@ -787,7 +787,8 @@
   background-color: #9095A1;
 }
 
-/* Force toast description to match title color */
+/* Match toast description color and weight to the title */
 [data-sonner-toast][data-styled='true'] [data-description] {
   color: inherit !important;
+  font-weight: 500 !important;
 }

@@ -85,7 +85,7 @@ const UserDropdown = ({
 
             setDeleteConfirmationOpen(false);
             setDropdownOpen(false);
-            toast.success("Your account has been deleted.");
+            toast.success("Your account has been deleted");
             router.replace("/sign-in");
             router.refresh();
         } catch {
@@ -239,15 +239,13 @@ const UserDropdown = ({
                         />
                     </nav>
                 )}
-                <DropdownMenuSeparator
-                    className={isGuest ? "user-menu-separator" : "user-menu-separator lg:hidden"}
-                />
-                <DropdownMenuItem onClick={handleSignOut} className="user-menu-item">
-                    <LogOut aria-hidden="true" />
-                    <span>Log Out</span>
-                </DropdownMenuItem>
                 {!isGuest && (
                     <>
+                        <DropdownMenuSeparator className="user-menu-separator lg:hidden" />
+                        <DropdownMenuItem onClick={handleSignOut} className="user-menu-item">
+                            <LogOut aria-hidden="true" />
+                            <span>Log Out</span>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator className="user-menu-separator" />
                         {deleteConfirmationOpen ? (
                             <div className="flex h-10 items-center gap-1.5 px-1">
