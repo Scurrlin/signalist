@@ -250,16 +250,16 @@ const UserDropdown = ({
                     <>
                         <DropdownMenuSeparator className="user-menu-separator" />
                         {deleteConfirmationOpen ? (
-                            <div className="flex items-center gap-1.5 px-1 pb-1">
+                            <div className="flex h-10 items-center gap-1.5 px-1">
                                 <span
                                     role="heading"
                                     aria-level={2}
-                                    className="min-w-0 flex-1 px-2 text-left text-sm font-medium text-gray-100"
+                                    className="flex h-10 min-w-0 flex-1 items-center px-2 text-left text-sm font-medium text-gray-100"
                                 >
                                     Are You Sure?
                                 </span>
                                 <DropdownMenuItem
-                                    className="h-8 w-12 shrink-0 cursor-pointer justify-center rounded-lg bg-blue-600 px-2 text-sm font-medium text-gray-100 focus:bg-blue-600 focus:text-gray-100"
+                                    className="h-10 w-12 shrink-0 cursor-pointer justify-center rounded-lg bg-blue-600 px-2 text-sm font-medium text-gray-100 focus:bg-blue-600 focus:text-gray-100"
                                     disabled={isDeletingAccount}
                                     onSelect={(event) => {
                                         event.preventDefault();
@@ -270,7 +270,7 @@ const UserDropdown = ({
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     aria-label={isDeletingAccount ? "Deleting account" : "Yes, delete my account"}
-                                    className="h-8 w-12 shrink-0 cursor-pointer justify-center rounded-lg bg-red-500 px-2 text-sm font-medium text-gray-100 focus:bg-red-500 focus:text-gray-100 data-[disabled]:opacity-60"
+                                    className="h-10 w-12 shrink-0 cursor-pointer justify-center rounded-lg bg-red-500 px-2 text-sm font-medium text-gray-100 focus:bg-red-500 focus:text-gray-100 data-[disabled]:opacity-60"
                                     disabled={isDeletingAccount}
                                     onSelect={(event) => {
                                         event.preventDefault();
