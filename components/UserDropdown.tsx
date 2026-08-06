@@ -19,13 +19,11 @@ import {signOut} from "@/lib/actions/auth.actions";
 import Link from "next/link";
 import SearchCommand from "@/components/SearchCommand";
 
-const COMPACT_NAV_BREAKPOINT = 1024;
 const SEARCH_DIALOG_SM_BREAKPOINT = 640;
 const DEFAULT_MENU_GAP = 10;
 const USER_MENU_WIDTH = 256;
 
 type UserMenuPlacement = {
-    align: "start" | "end";
     alignOffset: number;
     sideOffset: number;
 };
@@ -46,7 +44,6 @@ const UserDropdown = ({
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [menuPlacement, setMenuPlacement] = useState<UserMenuPlacement>({
-        align: "end",
         alignOffset: 0,
         sideOffset: DEFAULT_MENU_GAP,
     });
@@ -57,16 +54,12 @@ const UserDropdown = ({
         if (!trigger) return;
 
         const triggerRect = trigger.getBoundingClientRect();
-        const isCompactNav = window.innerWidth < COMPACT_NAV_BREAKPOINT;
         const searchDialogTopRatio = window.innerWidth < SEARCH_DIALOG_SM_BREAKPOINT ? 0.15 : 0.20;
         const searchDialogTop = window.innerHeight * searchDialogTopRatio;
         const menuTop = Math.max(searchDialogTop, triggerRect.bottom + DEFAULT_MENU_GAP);
 
         setMenuPlacement({
-            align: isCompactNav ? "start" : "end",
-            alignOffset: isCompactNav
-                ? (window.innerWidth - USER_MENU_WIDTH) / 2 - triggerRect.left
-                : 0,
+            alignOffset: (window.innerWidth - USER_MENU_WIDTH) / 2 - triggerRect.left,
             sideOffset: menuTop - triggerRect.bottom,
         });
     }, []);
@@ -135,10 +128,11 @@ const UserDropdown = ({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                align={menuPlacement.align}
+                align="start"
                 alignOffset={menuPlacement.alignOffset}
                 sideOffset={menuPlacement.sideOffset}
                 collisionPadding={16}
+                sticky="always"
                 className="user-menu-content"
             >
                 <DropdownMenuLabel className="user-menu-label">
