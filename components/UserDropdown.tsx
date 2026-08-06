@@ -250,36 +250,35 @@ const UserDropdown = ({
                     <>
                         <DropdownMenuSeparator className="user-menu-separator" />
                         {deleteConfirmationOpen ? (
-                            <div className="space-y-2 px-1 pb-1">
-                                <div
+                            <div className="flex items-center gap-1.5 px-1 pb-1">
+                                <span
                                     role="heading"
                                     aria-level={2}
-                                    className="flex min-h-12 items-center justify-center rounded-lg bg-red-500 px-4 text-base font-semibold text-white shadow-lg shadow-red-500/15"
+                                    className="min-w-0 flex-1 px-2 text-left text-sm font-medium text-gray-100"
                                 >
                                     Are You Sure?
-                                </div>
-                                <div className="grid grid-cols-2 gap-2">
-                                    <DropdownMenuItem
-                                        className="min-h-10 cursor-pointer justify-center rounded-lg border border-gray-600 bg-gray-700/70 text-sm font-semibold text-gray-100 focus:bg-gray-700 focus:text-white"
-                                        disabled={isDeletingAccount}
-                                        onSelect={(event) => {
-                                            event.preventDefault();
-                                            setDeleteConfirmationOpen(false);
-                                        }}
-                                    >
-                                        No
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                        className="min-h-10 cursor-pointer justify-center rounded-lg bg-red-500 text-sm font-semibold text-white focus:bg-red-500/90 focus:text-white data-[disabled]:opacity-60"
-                                        disabled={isDeletingAccount}
-                                        onSelect={(event) => {
-                                            event.preventDefault();
-                                            void handleDeleteAccount();
-                                        }}
-                                    >
-                                        {isDeletingAccount ? "Deleting..." : "Yes"}
-                                    </DropdownMenuItem>
-                                </div>
+                                </span>
+                                <DropdownMenuItem
+                                    className="h-8 w-12 shrink-0 cursor-pointer justify-center rounded-lg border border-gray-600 bg-gray-700/70 px-2 text-sm font-medium text-gray-100 focus:bg-gray-700 focus:text-white"
+                                    disabled={isDeletingAccount}
+                                    onSelect={(event) => {
+                                        event.preventDefault();
+                                        setDeleteConfirmationOpen(false);
+                                    }}
+                                >
+                                    No
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    aria-label={isDeletingAccount ? "Deleting account" : "Yes, delete my account"}
+                                    className="h-8 w-12 shrink-0 cursor-pointer justify-center rounded-lg bg-red-500 px-2 text-sm font-medium text-white focus:bg-red-500/90 focus:text-white data-[disabled]:opacity-60"
+                                    disabled={isDeletingAccount}
+                                    onSelect={(event) => {
+                                        event.preventDefault();
+                                        void handleDeleteAccount();
+                                    }}
+                                >
+                                    {isDeletingAccount ? "..." : "Yes"}
+                                </DropdownMenuItem>
                             </div>
                         ) : (
                             <DropdownMenuItem
