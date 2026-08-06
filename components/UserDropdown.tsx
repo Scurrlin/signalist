@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { LogIn, LogOut, UserPlus } from "lucide-react";
 import {
@@ -19,6 +19,17 @@ import {signOut} from "@/lib/actions/auth.actions";
 import Link from "next/link";
 import SearchCommand from "@/components/SearchCommand";
 
+const COMPACT_NAV_BREAKPOINT = 1024;
+const SEARCH_DIALOG_SM_BREAKPOINT = 640;
+const DEFAULT_MENU_GAP = 10;
+const USER_MENU_WIDTH = 256;
+
+type UserMenuPlacement = {
+    align: "start" | "end";
+    alignOffset: number;
+    sideOffset: number;
+};
+
 const UserDropdown = ({
     user,
     initialStocks,
@@ -34,6 +45,31 @@ const UserDropdown = ({
     const triggerRef = useRef<HTMLButtonElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [menuPlacement, setMenuPlacement] = useState<UserMenuPlacement>({
+        align: "end",
+        alignOffset: 0,
+        sideOffset: DEFAULT_MENU_GAP,
+    });
+
+    const updateMenuPlacement = useCallback(() => {
+        const trigger = triggerRef.current;
+
+        if (!trigger) return;
+
+        const triggerRect = trigger.getBoundingClientRect();
+        const isCompactNav = window.innerWidth < COMPACT_NAV_BREAKPOINT;
+        const searchDialogTopRatio = window.innerWidth < SEARCH_DIALOG_SM_BREAKPOINT ? 0.15 : 0.20;
+        const searchDialogTop = window.innerHeight * searchDialogTopRatio;
+        const menuTop = Math.max(searchDialogTop, triggerRect.bottom + DEFAULT_MENU_GAP);
+
+        setMenuPlacement({
+            align: isCompactNav ? "start" : "end",
+            alignOffset: isCompactNav
+                ? (window.innerWidth - USER_MENU_WIDTH) / 2 - triggerRect.left
+                : 0,
+            sideOffset: menuTop - triggerRect.bottom,
+        });
+    }, []);
 
     const handleSignOut = async () => {
         await signOut();
@@ -46,6 +82,10 @@ const UserDropdown = ({
     };
 
     const handleDropdownOpenChange = (open: boolean) => {
+        if (open) {
+            updateMenuPlacement();
+        }
+
         setDropdownOpen(open);
 
         if (!open) {
@@ -54,6 +94,20 @@ const UserDropdown = ({
             });
         }
     };
+
+    useEffect(() => {
+        if (!dropdownOpen) return;
+
+        const handleViewportChange = () => updateMenuPlacement();
+
+        window.addEventListener("resize", handleViewportChange);
+        window.addEventListener("orientationchange", handleViewportChange);
+
+        return () => {
+            window.removeEventListener("resize", handleViewportChange);
+            window.removeEventListener("orientationchange", handleViewportChange);
+        };
+    }, [dropdownOpen, updateMenuPlacement]);
 
     return (
         <>
@@ -81,8 +135,10 @@ const UserDropdown = ({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                align="end"
-                sideOffset={10}
+                align={menuPlacement.align}
+                alignOffset={menuPlacement.alignOffset}
+                sideOffset={menuPlacement.sideOffset}
+                collisionPadding={16}
                 className="user-menu-content"
             >
                 <DropdownMenuLabel className="user-menu-label">
