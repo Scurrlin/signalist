@@ -259,10 +259,10 @@
     @apply flex flex-col justify-between bg-gray-900 relative min-h-screen lg:h-screen lg:flex-row lg:overflow-hidden;
   }
   .auth-left-section {
-    @apply w-full lg:w-[45%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
+    @apply w-full max-lg:flex-1 lg:w-[45%] lg:h-screen px-6 lg:px-16 flex flex-col overflow-y-auto;
   }
   .auth-form-panel {
-    @apply mx-auto flex-1 pt-12 pb-6 lg:pt-16 lg:pb-8;
+    @apply m-auto py-12 lg:py-16;
     width: 100%;
     max-width: 730px;
   }

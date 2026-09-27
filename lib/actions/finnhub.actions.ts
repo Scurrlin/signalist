@@ -57,6 +57,26 @@ export async function getStockProfile(symbol: string): Promise<ProfileData | nul
   }
 }
 
+const createNewsDeduper = () => {
+  const seenUrls = new Set<string>();
+  const seenHeadlines = new Set<string>();
+
+  return (article: RawNewsArticle) => {
+    const url = (article.url ?? '').trim();
+    const headline = (article.headline ?? '').trim().toLowerCase();
+    if (seenUrls.has(url) || seenHeadlines.has(headline)) return false;
+    seenUrls.add(url);
+    seenHeadlines.add(headline);
+    return true;
+  };
+};
+
+const getUniqueNewsArticles = (articles: RawNewsArticle[]) =>
+  articles
+    .filter(validateArticle)
+    .sort((a, b) => (b.datetime || 0) - (a.datetime || 0))
+    .filter(createNewsDeduper());
+
 export async function getNews(symbols?: string[], limit = 8): Promise<MarketNewsArticle[]> {
   try {
     const ip = await getClientIp();
@@ -84,7 +104,7 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
           try {
             const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(sym)}&from=${range.from}&to=${range.to}&token=${token}`;
             const articles = await fetchJSON<RawNewsArticle[]>(url, 300);
-            perSymbolArticles[sym] = (articles || []).filter(validateArticle);
+            perSymbolArticles[sym] = getUniqueNewsArticles(articles || []);
           } catch (e) {
             console.error('Error fetching company news for', sym, e);
             perSymbolArticles[sym] = [];
@@ -93,14 +113,15 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
       );
 
       const collected: MarketNewsArticle[] = [];
+      const isUnique = createNewsDeduper();
       // Round-robin up to the requested article limit
       for (let round = 0; round < maxArticles; round++) {
         for (let i = 0; i < cleanSymbols.length; i++) {
           const sym = cleanSymbols[i];
           const list = perSymbolArticles[sym] || [];
-          if (list.length === 0) continue;
-          const article = list.shift();
-          if (!article || !validateArticle(article)) continue;
+          let article = list.shift();
+          while (article && !isUnique(article)) article = list.shift();
+          if (!article) continue;
           collected.push(formatArticle(article, true, sym, round));
           if (collected.length >= maxArticles) break;
         }
@@ -119,13 +140,10 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
     const generalUrl = `${FINNHUB_BASE_URL}/news?category=general&token=${token}`;
     const general = await fetchJSON<RawNewsArticle[]>(generalUrl, 300);
 
-    const seen = new Set<string>();
+    const isUnique = createNewsDeduper();
     const unique: RawNewsArticle[] = [];
     for (const art of general || []) {
-      if (!validateArticle(art)) continue;
-      const key = `${art.id}-${art.url}-${art.headline}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
+      if (!validateArticle(art) || !isUnique(art)) continue;
       unique.push(art);
       if (unique.length >= Math.max(maxArticles, 20)) break; // cap early before final slicing
     }
@@ -140,21 +158,7 @@ export async function getNews(symbols?: string[], limit = 8): Promise<MarketNews
 
 const RECENT_STOCK_NEWS_DAYS = 30;
 const HISTORICAL_STOCK_NEWS_DAYS = 365;
-const MIN_STOCK_NEWS_ARTICLES = 3;
-
-const getUniqueStockNewsArticles = (articles: RawNewsArticle[]) => {
-  const seen = new Set<string>();
-
-  return articles
-    .filter(validateArticle)
-    .filter((article) => {
-      const key = `${article.id}-${article.url}-${article.headline}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .sort((a, b) => (b.datetime || 0) - (a.datetime || 0));
-};
+const MIN_STOCK_NEWS_ARTICLES = 5;
 
 export async function getStockNews(symbol: string, limit = 6): Promise<MarketNewsArticle[]> {
   try {
@@ -178,7 +182,7 @@ export async function getStockNews(symbol: string, limit = 6): Promise<MarketNew
     const recentRange = getDateRange(RECENT_STOCK_NEWS_DAYS);
     const recentUrl = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(cleanSymbol)}&from=${recentRange.from}&to=${recentRange.to}&token=${token}`;
     const recentResponse = await fetchJSON<RawNewsArticle[]>(recentUrl, 300);
-    const recentArticles = getUniqueStockNewsArticles(recentResponse || []);
+    const recentArticles = getUniqueNewsArticles(recentResponse || []);
     const minimumArticleCount = Math.min(MIN_STOCK_NEWS_ARTICLES, maxArticles);
 
     let selectedArticles: RawNewsArticle[];
@@ -193,7 +197,7 @@ export async function getStockNews(symbol: string, limit = 6): Promise<MarketNew
         const historicalUrl = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(cleanSymbol)}&from=${historicalRange.from}&to=${historicalRange.to}&token=${token}`;
         const historicalResponse = await fetchJSON<RawNewsArticle[]>(historicalUrl, 300);
 
-        selectedArticles = getUniqueStockNewsArticles([
+        selectedArticles = getUniqueNewsArticles([
           ...recentArticles,
           ...(historicalResponse || []),
         ]).slice(0, minimumArticleCount);
