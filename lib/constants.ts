@@ -160,7 +160,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NYSE:DIS', displayName: 'Disney' },
                 { name: 'NYSE:SPOT', displayName: 'Spotify' },
                 { name: 'NASDAQ:ROKU', displayName: 'Roku' },
-                { name: 'NASDAQ:WBD', displayName: 'Warner Bros.' },
+                { name: 'NYSE:SKYD', displayName: 'Skydance Corporation' },
             ],
         },
     ],
