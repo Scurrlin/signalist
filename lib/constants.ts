@@ -60,7 +60,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NYSE:DIS', d: 'Disney' },
                 { s: 'NYSE:SPOT', d: 'Spotify' },
                 { s: 'NASDAQ:ROKU', d: 'Roku' },
-                { s: 'NASDAQ:WBD', d: 'Warner Bros.' },
+                { s: 'NYSE:SKYD', d: 'Skydance Corporation' },
             ],
         },
     ],
