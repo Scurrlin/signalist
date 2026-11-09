@@ -59,7 +59,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
                 { s: 'NASDAQ:NFLX', d: 'Netflix' },
                 { s: 'NYSE:DIS', d: 'Disney' },
                 { s: 'NYSE:SPOT', d: 'Spotify' },
-                { s: 'NASDAQ:ROKU', d: 'Roku' },
+                { s: 'NASDAQ:FOXA', d: 'Fox Corp' },
                 { s: 'NYSE:SKYD', d: 'Skydance' },
             ],
         },
@@ -159,7 +159,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
                 { name: 'NASDAQ:NFLX', displayName: 'Netflix' },
                 { name: 'NYSE:DIS', displayName: 'Disney' },
                 { name: 'NYSE:SPOT', displayName: 'Spotify' },
-                { name: 'NASDAQ:ROKU', displayName: 'Roku' },
+                { name: 'NASDAQ:FOXA', displayName: 'Fox Corp' },
                 { name: 'NYSE:SKYD', displayName: 'Skydance' },
             ],
         },
@@ -263,7 +263,7 @@ export const POPULAR_STOCK_SYMBOLS = [
     'SPOT',
     'XYZ',
     'SHOP',
-    'ROKU',
+    'CMCSA',
 
     // Newer Tech Companies
     'SNOW',
