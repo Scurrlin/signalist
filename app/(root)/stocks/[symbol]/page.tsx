@@ -96,7 +96,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
           <div className="flex min-w-0 flex-col gap-6 min-[1025px]:order-2">
             <TradingViewWidget
               scriptUrl={`${scriptUrl}technical-analysis.js`}
-              config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(symbol)}
+              config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(tradingViewSymbol)}
               className="technical-analysis-widget widget-overlay-frame"
               height={400}
             />
