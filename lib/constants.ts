@@ -102,17 +102,6 @@ export const TOP_STORIES_WIDGET_CONFIG = {
     height: '950',
 };
 
-export const SYMBOL_NEWS_WIDGET_CONFIG = (symbol: string) => ({
-    displayMode: 'regular',
-    feedMode: 'symbol',
-    symbol: symbol.toUpperCase(),
-    colorTheme: 'dark',
-    isTransparent: true,
-    locale: 'en',
-    width: '100%',
-    height: 496,
-});
-
 export const MARKET_DATA_WIDGET_CONFIG = {
     title: 'Stocks',
     width: '100%',
@@ -218,15 +207,6 @@ export const TECHNICAL_ANALYSIS_WIDGET_CONFIG = (symbol: string) => ({
     height: 400,
     interval: '1h',
     largeChartUrl: '',
-});
-
-export const COMPANY_PROFILE_WIDGET_CONFIG = (symbol: string) => ({
-    symbol: symbol.toUpperCase(),
-    colorTheme: 'dark',
-    isTransparent: 'true',
-    locale: 'en',
-    width: '100%',
-    height: 440,
 });
 
 export const COMPANY_FINANCIALS_WIDGET_CONFIG = (symbol: string) => ({
