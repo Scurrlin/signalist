@@ -2,7 +2,7 @@
 
 import { connectToDatabase } from '@/database/mongoose';
 import { Watchlist } from '@/database/models/watchlist.model';
-import { fetchJSON } from './finnhub.actions';
+import { fetchJSON, searchStocksWithStatus } from './finnhub.actions';
 import { getServerSession } from '@/lib/better-auth/session';
 
 const FINNHUB_BASE_URL = process.env.FINNHUB_BASE_URL;
@@ -56,6 +56,16 @@ export async function getCurrentWatchlistSymbols(): Promise<string[]> {
     console.error('getCurrentWatchlistSymbols error:', err);
     return [];
   }
+}
+
+// Fetched when the search dialog opens, so no page render waits on it.
+export async function getSearchDefaults() {
+  const [popular, watchlistSymbols] = await Promise.all([
+    searchStocksWithStatus(),
+    getCurrentWatchlistSymbols(),
+  ]);
+
+  return { stocks: popular.stocks, watchlistSymbols };
 }
 
 export async function addToWatchlist(symbol: string, company: string) {

@@ -31,14 +31,10 @@ type UserMenuPlacement = {
 
 const UserDropdown = ({
     user,
-    initialStocks,
     isGuest = false,
-    watchlistSymbols = [],
 }: {
     user: User;
-    initialStocks: StockWithWatchlistStatus[];
     isGuest?: boolean;
-    watchlistSymbols?: string[];
 }) => {
     const router = useRouter();
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -217,11 +213,9 @@ const UserDropdown = ({
                             <DropdownMenuSeparator className="user-menu-separator"/>
                             <nav>
                                 <NavItems
-                                    initialStocks={initialStocks}
                                     isGuest={true}
                                     inDropdown={true}
                                     onOpenSearch={handleOpenSearch}
-                                    watchlistSymbols={watchlistSymbols}
                                 />
                             </nav>
                         </div>
@@ -229,12 +223,10 @@ const UserDropdown = ({
                 ) : (
                     <nav className="lg:hidden">
                         <NavItems
-                            initialStocks={initialStocks}
                             isGuest={false}
                             inDropdown={true}
                             onOpenSearch={handleOpenSearch}
                             userId={user.id}
-                            watchlistSymbols={watchlistSymbols}
                         />
                     </nav>
                 )}
@@ -296,12 +288,10 @@ const UserDropdown = ({
         
         <SearchCommand 
             renderAs="hidden"
-            initialStocks={initialStocks}
             externalOpen={searchOpen}
             onExternalOpenChange={setSearchOpen}
             userId={isGuest ? undefined : user.id}
             isGuest={isGuest}
-            watchlistSymbols={watchlistSymbols}
         />
     </>
     )

@@ -33,7 +33,6 @@ declare global {
     type SearchCommandProps = {
         renderAs?: 'button' | 'text' | 'hidden';
         label?: string;
-        initialStocks: StockWithWatchlistStatus[];
         onSearchOpen?: () => void;
         externalOpen?: boolean;
         onExternalOpenChange?: (open: boolean) => void;
@@ -81,8 +80,6 @@ declare global {
     type WatchlistButtonProps = {
         symbol: string;
         isInWatchlist: boolean;
-        showTrashIcon?: boolean;
-        type?: 'button' | 'icon';
         onWatchlistChange?: (symbol: string, isAdded: boolean) => Promise<void>;
         isGuest?: boolean;
     };

@@ -14,21 +14,17 @@ const getDropdownNavIcon = (href: string) => {
 };
 
 type NavItemsProps = {
-    initialStocks: StockWithWatchlistStatus[];
     isGuest?: boolean;
     inDropdown?: boolean;
     onOpenSearch?: () => void;
     userId?: string;
-    watchlistSymbols?: string[];
 };
 
 const NavItems = ({
-    initialStocks,
     isGuest = false,
     inDropdown = false,
     onOpenSearch,
     userId,
-    watchlistSymbols = [],
 }: NavItemsProps) => {
     const navItems = NAV_ITEMS.filter(item => !isGuest || !item.authOnly);
 
@@ -106,10 +102,8 @@ const NavItems = ({
                     <SearchCommand
                         renderAs="text"
                         label={searchItem.label}
-                        initialStocks={initialStocks}
                         userId={userId}
                         isGuest={isGuest}
-                        watchlistSymbols={watchlistSymbols}
                     />
                 )}
                 {watchlistItem && (

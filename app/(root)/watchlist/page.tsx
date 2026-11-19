@@ -2,7 +2,7 @@ import Watchlist from "@/components/Watchlist";
 import { getServerSession } from "@/lib/better-auth/session";
 import { cookies } from "next/headers";
 import { getCurrentWatchlistWithData } from "@/lib/actions/watchlist.actions";
-import { getNews, searchStocks } from "@/lib/actions/finnhub.actions";
+import { getNews } from "@/lib/actions/finnhub.actions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
@@ -52,16 +52,12 @@ export default async function WatchlistPage() {
     .filter((stock) => stock.newsEnabled !== false)
     .map((stock) => stock.symbol);
 
-  const [watchlistNews, initialSearchStocks] = await Promise.all([
-    newsSymbols.length > 0 ? getNews(newsSymbols, 12).catch(() => []) : Promise.resolve([]),
-    searchStocks(),
-  ]);
+  const watchlistNews = newsSymbols.length > 0 ? await getNews(newsSymbols, 12).catch(() => []) : [];
 
   return (
     <div className="w-full">
       <Watchlist
         initialStocks={watchlistStocks}
-        initialSearchStocks={initialSearchStocks}
         news={watchlistNews}
         userId={userId!}
       />

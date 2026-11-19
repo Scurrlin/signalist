@@ -6,14 +6,15 @@ import {Button} from "@/components/ui/button";
 import {CornerDownLeft, Loader2, TrendingUp} from "lucide-react";
 import Link from "next/link";
 import {searchStocksWithStatus} from "@/lib/actions/finnhub.actions";
-import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
+import { addToWatchlist, getSearchDefaults, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
 import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
+
+const toSymbolSet = (symbols: string[]) => new Set(symbols.map(symbol => symbol.toUpperCase()));
 
 export default function SearchCommand({
   renderAs = 'button',
   label = 'Add stock',
-  initialStocks,
   onSearchOpen,
   externalOpen,
   onExternalOpenChange,
@@ -31,29 +32,47 @@ export default function SearchCommand({
   const [submittedQuery, setSubmittedQuery] = useState("")
   const [loading, setLoading] = useState(false)
   const [searchError, setSearchError] = useState<string | null>(null)
-  const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>(initialStocks);
+  const [popularStocks, setPopularStocks] = useState<StockWithWatchlistStatus[] | null>(null);
+  const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>([]);
   const [updatingSymbol, setUpdatingSymbol] = useState<string | null>(null);
-  const [trackedSymbols, setTrackedSymbols] = useState<Set<string>>(() => {
-    const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);
-    return new Set(symbols.map(symbol => symbol.toUpperCase()));
-  });
+  const [trackedSymbols, setTrackedSymbols] = useState<Set<string>>(() => toSymbolSet(watchlistSymbols ?? []));
   const router = useRouter();
   const pathname = usePathname();
 
   const trimmedSearchTerm = searchTerm.trim();
   const isSearchMode = !!submittedQuery;
   const hasPendingSearch = !!trimmedSearchTerm && trimmedSearchTerm !== submittedQuery && !loading;
-  const displayStocks = isSearchMode ? stocks : stocks?.slice(0, 10);
-  const resultCount = displayStocks?.length ?? 0;
+  const displayStocks = isSearchMode ? stocks : (popularStocks ?? []).slice(0, 10);
+  const isLoadingList = loading || (!isSearchMode && popularStocks === null);
+  const resultCount = displayStocks.length;
   const resultCountLabel = resultCount >= 11 ? '10+' : resultCount;
+  // The watchlist page passes its live symbols; everywhere else they come from getSearchDefaults.
+  const hasExternalSymbols = watchlistSymbols !== undefined;
 
   useEffect(() => {
-    const symbols = watchlistSymbols ?? initialStocks.filter(stock => stock.isInWatchlist).map(stock => stock.symbol);
-    setTrackedSymbols(new Set(symbols.map(symbol => symbol.toUpperCase())));
-    if (!submittedQuery) {
-      setStocks(initialStocks);
-    }
-  }, [initialStocks, watchlistSymbols, submittedQuery]);
+    if (watchlistSymbols) setTrackedSymbols(toSymbolSet(watchlistSymbols));
+  }, [watchlistSymbols]);
+
+  // Load popular stocks and the user's watchlist each time the dialog opens, so no page render waits on them.
+  useEffect(() => {
+    if (!open) return;
+
+    let cancelled = false;
+
+    getSearchDefaults()
+      .then((defaults) => {
+        if (cancelled) return;
+        setPopularStocks(defaults.stocks);
+        if (!hasExternalSymbols) setTrackedSymbols(toSymbolSet(defaults.watchlistSymbols));
+      })
+      .catch(() => {
+        if (!cancelled) setPopularStocks(prev => prev ?? []);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, hasExternalSymbols]);
 
   const performSearch = async () => {
     const trimmed = searchTerm.trim();
@@ -61,7 +80,6 @@ export default function SearchCommand({
     if (!trimmed) {
       setSubmittedQuery("");
       setSearchError(null);
-      setStocks(initialStocks);
       return;
     }
 
@@ -91,7 +109,6 @@ export default function SearchCommand({
     if (!value.trim() && submittedQuery) {
       setSubmittedQuery("");
       setSearchError(null);
-      setStocks(initialStocks);
     }
   }
 
@@ -107,7 +124,6 @@ export default function SearchCommand({
     setOpen(false);
     setSearchTerm("");
     setSubmittedQuery("");
-    setStocks(initialStocks);
   }
 
   const handleToggleWatchlist = async (event: MouseEvent<HTMLButtonElement>, stock: StockWithWatchlistStatus) => {
@@ -199,13 +215,13 @@ export default function SearchCommand({
           ) : null}
         </div>
         <CommandList className="search-list">
-          {loading ? (
+          {isLoadingList ? (
               <CommandEmpty className="search-list-empty">Loading stocks...</CommandEmpty>
           ) : searchError ? (
               <div className="search-list-indicator">
                 {searchError}
               </div>
-          ) : displayStocks?.length === 0 ? (
+          ) : displayStocks.length === 0 ? (
               <div className="search-list-indicator">
                 {isSearchMode ? 'No results found' : 'No stocks available'}
               </div>
@@ -215,7 +231,7 @@ export default function SearchCommand({
                 {isSearchMode ? 'Search results' : 'Popular stocks'}
                 {` `}({resultCountLabel})
               </div>
-              {displayStocks?.map((stock) => (
+              {displayStocks.map((stock) => (
                   <li key={stock.symbol} className="search-item">
                     <div className="search-item-row">
                     <Link

@@ -10,7 +10,6 @@ import SearchCommand from './SearchCommand';
 
 interface WatchlistProps {
   initialStocks: StockWithData[];
-  initialSearchStocks: StockWithWatchlistStatus[];
   news: MarketNewsArticle[];
   userId: string;
 }
@@ -50,7 +49,7 @@ const formatNewsDate = (timestamp: number) => {
   }).format(new Date(timestamp * 1000));
 };
 
-const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: WatchlistProps) => {
+const Watchlist = ({ initialStocks, news, userId }: WatchlistProps) => {
   const [stocks, setStocks] = useState(initialStocks);
   const [currentNews, setCurrentNews] = useState(news);
   const [newsEmptyMessage, setNewsEmptyMessage] = useState(
@@ -262,7 +261,6 @@ const Watchlist = ({ initialStocks, initialSearchStocks, news, userId }: Watchli
           <h1 className="watchlist-title">Watchlist</h1>
           <div className="watchlist-header-actions">
             <SearchCommand
-              initialStocks={initialSearchStocks}
               label="Add Stock"
               userId={userId}
               watchlistSymbols={stocks.map(stock => stock.symbol)}

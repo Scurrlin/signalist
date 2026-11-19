@@ -3,7 +3,6 @@
 import { getDateRange, validateArticle, formatArticle } from '@/lib/utils';
 import { POPULAR_STOCK_SYMBOLS } from '@/lib/constants';
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
-import { cache } from 'react';
 
 type StockProfile = {
   name?: string;
@@ -214,11 +213,6 @@ export async function getStockNews(symbol: string, limit = 6): Promise<MarketNew
     return [];
   }
 }
-
-export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
-  const result = await searchStocksWithStatus(query);
-  return result.success ? result.stocks : [];
-});
 
 export async function searchStocksWithStatus(query?: string): Promise<StockSearchResponse> {
   try {

@@ -41,19 +41,9 @@ const createAuth = (db: Db) =>
         plugins: [nextCookies()],
     });
 
-let authInstance: ReturnType<typeof createAuth> | null = null;
+// Module-level await: this file runs once per server process, so auth is created once.
+const { connection } = await connectToDatabase();
 
-export const getAuth = async () => {
-    if(authInstance) return authInstance;
+if(!connection.db) throw new Error('MongoDB connection not found');
 
-    const mongoose = await connectToDatabase();
-    const db = mongoose.connection.db;
-
-    if(!db) throw new Error('MongoDB connection not found');
-
-    authInstance = createAuth(db as Db);
-
-    return authInstance;
-}
-
-export const auth = await getAuth();
+export const auth = createAuth(connection.db as Db);

@@ -73,6 +73,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        {/* Warm the TradingView loader and widget-frame hosts (from the sign-in page onward). */}
+        <link rel="preconnect" href="https://s3.tradingview.com" />
+        <link rel="preconnect" href="https://www.tradingview-widget.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
