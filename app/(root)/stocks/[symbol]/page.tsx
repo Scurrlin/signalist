@@ -22,12 +22,14 @@ const getTradingViewSymbol = (symbol: string, exchange?: string) => {
     return `NASDAQ:${upperSymbol}`;
   }
 
-  if (upperExchange.includes('NYSE')) {
-    return `NYSE:${upperSymbol}`;
+  // Checked before NYSE because Finnhub names it "NYSE MKT LLC".
+  if (['AMEX', 'NYSE AMERICAN', 'NYSE MKT'].some((name) => upperExchange.includes(name))) {
+    return `AMEX:${upperSymbol}`;
   }
 
-  if (upperExchange.includes('AMEX') || upperExchange.includes('NYSE AMERICAN')) {
-    return `AMEX:${upperSymbol}`;
+  // Finnhub spells NYSE out as "NEW YORK STOCK EXCHANGE, INC."
+  if (upperExchange.includes('NYSE') || upperExchange.includes('NEW YORK STOCK EXCHANGE')) {
+    return `NYSE:${upperSymbol}`;
   }
 
   return upperSymbol;
