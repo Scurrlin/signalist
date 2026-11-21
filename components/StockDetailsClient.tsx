@@ -38,7 +38,7 @@ export default function StockDetailsClient({
       } else {
         // Revert on error
         setInWatchlist(!isAdded);
-        toast.error(result.error || 'Something went wrong');
+        toast.error(result.error || 'Failed to update watchlist');
       }
     } catch {
       // Revert on error

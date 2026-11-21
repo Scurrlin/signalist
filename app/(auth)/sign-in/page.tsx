@@ -41,7 +41,7 @@ const SignIn = () => {
         } catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
-                description: e instanceof Error ? e.message : 'Something went wrong. Please try again'
+                description: 'Something went wrong. Please try again'
             })
         }
     }

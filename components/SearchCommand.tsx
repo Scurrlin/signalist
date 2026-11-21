@@ -131,8 +131,7 @@ export default function SearchCommand({
     event.stopPropagation();
 
     if (isGuest || !userId) {
-      toast.info('Create a free account', {
-        description: 'Sign up to add to your watchlist',
+      toast.info('Watchlists need a free account', {
         action: {
           label: 'Sign Up',
           onClick: () => router.push('/sign-up'),
