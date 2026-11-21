@@ -677,6 +677,22 @@
   background-color: #9095A1;
 }
 
+/* Size toasts to their text, wrapping at Sonner's default width.
+   Scoped to the toaster so it outranks Sonner's stylesheet, which loads after this one. */
+[data-sonner-toaster] [data-sonner-toast][data-styled='true'] {
+  width: fit-content;
+  max-width: var(--width);
+}
+
+/* Sonner spans toasts full width on phones; keep them right-aligned and fitted */
+@media (max-width: 600px) {
+  [data-sonner-toaster] [data-sonner-toast][data-styled='true'] {
+    left: auto;
+    right: calc(var(--mobile-offset-left) + var(--mobile-offset-right));
+    max-width: calc(100% - var(--mobile-offset-left) - var(--mobile-offset-right));
+  }
+}
+
 /* Match toast description color and weight to the title */
 [data-sonner-toast][data-styled='true'] [data-description] {
   color: inherit !important;
