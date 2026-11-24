@@ -264,7 +264,7 @@
   .auth-form-panel {
     @apply m-auto py-12 lg:py-16;
     width: 100%;
-    max-width: 730px;
+    max-width: 480px;
   }
   .auth-right-section {
     @apply relative hidden w-full min-h-[460px] max-lg:border-t max-lg:border-gray-600 lg:flex lg:w-[55%] lg:h-screen overflow-hidden bg-gray-950 px-6 py-10 md:p-8 lg:py-12 lg:px-12 flex-col justify-start;
