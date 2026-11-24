@@ -34,15 +34,11 @@ const SignIn = () => {
                 toast.success('Welcome back!');
                 pushWithAuthSuccessTransition(router);
             } else {
-                toast.error('Sign in failed', {
-                    description: result.error || 'Invalid email or password'
-                })
+                toast.error(result.error || 'Invalid email or password');
             }
         } catch (e) {
             console.error(e);
-            toast.error('Sign in failed', {
-                description: 'Something went wrong. Please try again'
-            })
+            toast.error(<>Something went wrong. <br className="toast-break" />Please try again.</>);
         }
     }
 
@@ -52,7 +48,7 @@ const SignIn = () => {
             const result = await setGuestMode();
             
             if (result.success) {
-                toast.success('Welcome! Feel free to take a look around');
+                toast.success(<>Welcome! Feel free to <br className="toast-break" />take a look around</>);
                 pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Failed to enter guest mode');

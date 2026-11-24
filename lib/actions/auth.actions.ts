@@ -19,7 +19,7 @@ export const signUpWithEmail = async ({ email, password, fullName }: SignUpFormD
         
         // Extract the specific error message from Better Auth
         const error = e as { message?: string; body?: { message?: string } };
-        const errorMessage = error?.message || error?.body?.message || 'Failed to create account';
+        const errorMessage = error?.message || error?.body?.message || 'Failed to create an account';
         
         // Check for common error scenarios
         if (errorMessage.toLowerCase().includes('already') || errorMessage.toLowerCase().includes('exists')) {

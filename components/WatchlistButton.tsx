@@ -15,7 +15,7 @@ const WatchlistButton = ({
 
   const handleClick = async () => {
     if (isGuest) {
-      toast.info('Watchlists require a free account', {
+      toast.info(<>Watchlists require <br className="toast-break" />a free account</>, {
         action: {
           label: 'Sign Up',
           onClick: () => router.push('/sign-up'),

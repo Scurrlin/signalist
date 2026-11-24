@@ -35,15 +35,11 @@ const SignUp = () => {
                 toast.success('Account created successfully!');
                 pushWithAuthSuccessTransition(router);
             } else {
-                toast.error('Sign up failed', {
-                    description: result.error || 'Failed to create an account'
-                })
+                toast.error(result.error || 'Failed to create an account');
             }
         } catch (e) {
             console.error(e);
-            toast.error('Sign up failed', {
-                description: 'Something went wrong. Please try again'
-            })
+            toast.error(<>Something went wrong. <br className="toast-break" />Please try again.</>);
         }
     }
 
@@ -53,7 +49,7 @@ const SignUp = () => {
             const result = await setGuestMode();
             
             if (result.success) {
-                toast.success('Welcome! Feel free to take a look around');
+                toast.success(<>Welcome! Feel free to <br className="toast-break" />take a look around</>);
                 pushWithAuthSuccessTransition(router);
             } else {
                 toast.error('Failed to enter guest mode');

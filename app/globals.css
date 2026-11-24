@@ -684,6 +684,33 @@
   max-width: var(--width);
 }
 
+/* Color toasts like the watchlist buttons: blue for success and info, red for errors.
+   Sonner's action button swaps these, so it turns white with colored text. */
+[data-sonner-toast][data-type='success'],
+[data-sonner-toast][data-type='info'] {
+  --normal-bg: var(--color-blue-600);
+  --normal-border: var(--color-blue-600);
+  --normal-text: var(--color-gray-100);
+}
+[data-sonner-toast][data-type='error'] {
+  --normal-bg: var(--color-red-500);
+  --normal-border: var(--color-red-500);
+  --normal-text: var(--color-gray-100);
+}
+
+/* Black icon circles with white symbols. The symbol is cut out of the circle,
+   so a white disc inside the circle (radius 8 of 10) shows through it. */
+[data-sonner-toaster] [data-sonner-toast][data-styled='true'] [data-icon] svg {
+  color: var(--color-gray-900);
+  background: radial-gradient(circle closest-side, var(--color-gray-100) 72%, transparent 73%);
+}
+
+/* Black action button (Sign Up) with white text */
+[data-sonner-toaster] [data-sonner-toast][data-styled='true'] [data-button] {
+  background: var(--color-gray-900);
+  color: var(--color-gray-100);
+}
+
 /* Sonner spans toasts full width on phones; keep them centered and fitted.
    The toaster starts at the left offset and runs a full viewport wide, so the
    right inset is doubled to center the toast on the screen. */
@@ -693,6 +720,13 @@
     right: calc(var(--mobile-offset-left) + var(--mobile-offset-right));
     margin-inline: auto;
     max-width: calc(100% - var(--mobile-offset-left) - var(--mobile-offset-right));
+  }
+}
+
+/* Hand-placed line breaks in toast text, used only on screens narrower than 375px */
+@media (min-width: 375px) {
+  .toast-break {
+    display: none;
   }
 }
 
