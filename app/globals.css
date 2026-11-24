@@ -684,11 +684,14 @@
   max-width: var(--width);
 }
 
-/* Sonner spans toasts full width on phones; keep them right-aligned and fitted */
+/* Sonner spans toasts full width on phones; keep them centered and fitted.
+   The toaster starts at the left offset and runs a full viewport wide, so the
+   right inset is doubled to center the toast on the screen. */
 @media (max-width: 600px) {
   [data-sonner-toaster] [data-sonner-toast][data-styled='true'] {
-    left: auto;
+    left: 0;
     right: calc(var(--mobile-offset-left) + var(--mobile-offset-right));
+    margin-inline: auto;
     max-width: calc(100% - var(--mobile-offset-left) - var(--mobile-offset-right));
   }
 }
